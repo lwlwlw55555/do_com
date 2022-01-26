@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.domdd.dao.InventoryMapper" >
+
+    <insert id="replaceBatch">
+        replace into inventory (quantity, lock_quantity, available_quantity, substandard_quantity, sale_in_ontheway_quantity, barcode, goods_name, sku_name, brand_name, category_name)
+        VALUES
+        <foreach collection ="records" item="order" separator =",">
+            (#{order.quantity}, #{order.lockQuantity}, #{order.availableQuantity}, #{order.substandardQuantity}, #{order.saleInOnthewayQuantity}, #{order.barcode}, #{order.goodsName}, #{order.skuName}, #{order.brandName}, #{order.categoryName})
+        </foreach >
+    </insert>
+</mapper>

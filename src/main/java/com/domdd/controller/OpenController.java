@@ -1,0 +1,75 @@
+package com.domdd.controller;
+
+
+import com.domdd.controller.base.BaseController;
+import com.domdd.controller.base.resp.BasePagingResp;
+import com.domdd.controller.base.resp.BaseResp;
+import com.domdd.controller.req.OpenInventoryListReq;
+import com.domdd.controller.req.OpenOrderListReq;
+import com.domdd.controller.req.OpenOrderShopReq;
+import com.domdd.controller.req.OpenTimeReq;
+import com.domdd.service.OpenService;
+import com.domdd.model.*;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.validation.Valid;
+
+@Api(tags = "[open]")
+@RestController
+@RequestMapping("open")
+@ApiImplicitParams({
+        @ApiImplicitParam(name = "partyId", paramType = "header", type = "int", required = true, example = "1"),
+        @ApiImplicitParam(name = "bizIds", paramType = "header", type = "String", example = "1")
+})
+@Controller
+public class OpenController extends BaseController {
+
+    @Resource
+    private OpenService openService;
+
+    @PostMapping("purchaseInOrder/list")
+    @ApiOperation("采购入库单查询")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<BasePagingResp<PurchaseInOrder>> purchaseInOrderList(@RequestBody @Valid OpenTimeReq req, BindingResult bindingResult) {
+        return BaseResp.success(new BasePagingResp<>(openService.purchaseInOrderList(req.getStartTime(), req.getEndTime(), req.getPage(), req.getPageSize())));
+    }
+
+    @PostMapping("order/list")
+    @ApiOperation("销售订单查询")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<BasePagingResp<OrderInfo>> orderList(@RequestBody @Valid OpenOrderListReq req, BindingResult bindingResult) {
+        return BaseResp.success(new BasePagingResp<>(openService.orderList(req.getShopName(), req.getStartTime(), req.getEndTime(), req.getTimeType(), req.getPage(), req.getPageSize())));
+    }
+
+    @PostMapping("afterSaleOrder/list")
+    @ApiOperation("退款单查询")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<BasePagingResp<AfterSaleOrder>> afterSaleOrderList(@RequestBody @Valid OpenOrderShopReq req, BindingResult bindingResult) {
+        return BaseResp.success(new BasePagingResp<>(openService.afterSaleOrderList(req.getShopName(), req.getStartTime(), req.getEndTime(), req.getPage(), req.getPageSize())));
+    }
+
+    @PostMapping("afterSaleReturnOrder/list")
+    @ApiOperation("退货单查询")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<BasePagingResp<AfterSaleReturnOrder>> afterSaleReturnOrderList(@RequestBody @Valid OpenOrderShopReq req, BindingResult bindingResult) {
+        return BaseResp.success(new BasePagingResp<>(openService.afterSaleReturnOrderList(req.getShopName(), req.getStartTime(), req.getEndTime(), req.getPage(), req.getPageSize())));
+    }
+
+    @PostMapping("inventory/list")
+    @ApiOperation("库存表查询")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<BasePagingResp<Inventory>> inventoryList(@RequestBody @Valid OpenInventoryListReq req, BindingResult bindingResult) {
+        return BaseResp.success(new BasePagingResp<>(openService.inventoryList(req.getPage(), req.getPageSize())));
+    }
+}
