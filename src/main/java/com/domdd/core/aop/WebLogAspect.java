@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class WebLogAspect {
 	private final static Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
 
-    @Pointcut("execution(public * com.domdd.controller..*.*(..))")
+    @Pointcut("execution(public * com.domdd.controller.*.*(..))")
     public void webLog(){}
 
     @AfterReturning(returning = "ret", pointcut = "webLog()")
