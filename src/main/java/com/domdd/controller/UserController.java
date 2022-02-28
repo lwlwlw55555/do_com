@@ -1,9 +1,10 @@
 package com.domdd.controller;
 
 import com.domdd.controller.base.resp.BaseResp;
-import com.domdd.mapper.es.EsUserService;
 import com.domdd.model.es.User;
+import com.domdd.service.es.UserService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -21,6 +22,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +32,12 @@ import java.util.Random;
  * @author lw
  * @date 2022/2/15 5:23 下午
  */
+@Api(tags = "[user]")
 @RestController
 @AllArgsConstructor
-public class EsController {
+public class UserController {
     private final ElasticsearchRestTemplate elasticsearchTemplate;
-    private final EsUserService esUserService;
+    private final UserService esUserService;
 
     private final String[] names = {"诸葛亮", "曹操", "李白", "韩信", "赵云", "小乔", "狄仁杰", "李四", "诸小明", "王五"};
     private final String[] infos = {"我来自中国的一个小乡村，地处湖南省", "我来自中国的一个大城市，名叫上海，人们称作魔都"
@@ -50,7 +53,7 @@ public class EsController {
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             User user = new User();
-            user.setId(i);
+//            user.setId(i);
             user.setName(names[random.nextInt(9)]);
             user.setAge(random.nextInt(40) + i);
             user.setInfo(infos[random.nextInt(2)]);
@@ -111,6 +114,7 @@ public class EsController {
                 .build();
         //查询
         SearchHits<User> search = elasticsearchTemplate.search(searchQuery, User.class);
+//        elasticsearchTemplate.queryForList();
         //得到查询返回的内容
         List<SearchHit<User>> searchHits = search.getSearchHits();
         //设置一个最后需要返回的实体类集合

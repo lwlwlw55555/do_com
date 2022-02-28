@@ -8,8 +8,6 @@ import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.domdd.core.interceptors.MybatisLog;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.LocalCacheScope;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.EnvironmentAware;

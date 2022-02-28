@@ -2,6 +2,8 @@ package com.domdd.core;
 
 import com.domdd.core.db.DruidProperties;
 import com.domdd.core.db.EsProperties;
+import com.domdd.core.db.KafkaProperties;
+import com.domdd.core.db.ZkProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,18 @@ public class PropertiesConfiguration {
     @ConfigurationProperties(prefix = "es")
     public EsProperties esProperties() {
         return new EsProperties();
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "zk")
+    public ZkProperties zkProperties() {
+        return new ZkProperties();
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "kafka")
+    public KafkaProperties kafkaProperties() {
+        return new KafkaProperties();
     }
 
 }

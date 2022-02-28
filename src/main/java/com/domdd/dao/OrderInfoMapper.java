@@ -1,6 +1,5 @@
 package com.domdd.dao;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -9,7 +8,6 @@ import com.domdd.model.OrderInfo;
 import com.domdd.service.OpenService;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;

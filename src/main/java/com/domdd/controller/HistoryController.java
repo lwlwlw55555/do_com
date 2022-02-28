@@ -1,9 +1,7 @@
 package com.domdd.controller;
 
-import com.domdd.controller.base.resp.BasePagingResp;
 import com.domdd.controller.base.resp.BaseResp;
-import com.domdd.controller.req.*;
-import com.domdd.model.*;
+import com.domdd.controller.req.HistoryBaseReq;
 import com.domdd.service.OpenService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
