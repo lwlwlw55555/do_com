@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.domdd.controller.resp.MddResp;
 import com.domdd.core.DanengOpenPropertiesDo;
 import com.domdd.core.aop.OpenAspect;
-import com.domdd.dao.*;
+import com.domdd.dao.common.*;
 import com.domdd.model.*;
 import com.domdd.util.ObjectFieldHandler;
 import com.google.common.collect.ImmutableMap;

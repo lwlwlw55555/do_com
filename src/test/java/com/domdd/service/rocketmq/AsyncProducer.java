@@ -14,6 +14,17 @@ import java.util.concurrent.TimeUnit;
  * @date 2022/3/2 4:03 下午
  */
 public class AsyncProducer {
+    /**
+     * 异步消息发送一般用来对方法调用响应时间有较严格要求的情况下，异步调用，立即返回。不同于同步的唯一在于：
+     * send方法调用的时候多携带一个回调接口参数 SendCallBack，用来异步处理消息发送结果；
+     * 另外还可以使用 setRetryTimesWhenSendAsyncFailed 方法来设置异步消息发送失败重试次数。
+     *
+     * ————————————————
+     * 版权声明：本文为CSDN博主「championzgj」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+     * 原文链接：https://blog.csdn.net/championzgj/article/details/90726080
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         //Instantiate with a producer group name.
         DefaultMQProducer producer = new DefaultMQProducer("lw");

@@ -1,4 +1,4 @@
-package com.domdd.dao;
+package com.domdd.dao.shardingjdbc;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.Date;
 import java.util.List;
 
-public interface AfterSaleOrderMapper extends BaseMapper<AfterSaleOrder> {
+public interface SjAfterSaleOrderMapper extends BaseMapper<AfterSaleOrder> {
     default IPage<AfterSaleOrder> selectByPage(IPage<AfterSaleOrder> page, Date startTime, Date endTime, String shopName) {
         LambdaQueryWrapper<AfterSaleOrder> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(AfterSaleOrder::getShopName, shopName);

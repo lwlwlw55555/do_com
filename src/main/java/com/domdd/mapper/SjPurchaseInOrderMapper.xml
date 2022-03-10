@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.domdd.dao.common.PurchaseInOrderMapper" >
+<mapper namespace="com.domdd.dao.shardingjdbc.SjPurchaseInOrderMapper" >
 
     <insert id="replaceBatch">
         replace into purchase_in_order (inventory_order_sn, order_sn, supplier, warehouse_name, order_status, goods_sub_type, outer_id, barcode, goods_name, sku_name, product_batch_code, goods_number, quantity, product_date, expire_date, inventory_in_time)

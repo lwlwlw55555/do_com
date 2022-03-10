@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.domdd.dao.common.OrderInfoMapper">
+<mapper namespace="com.domdd.dao.shardingjdbc.SjOrderInfoMapper">
 
     <insert id="replaceBatch">
         replace INTO order_info (order_goods_id, order_sn, platform_order_sn, goods_name, platform_order_goods_sn,

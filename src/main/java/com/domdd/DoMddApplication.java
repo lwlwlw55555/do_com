@@ -8,6 +8,7 @@ import com.domdd.util.CustomerBigDecimalCodec;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+//@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @SpringBootApplication
 @EnableCaching
 @EnableAsync(proxyTargetClass = true)
@@ -41,14 +43,14 @@ public class DoMddApplication implements WebMvcConfigurer {
 
     @Bean
     public StringHttpMessageConverter stringHttpMessageConverter() {
-        return new StringHttpMessageConverter( StandardCharsets.UTF_8 );
+        return new StringHttpMessageConverter(StandardCharsets.UTF_8);
     }
 
     @Bean
-    public FastJsonHttpMessageConverter fastJsonHttpMessageConverter(){
+    public FastJsonHttpMessageConverter fastJsonHttpMessageConverter() {
         FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        SerializerFeature[] serializerFeatures = new SerializerFeature[] {
+        SerializerFeature[] serializerFeatures = new SerializerFeature[]{
                 SerializerFeature.PrettyFormat,
                 SerializerFeature.WriteMapNullValue,
                 SerializerFeature.WriteNonStringKeyAsString,
@@ -72,7 +74,7 @@ public class DoMddApplication implements WebMvcConfigurer {
     public HttpMessageConverters fastJsonHttpMessageConverters() {
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        SerializerFeature[] serializerFeatures = new SerializerFeature[] {
+        SerializerFeature[] serializerFeatures = new SerializerFeature[]{
                 SerializerFeature.PrettyFormat,
                 SerializerFeature.WriteMapNullValue,
                 SerializerFeature.WriteNonStringKeyAsString,
@@ -90,13 +92,13 @@ public class DoMddApplication implements WebMvcConfigurer {
     }
 
     @Override
-    public void configureMessageConverters( List<HttpMessageConverter<?>> converters ) {
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(stringHttpMessageConverter());
         converters.add(fastJsonHttpMessageConverter());
     }
 
     @Override
-    public void extendMessageConverters( List<HttpMessageConverter<?>> converters ) {
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.clear();
         converters.add(stringHttpMessageConverter());
         converters.add(fastJsonHttpMessageConverter());

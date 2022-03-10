@@ -27,7 +27,7 @@ import java.util.Properties;
  * 2）创建SqlSessionFactory 3）配置事务管理器，除非需要使用事务，否则不用配置
  */
 @Configuration // 该注解类似于spring配置文件
-@MapperScan(basePackages = {"com.domdd.dao"}, sqlSessionFactoryRef = "sqlSessionFactory")
+@MapperScan(basePackages = {"com.domdd.dao.common"}, sqlSessionFactoryRef = "sqlSessionFactory")
 public class MyBatisConfig implements EnvironmentAware {
 
     private Environment environment;
@@ -63,23 +63,20 @@ public class MyBatisConfig implements EnvironmentAware {
      */
     @Bean
     public MybatisSqlSessionFactoryBean sqlSessionFactory(@Qualifier("dataSource") DataSource ds, @Qualifier("paginationInterceptor") PaginationInterceptor paginationInterceptor, @Qualifier("mybatisLog") MybatisLog mybatisLog) throws Exception {
-//
 //        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-//
 //        SqlSessionFactoryBean fb = new SqlSessionFactoryBean();
 //        fb.setPlugins(new Interceptor[]{(Interceptor) paginationInterceptor});
 //        fb.setDataSource(ds);// 指定数据源(这个必须有，否则报错)
 //        fb.setTypeAliasesPackage("com.domdd.dao");
 //        // 下边两句仅仅用于*.xml文件，如果整个持久层操作不需要使用到xml文件的话（只用注解就可以搞定），则不加
 //        fb.setMapperLocations(resolver.getResources("com/domdd/mapper/*.xml"));//
-//
 //        return fb.getObject();
         // TODO: 2021/12/27 当时遇到过这个问题的为什么现在想不起了呢？？？请做好记录啊！！！！
         // TODO: 2021/12/27 mybatis-plus 必须用MybatisSqlSessionFactoryBean不能用SqlSessionFactoryBean啊啊啊啊！
         MybatisSqlSessionFactoryBean bean = new MybatisSqlSessionFactoryBean();
         bean.setPlugins(new Interceptor[]{(Interceptor) paginationInterceptor, mybatisLog});
         bean.setDataSource(ds);
-        bean.setTypeAliasesPackage("com.domdd.dao");
+        bean.setTypeAliasesPackage("com.domdd.dao.common");
         bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("com/domdd/mapper/*.xml"));
         MybatisConfiguration mybatisConfiguration = new MybatisConfiguration();
         mybatisConfiguration.setLocalCacheScope(LocalCacheScope.STATEMENT);
@@ -101,7 +98,7 @@ public class MyBatisConfig implements EnvironmentAware {
     @Primary
     public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
-        scannerConfigurer.setBasePackage("com.domdd.dao");
+        scannerConfigurer.setBasePackage("com.domdd.dao.common");
         scannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
         Properties props = new Properties();
         props.setProperty("mappers", "tk.mybatis.mapper.common.Mapper");

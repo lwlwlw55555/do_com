@@ -1,4 +1,4 @@
-package com.domdd.dao;
+package com.domdd.dao.common;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

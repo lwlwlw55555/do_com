@@ -1,4 +1,4 @@
-package com.domdd.dao;
+package com.domdd.dao.common;
 
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -30,5 +30,4 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
     }
 
     void replaceBatch(@Param("records") List<OrderInfo> records);
-
 }
