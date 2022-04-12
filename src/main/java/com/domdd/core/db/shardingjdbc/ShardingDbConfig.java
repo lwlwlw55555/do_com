@@ -17,6 +17,7 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.LocalCacheScope;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.BeanUtils;
@@ -152,9 +153,9 @@ public class ShardingDbConfig {
         scannerConfigurer.setProperties(props);
         return scannerConfigurer;
     }
-//
-//    @Bean
-//    public SqlSessionTemplate sqlSession(@Qualifier("shardingSqlSessionFactory") SqlSessionFactory factory) throws Exception {
-//        return new SqlSessionTemplate(factory, ExecutorType.BATCH);
-//    }
+
+    @Bean
+    public SqlSessionTemplate sqlSession(@Qualifier("shardingSqlSessionFactory") SqlSessionFactory factory) throws Exception {
+        return new SqlSessionTemplate(factory, ExecutorType.BATCH);
+    }
 }

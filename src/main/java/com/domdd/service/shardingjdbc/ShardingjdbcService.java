@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.apache.ibatis.session.ResultContext;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class ShardingjdbcService extends SqlSessionDaoSupport {
         System.out.println(transactionManager);
 //        System.out.println(transactionDefinition);
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-//        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW); // 事物隔离级别，开启新事务
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW); // 事物隔离级别，开启新事务
         TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition()); // 获得事务状态
 
         HintManager instance = HintManager.getInstance();

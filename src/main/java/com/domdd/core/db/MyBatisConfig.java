@@ -73,6 +73,7 @@ public class MyBatisConfig implements EnvironmentAware {
 //        return fb.getObject();
         // TODO: 2021/12/27 当时遇到过这个问题的为什么现在想不起了呢？？？请做好记录啊！！！！
         // TODO: 2021/12/27 mybatis-plus 必须用MybatisSqlSessionFactoryBean不能用SqlSessionFactoryBean啊啊啊啊！
+        //todo 从原理看MybatisSqlSessionFactoryBean是覆盖了之前的源码中的SqlSessionFactoryBean
         MybatisSqlSessionFactoryBean bean = new MybatisSqlSessionFactoryBean();
         bean.setPlugins(new Interceptor[]{(Interceptor) paginationInterceptor, mybatisLog});
         bean.setDataSource(ds);

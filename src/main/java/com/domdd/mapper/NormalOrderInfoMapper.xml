@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.domdd.dao.normal.NormalOrderInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.domdd.model.NormalOrderInfo" >
+    <id column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="order_goods_id" property="orderGoodsId" jdbcType="BIGINT" />
+    <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="platform_order_sn" property="platformOrderSn" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="platform_order_goods_sn" property="platformOrderGoodsSn" jdbcType="VARCHAR" />
+    <result column="platform_order_status" property="platformOrderStatus" jdbcType="VARCHAR" />
+    <result column="province_name" property="provinceName" jdbcType="VARCHAR" />
+    <result column="city_name" property="cityName" jdbcType="VARCHAR" />
+    <result column="district_name" property="districtName" jdbcType="VARCHAR" />
+    <result column="shipping_address" property="shippingAddress" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="receive_name" property="receiveName" jdbcType="VARCHAR" />
+    <result column="platform_sku_id" property="platformSkuId" jdbcType="VARCHAR" />
+    <result column="style_value" property="styleValue" jdbcType="VARCHAR" />
+    <result column="platform_goods_id" property="platformGoodsId" jdbcType="VARCHAR" />
+    <result column="seller_note" property="sellerNote" jdbcType="VARCHAR" />
+    <result column="refund_status" property="refundStatus" jdbcType="VARCHAR" />
+    <result column="tracking_number" property="trackingNumber" jdbcType="VARCHAR" />
+    <result column="shipping_name" property="shippingName" jdbcType="VARCHAR" />
+    <result column="outer_id" property="outerId" jdbcType="VARCHAR" />
+    <result column="shipping_time" property="shippingTime" jdbcType="TIMESTAMP" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="goods_amount" property="goodsAmount" jdbcType="DECIMAL" />
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="order_amount" property="orderAmount" jdbcType="DECIMAL" />
+    <result column="seller_discount" property="sellerDiscount" jdbcType="DECIMAL" />
+    <result column="platform_discount" property="platformDiscount" jdbcType="DECIMAL" />
+    <result column="goods_number" property="goodsNumber" jdbcType="INTEGER" />
+    <result column="sku_number" property="skuNumber" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="last_updated_time" property="lastUpdatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_id, order_goods_id, order_sn, platform_order_sn, goods_name, platform_order_goods_sn, 
+    platform_order_status, province_name, city_name, district_name, shipping_address, 
+    mobile, receive_name, platform_sku_id, style_value, platform_goods_id, seller_note, 
+    refund_status, tracking_number, shipping_name, outer_id, shipping_time, shop_name, 
+    pay_time, goods_amount, pay_amount, order_amount, seller_discount, platform_discount, 
+    goods_number, sku_number, created_time, last_updated_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from order_info
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from order_info
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.domdd.model.NormalOrderInfo" >
+    insert into order_info (order_id, order_goods_id, order_sn, 
+      platform_order_sn, goods_name, platform_order_goods_sn, 
+      platform_order_status, province_name, city_name, 
+      district_name, shipping_address, mobile, 
+      receive_name, platform_sku_id, style_value, 
+      platform_goods_id, seller_note, refund_status, 
+      tracking_number, shipping_name, outer_id, 
+      shipping_time, shop_name, pay_time, 
+      goods_amount, pay_amount, order_amount, 
+      seller_discount, platform_discount, goods_number, 
+      sku_number, created_time, last_updated_time
+      )
+    values (#{orderId,jdbcType=BIGINT}, #{orderGoodsId,jdbcType=BIGINT}, #{orderSn,jdbcType=VARCHAR}, 
+      #{platformOrderSn,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{platformOrderGoodsSn,jdbcType=VARCHAR}, 
+      #{platformOrderStatus,jdbcType=VARCHAR}, #{provinceName,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, 
+      #{districtName,jdbcType=VARCHAR}, #{shippingAddress,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{receiveName,jdbcType=VARCHAR}, #{platformSkuId,jdbcType=VARCHAR}, #{styleValue,jdbcType=VARCHAR}, 
+      #{platformGoodsId,jdbcType=VARCHAR}, #{sellerNote,jdbcType=VARCHAR}, #{refundStatus,jdbcType=VARCHAR}, 
+      #{trackingNumber,jdbcType=VARCHAR}, #{shippingName,jdbcType=VARCHAR}, #{outerId,jdbcType=VARCHAR}, 
+      #{shippingTime,jdbcType=TIMESTAMP}, #{shopName,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, 
+      #{goodsAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL}, #{orderAmount,jdbcType=DECIMAL}, 
+      #{sellerDiscount,jdbcType=DECIMAL}, #{platformDiscount,jdbcType=DECIMAL}, #{goodsNumber,jdbcType=INTEGER}, 
+      #{skuNumber,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, #{lastUpdatedTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.domdd.model.NormalOrderInfo" >
+    insert into order_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="orderGoodsId != null" >
+        order_goods_id,
+      </if>
+      <if test="orderSn != null" >
+        order_sn,
+      </if>
+      <if test="platformOrderSn != null" >
+        platform_order_sn,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="platformOrderGoodsSn != null" >
+        platform_order_goods_sn,
+      </if>
+      <if test="platformOrderStatus != null" >
+        platform_order_status,
+      </if>
+      <if test="provinceName != null" >
+        province_name,
+      </if>
+      <if test="cityName != null" >
+        city_name,
+      </if>
+      <if test="districtName != null" >
+        district_name,
+      </if>
+      <if test="shippingAddress != null" >
+        shipping_address,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="receiveName != null" >
+        receive_name,
+      </if>
+      <if test="platformSkuId != null" >
+        platform_sku_id,
+      </if>
+      <if test="styleValue != null" >
+        style_value,
+      </if>
+      <if test="platformGoodsId != null" >
+        platform_goods_id,
+      </if>
+      <if test="sellerNote != null" >
+        seller_note,
+      </if>
+      <if test="refundStatus != null" >
+        refund_status,
+      </if>
+      <if test="trackingNumber != null" >
+        tracking_number,
+      </if>
+      <if test="shippingName != null" >
+        shipping_name,
+      </if>
+      <if test="outerId != null" >
+        outer_id,
+      </if>
+      <if test="shippingTime != null" >
+        shipping_time,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="payTime != null" >
+        pay_time,
+      </if>
+      <if test="goodsAmount != null" >
+        goods_amount,
+      </if>
+      <if test="payAmount != null" >
+        pay_amount,
+      </if>
+      <if test="orderAmount != null" >
+        order_amount,
+      </if>
+      <if test="sellerDiscount != null" >
+        seller_discount,
+      </if>
+      <if test="platformDiscount != null" >
+        platform_discount,
+      </if>
+      <if test="goodsNumber != null" >
+        goods_number,
+      </if>
+      <if test="skuNumber != null" >
+        sku_number,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderGoodsId != null" >
+        #{orderGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="orderSn != null" >
+        #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="platformOrderSn != null" >
+        #{platformOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="platformOrderGoodsSn != null" >
+        #{platformOrderGoodsSn,jdbcType=VARCHAR},
+      </if>
+      <if test="platformOrderStatus != null" >
+        #{platformOrderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceName != null" >
+        #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null" >
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtName != null" >
+        #{districtName,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingAddress != null" >
+        #{shippingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveName != null" >
+        #{receiveName,jdbcType=VARCHAR},
+      </if>
+      <if test="platformSkuId != null" >
+        #{platformSkuId,jdbcType=VARCHAR},
+      </if>
+      <if test="styleValue != null" >
+        #{styleValue,jdbcType=VARCHAR},
+      </if>
+      <if test="platformGoodsId != null" >
+        #{platformGoodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerNote != null" >
+        #{sellerNote,jdbcType=VARCHAR},
+      </if>
+      <if test="refundStatus != null" >
+        #{refundStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="trackingNumber != null" >
+        #{trackingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingName != null" >
+        #{shippingName,jdbcType=VARCHAR},
+      </if>
+      <if test="outerId != null" >
+        #{outerId,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingTime != null" >
+        #{shippingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsAmount != null" >
+        #{goodsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="orderAmount != null" >
+        #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="sellerDiscount != null" >
+        #{sellerDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="platformDiscount != null" >
+        #{platformDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsNumber != null" >
+        #{goodsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="skuNumber != null" >
+        #{skuNumber,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        #{lastUpdatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.domdd.model.NormalOrderInfo" >
+    update order_info
+    <set >
+      <if test="orderGoodsId != null" >
+        order_goods_id = #{orderGoodsId,jdbcType=BIGINT},
+      </if>
+      <if test="orderSn != null" >
+        order_sn = #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="platformOrderSn != null" >
+        platform_order_sn = #{platformOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="platformOrderGoodsSn != null" >
+        platform_order_goods_sn = #{platformOrderGoodsSn,jdbcType=VARCHAR},
+      </if>
+      <if test="platformOrderStatus != null" >
+        platform_order_status = #{platformOrderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceName != null" >
+        province_name = #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null" >
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtName != null" >
+        district_name = #{districtName,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingAddress != null" >
+        shipping_address = #{shippingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveName != null" >
+        receive_name = #{receiveName,jdbcType=VARCHAR},
+      </if>
+      <if test="platformSkuId != null" >
+        platform_sku_id = #{platformSkuId,jdbcType=VARCHAR},
+      </if>
+      <if test="styleValue != null" >
+        style_value = #{styleValue,jdbcType=VARCHAR},
+      </if>
+      <if test="platformGoodsId != null" >
+        platform_goods_id = #{platformGoodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerNote != null" >
+        seller_note = #{sellerNote,jdbcType=VARCHAR},
+      </if>
+      <if test="refundStatus != null" >
+        refund_status = #{refundStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="trackingNumber != null" >
+        tracking_number = #{trackingNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingName != null" >
+        shipping_name = #{shippingName,jdbcType=VARCHAR},
+      </if>
+      <if test="outerId != null" >
+        outer_id = #{outerId,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingTime != null" >
+        shipping_time = #{shippingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsAmount != null" >
+        goods_amount = #{goodsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null" >
+        pay_amount = #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="orderAmount != null" >
+        order_amount = #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="sellerDiscount != null" >
+        seller_discount = #{sellerDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="platformDiscount != null" >
+        platform_discount = #{platformDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsNumber != null" >
+        goods_number = #{goodsNumber,jdbcType=INTEGER},
+      </if>
+      <if test="skuNumber != null" >
+        sku_number = #{skuNumber,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedTime != null" >
+        last_updated_time = #{lastUpdatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.domdd.model.NormalOrderInfo" >
+    update order_info
+    set order_goods_id = #{orderGoodsId,jdbcType=BIGINT},
+      order_sn = #{orderSn,jdbcType=VARCHAR},
+      platform_order_sn = #{platformOrderSn,jdbcType=VARCHAR},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      platform_order_goods_sn = #{platformOrderGoodsSn,jdbcType=VARCHAR},
+      platform_order_status = #{platformOrderStatus,jdbcType=VARCHAR},
+      province_name = #{provinceName,jdbcType=VARCHAR},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      district_name = #{districtName,jdbcType=VARCHAR},
+      shipping_address = #{shippingAddress,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      receive_name = #{receiveName,jdbcType=VARCHAR},
+      platform_sku_id = #{platformSkuId,jdbcType=VARCHAR},
+      style_value = #{styleValue,jdbcType=VARCHAR},
+      platform_goods_id = #{platformGoodsId,jdbcType=VARCHAR},
+      seller_note = #{sellerNote,jdbcType=VARCHAR},
+      refund_status = #{refundStatus,jdbcType=VARCHAR},
+      tracking_number = #{trackingNumber,jdbcType=VARCHAR},
+      shipping_name = #{shippingName,jdbcType=VARCHAR},
+      outer_id = #{outerId,jdbcType=VARCHAR},
+      shipping_time = #{shippingTime,jdbcType=TIMESTAMP},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      goods_amount = #{goodsAmount,jdbcType=DECIMAL},
+      pay_amount = #{payAmount,jdbcType=DECIMAL},
+      order_amount = #{orderAmount,jdbcType=DECIMAL},
+      seller_discount = #{sellerDiscount,jdbcType=DECIMAL},
+      platform_discount = #{platformDiscount,jdbcType=DECIMAL},
+      goods_number = #{goodsNumber,jdbcType=INTEGER},
+      sku_number = #{skuNumber,jdbcType=INTEGER},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      last_updated_time = #{lastUpdatedTime,jdbcType=TIMESTAMP}
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+</mapper>
