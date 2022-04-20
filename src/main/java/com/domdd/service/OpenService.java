@@ -44,7 +44,7 @@ public class OpenService {
     public static List<String> shopNameList = Arrays.asList("诺优能官方旗舰店", "爱他美旗舰店");
     public static List<String> ignoreOuterIdList = CollectionUtil.newArrayList("lyf-sbyj", "qmsd-3", "qmsd-xd",
             "ysgb", "hx-yzbs", "tc-qslsb", "dsn-rt", "ld-xhyb", "dsn-lh", "qmsd-1", "ksjta", "ksj-2", "ksj-3", "ksj-4",
-            "myb", "dsnsb", "ksj-12", "9e00094");
+            "myb", "dsnsb", "ksj-12", "9e00094","qmsd-7","tsx-wd");
 
 
     public static boolean checkTimeInNight() {
