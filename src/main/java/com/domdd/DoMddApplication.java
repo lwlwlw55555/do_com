@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -32,9 +33,10 @@ import java.util.List;
 //@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @SpringBootApplication
 @EnableCaching
-@EnableAsync(proxyTargetClass = true)
+//@EnableAsync(proxyTargetClass = true)
 @EnableTransactionManagement
 @EnableScheduling
+@EnableAspectJAutoProxy(proxyTargetClass = false)
 public class DoMddApplication implements WebMvcConfigurer {
 
     public static void main(String[] args) {

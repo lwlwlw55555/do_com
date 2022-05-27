@@ -42,10 +42,17 @@ public class OpenService {
     public static String DEFAULT_DATE_PATTERN_1 = "yyyy-MM-dd 23:59:59";
     public static Integer pageSize = 100;
     public static List<String> shopNameList = Arrays.asList("诺优能官方旗舰店", "爱他美旗舰店");
+    public static Map<String, String> shopNameMapping = ImmutableMap.of("爱他美旗舰店", "爱他美官方旗舰店");
     public static List<String> ignoreOuterIdList = CollectionUtil.newArrayList("lyf-sbyj", "qmsd-3", "qmsd-xd",
             "ysgb", "hx-yzbs", "tc-qslsb", "dsn-rt", "ld-xhyb", "dsn-lh", "qmsd-1", "ksjta", "ksj-2", "ksj-3", "ksj-4",
-            "myb", "dsnsb", "ksj-12", "9e00094","qmsd-7","tsx-wd");
+            "myb", "dsnsb", "ksj-12", "9e00094", "qmsd-7", "tsx-wd");
 
+    public static String getStringByMapping(String shopName) {
+        if (shopNameMapping.containsKey(shopName)) {
+            return shopNameMapping.get(shopName);
+        }
+        return shopName;
+    }
 
     public static boolean checkTimeInNight() {
         int hour = DateUtil.hour(DateUtil.date(), true);
@@ -223,7 +230,7 @@ public class OpenService {
                 MddResp<OrderInfo> resp = null;
                 while (resp == null || resp.getHasNextPage()) {
                     page++;
-                    resp = getOrderInfoList(shopName, startDate, tempEndDate, "shipping_time", page, pageSize);
+                    resp = getOrderInfoList(getStringByMapping(shopName), startDate, tempEndDate, "shipping_time", page, pageSize);
                     if (CollectionUtils.isNotEmpty(resp.getRecords())) {
                         resp.getRecords().forEach(orderInfo -> {
                             orderInfo.setShopName(shopName);
@@ -261,7 +268,7 @@ public class OpenService {
                 MddResp<AfterSaleOrder> resp = null;
                 while (resp == null || resp.getHasNextPage()) {
                     page++;
-                    resp = getAfterSaleOrderList(shopName, startDate, tempEndDate, page, pageSize);
+                    resp = getAfterSaleOrderList(getStringByMapping(shopName), startDate, tempEndDate, page, pageSize);
                     if (CollectionUtils.isNotEmpty(resp.getRecords())) {
                         resp.getRecords().forEach(orderInfo -> {
                             orderInfo.setShopName(shopName);
@@ -296,7 +303,7 @@ public class OpenService {
                 MddResp<AfterSaleReturnOrder> resp = null;
                 while (resp == null || resp.getHasNextPage()) {
                     page++;
-                    resp = getAfterSaleReturnOrderList(shopName, startDate, tempEndDate, page, pageSize);
+                    resp = getAfterSaleReturnOrderList(getStringByMapping(shopName), startDate, tempEndDate, page, pageSize);
                     if (CollectionUtils.isNotEmpty(resp.getRecords())) {
                         resp.getRecords().forEach(orderInfo -> {
                             orderInfo.setShopName(shopName);

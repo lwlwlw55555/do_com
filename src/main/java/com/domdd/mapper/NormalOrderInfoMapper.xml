@@ -80,7 +80,7 @@
       #{skuNumber,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, #{lastUpdatedTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.domdd.model.NormalOrderInfo" >
+  <insert id="insertSelective" parameterType="com.domdd.model.NormalOrderInfo" useGeneratedKeys="true" keyProperty="orderId">
     insert into order_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="orderId != null" >
@@ -285,6 +285,40 @@
       </if>
     </trim>
   </insert>
+
+
+  <insert id="batchInsertSelective" useGeneratedKeys="true" keyProperty="orderId">
+      insert into order_info (order_id, order_goods_id, order_sn,
+                              platform_order_sn, goods_name, platform_order_goods_sn,
+                              platform_order_status, province_name, city_name,
+                              district_name, shipping_address, mobile,
+                              receive_name, platform_sku_id, style_value,
+                              platform_goods_id, seller_note, refund_status,
+                              tracking_number, shipping_name, outer_id,
+                              shipping_time, shop_name, pay_time,
+                              goods_amount, pay_amount, order_amount,
+                              seller_discount, platform_discount, goods_number,
+                              sku_number, created_time, last_updated_time
+      )
+      values
+    <foreach collection ="orderList" item="order" separator =",">
+      (#{order.orderId,jdbcType=BIGINT}, #{order.orderGoodsId,jdbcType=BIGINT}, #{order.orderSn,jdbcType=VARCHAR},
+      #{order.platformOrderSn,jdbcType=VARCHAR}, #{order.goodsName,jdbcType=VARCHAR}, #{order.platformOrderGoodsSn,jdbcType=VARCHAR},
+      #{order.platformOrderStatus,jdbcType=VARCHAR}, #{order.provinceName,jdbcType=VARCHAR}, #{order.cityName,jdbcType=VARCHAR},
+      #{order.districtName,jdbcType=VARCHAR}, #{order.shippingAddress,jdbcType=VARCHAR}, #{order.mobile,jdbcType=VARCHAR},
+      #{order.receiveName,jdbcType=VARCHAR}, #{order.platformSkuId,jdbcType=VARCHAR}, #{order.styleValue,jdbcType=VARCHAR},
+      #{order.platformGoodsId,jdbcType=VARCHAR}, #{order.sellerNote,jdbcType=VARCHAR}, #{order.refundStatus,jdbcType=VARCHAR},
+      #{order.trackingNumber,jdbcType=VARCHAR}, #{order.shippingName,jdbcType=VARCHAR}, #{order.outerId,jdbcType=VARCHAR},
+      #{order.shippingTime,jdbcType=TIMESTAMP}, #{order.shopName,jdbcType=VARCHAR}, #{order.payTime,jdbcType=TIMESTAMP},
+      #{order.goodsAmount,jdbcType=DECIMAL}, #{order.payAmount,jdbcType=DECIMAL}, #{order.orderAmount,jdbcType=DECIMAL},
+      #{order.sellerDiscount,jdbcType=DECIMAL}, #{order.platformDiscount,jdbcType=DECIMAL}, #{order.goodsNumber,jdbcType=INTEGER},
+      #{order.skuNumber,jdbcType=INTEGER}, #{order.createdTime,jdbcType=TIMESTAMP}, #{order.lastUpdatedTime,jdbcType=TIMESTAMP}
+      )
+    </foreach>
+  </insert>
+
+
+
   <update id="updateByPrimaryKeySelective" parameterType="com.domdd.model.NormalOrderInfo" >
     update order_info
     <set >

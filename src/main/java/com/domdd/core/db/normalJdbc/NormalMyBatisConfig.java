@@ -64,7 +64,8 @@ public class NormalMyBatisConfig {
         fb.setTypeAliasesPackage("com.dao.normal");// 指定基包
         fb.setMapperLocations(resolver.getResources("com/domdd/mapper/*.xml"));//
 
-        return fb.getObject();
+        SqlSessionFactory object = fb.getObject();
+        return object;
     }
 
 
