@@ -2,6 +2,7 @@ package com.domdd.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.domdd.controller.base.BaseController;
 import com.domdd.controller.base.resp.BasePagingResp;
 import com.domdd.controller.base.resp.BaseResp;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 @Api(tags = "[open]")
 @RestController
@@ -54,7 +56,10 @@ public class OpenController extends BaseController {
     @ApiOperationSupport(author = "lw")
     public BaseResp<BasePagingResp<OrderInfo>> orderList(@RequestBody @Valid OpenOrderListReq req, BindingResult bindingResult) {
         log.info("[order/list] params:{}", JSON.toJSONString(req));
-        return BaseResp.success(new BasePagingResp<>(openService.orderList(req.getShopName(), req.getStartTime(), req.getEndTime(), req.getTimeType(), req.getPage(), req.getPageSize())));
+        IPage<OrderInfo> orderInfoPage = openService.orderList(req.getShopName(), req.getStartTime(), req.getEndTime(), req.getTimeType(), req.getPage(), req.getPageSize());
+        List<OrderInfo> records = orderInfoPage.getRecords();
+        OrderInfo.checkParams(records);
+        return BaseResp.success(new BasePagingResp<>(orderInfoPage));
     }
 
     @PostMapping("afterSaleOrder/list")

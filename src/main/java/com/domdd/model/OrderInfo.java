@@ -6,10 +6,12 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @TableName(value = "order_info")
@@ -59,6 +61,9 @@ public class OrderInfo implements Serializable {
 
     private String outerId;
 
+    @JSONField(serialize = false)
+    private String sysOuterId;
+
     private Date shippingTime;
 
     private Date payTime;
@@ -84,4 +89,12 @@ public class OrderInfo implements Serializable {
 
     @JSONField(serialize = false)
     private Date lastUpdatedTime;
+
+    public static void checkParams(List<OrderInfo> records) {
+        records.forEach(orderInfo -> {
+            if (StringUtils.isNotBlank(orderInfo.getSysOuterId())) {
+                orderInfo.setOuterId(orderInfo.getSysOuterId());
+            }
+        });
+    }
 }
