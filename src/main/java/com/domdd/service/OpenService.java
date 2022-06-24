@@ -45,7 +45,7 @@ public class OpenService {
     public static Map<String, String> shopNameMapping = ImmutableMap.of("爱他美旗舰店", "爱他美官方旗舰店");
     public static List<String> ignoreOuterIdList = CollectionUtil.newArrayList("lyf-sbyj", "qmsd-3", "qmsd-xd",
             "ysgb", "hx-yzbs", "tc-qslsb", "dsn-rt", "ld-xhyb", "dsn-lh", "qmsd-1", "ksjta", "ksj-2", "ksj-3", "ksj-4",
-            "myb", "dsnsb", "ksj-12", "9e00094", "qmsd-7", "tsx-wd");
+            "myb", "dsnsb", "ksj-12", "9e00094", "qmsd-7", "tsx-wd", "qmsd-4", "dsn-xhj", "dl-yhb", "lyf-rbt", "xhr-xlx");
 
     public static String getStringByMapping(String shopName) {
         if (shopNameMapping.containsKey(shopName)) {
@@ -64,7 +64,7 @@ public class OpenService {
             MddResp<OrderInfo> orderInfoList = getOrderInfoList(shopName, startTime, endTime, timeType, page, pageSize);
             IPage<OrderInfo> p = new Page<>();
             orderInfoList.setRecords(ObjectFieldHandler.generateFindAllOptional(orderInfoList.getRecords(), order -> {
-                return !ignoreOuterIdList.contains(order.getOuterId());
+                return !ignoreOuterIdList.contains(order.getOuterId()) && !ignoreOuterIdList.contains(order.getSysOuterId());
             }));
             BeanUtils.copyProperties(orderInfoList, p);
             return p;

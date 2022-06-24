@@ -26,6 +26,7 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
                     .ge(OrderInfo::getShippingTime, DateUtil.parseDate("2021-10-01 00:00:00"));
         }
         wrapper.notIn(OrderInfo::getOuterId, OpenService.ignoreOuterIdList);
+        wrapper.notIn(OrderInfo::getSysOuterId, OpenService.ignoreOuterIdList);
         return this.selectPage(page, wrapper);
     }
 
