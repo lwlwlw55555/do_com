@@ -46,7 +46,7 @@ public class OpenService {
     public static List<String> ignoreOuterIdList = CollectionUtil.newArrayList("lyf-sbyj", "qmsd-3", "qmsd-xd",
             "ysgb", "hx-yzbs", "tc-qslsb", "dsn-rt", "ld-xhyb", "dsn-lh", "qmsd-1", "ksjta", "ksj-2", "ksj-3", "ksj-4",
             "myb", "dsnsb", "ksj-12", "9e00094", "qmsd-7", "tsx-wd", "qmsd-4", "dsn-xhj", "dl-yhb", "lyf-rbt", "xhr-xlx",
-            "fx-yywj","fx-rtfb","NDXY-DXGZ","DUCK-DDL","DSN-gjjwj","DSN-yhxb","SHARK-xcq","fx-mmb","hrl-cslb","ds-xcq","dsn-rmj","ht-hxc","zxp","bfr-mnjt","mtj-ktkd","fx-cnt","xtk-sh","qw-mkfty","ds-cfj","bf-yqz");
+            "fx-yywj","fx-rtfb");
 
     public static String getStringByMapping(String shopName) {
         if (shopNameMapping.containsKey(shopName)) {
