@@ -312,6 +312,18 @@
             <version>2.4.0</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.dingtalk.api</groupId>
+            <artifactId>dingtalk-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>dingtalk</artifactId>
+            <version>1.4.21</version>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->
 <!--            <artifactId>spring-boot-starter-security</artifactId>-->

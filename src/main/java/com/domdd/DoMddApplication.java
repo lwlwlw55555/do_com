@@ -36,7 +36,7 @@ import java.util.List;
 //@EnableAsync(proxyTargetClass = true)
 @EnableTransactionManagement
 @EnableScheduling
-@EnableAspectJAutoProxy(proxyTargetClass = false)
+//@EnableAspectJAutoProxy(proxyTargetClass = false)
 public class DoMddApplication implements WebMvcConfigurer {
 
     public static void main(String[] args) {

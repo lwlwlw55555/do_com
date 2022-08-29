@@ -34,6 +34,8 @@ import java.util.*;
 public class NormalTransaction {
     private final NormalOrderInfoMapper normalOrderInfoMapper;
 
+    private final OrderInfo orderInfo;
+
 //    @Override
     @Transactional("normalDataSourceTransactionManager")
     public void testNormalTransaction() {
