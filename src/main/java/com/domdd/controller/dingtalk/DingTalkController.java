@@ -17,16 +17,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author lw
  * @date 2022/8/29 6:01 下午
  */
 @Slf4j
+@RestController
+@RequestMapping("dingTalk")
 public class DingTalkController {
 
 
-    @RequestMapping(value = "/robots", method = RequestMethod.POST)
+    @RequestMapping(value = "robots", method = RequestMethod.POST)
     public String helloRobots(@RequestBody(required = false) JSONObject json) throws Exception {
         log.info(JSON.toJSONString(json));
         String content = json.getJSONObject("text").getString("content");
