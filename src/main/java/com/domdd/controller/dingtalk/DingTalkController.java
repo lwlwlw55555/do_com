@@ -13,6 +13,7 @@ import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiGettokenRequest;
 import com.dingtalk.api.response.OapiGettokenResponse;
 import com.taobao.api.ApiException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,15 +22,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author lw
  * @date 2022/8/29 6:01 下午
  */
+@Slf4j
 public class DingTalkController {
 
 
     @RequestMapping(value = "/robots", method = RequestMethod.POST)
     public String helloRobots(@RequestBody(required = false) JSONObject json) throws Exception {
-        System.out.println(JSON.toJSONString(json));
+        log.info(JSON.toJSONString(json));
         String content = json.getJSONObject("text").getString("content");
         String userId = json.get("senderStaffId").toString();
-        System.out.println(content);
+        log.info(content);
         if (content.equals("发票")) {
             sendMessage1(userId);
         } else if (content.equals("发票要普票还是专票")) {
@@ -69,19 +71,19 @@ public class DingTalkController {
                         "    }");
         try {
             BatchSendOTOResponse batchSendOTOResponse = client.batchSendOTOWithOptions(batchSendOTORequest, batchSendOTOHeaders, new RuntimeOptions());
-            System.out.println(JSON.toJSONString(batchSendOTOResponse.getBody()));
+            log.info(JSON.toJSONString(batchSendOTOResponse.getBody()));
         } catch (TeaException err) {
             if (!com.aliyun.teautil.Common.empty(err.code) && !com.aliyun.teautil.Common.empty(err.message)) {
                 // err 中含有 code 和 message 属性，可帮助开发定位问题
-                System.out.println(err.code);
-                System.out.println(err.message);
+                log.info(err.code);
+                log.info(err.message);
             }
         } catch (Exception _err) {
             TeaException err = new TeaException(_err.getMessage(), _err);
             if (!com.aliyun.teautil.Common.empty(err.code) && !com.aliyun.teautil.Common.empty(err.message)) {
                 // err 中含有 code 和 message 属性，可帮助开发定位问题
-                System.out.println(err.code);
-                System.out.println(err.message);
+                log.info(err.code);
+                log.info(err.message);
             }
         }
     }
@@ -99,19 +101,19 @@ public class DingTalkController {
                 .setMsgParam("{\"content\": \"发票需要普票\"}");
         try {
             BatchSendOTOResponse batchSendOTOResponse = client.batchSendOTOWithOptions(batchSendOTORequest, batchSendOTOHeaders, new RuntimeOptions());
-            System.out.println(JSON.toJSONString(batchSendOTOResponse.getBody()));
+            log.info(JSON.toJSONString(batchSendOTOResponse.getBody()));
         } catch (TeaException err) {
             if (!com.aliyun.teautil.Common.empty(err.code) && !com.aliyun.teautil.Common.empty(err.message)) {
                 // err 中含有 code 和 message 属性，可帮助开发定位问题
-                System.out.println(err.code);
-                System.out.println(err.message);
+                log.info(err.code);
+                log.info(err.message);
             }
         } catch (Exception _err) {
             TeaException err = new TeaException(_err.getMessage(), _err);
             if (!com.aliyun.teautil.Common.empty(err.code) && !com.aliyun.teautil.Common.empty(err.message)) {
                 // err 中含有 code 和 message 属性，可帮助开发定位问题
-                System.out.println(err.code);
-                System.out.println(err.message);
+                log.info(err.code);
+                log.info(err.message);
             }
         }
     }
@@ -132,19 +134,19 @@ public class DingTalkController {
                         "    }");
         try {
             BatchSendOTOResponse batchSendOTOResponse = client.batchSendOTOWithOptions(batchSendOTORequest, batchSendOTOHeaders, new RuntimeOptions());
-            System.out.println(JSON.toJSONString(batchSendOTOResponse.getBody()));
+            log.info(JSON.toJSONString(batchSendOTOResponse.getBody()));
         } catch (TeaException err) {
             if (!com.aliyun.teautil.Common.empty(err.code) && !com.aliyun.teautil.Common.empty(err.message)) {
                 // err 中含有 code 和 message 属性，可帮助开发定位问题
-                System.out.println(err.code);
-                System.out.println(err.message);
+                log.info(err.code);
+                log.info(err.message);
             }
         } catch (Exception _err) {
             TeaException err = new TeaException(_err.getMessage(), _err);
             if (!com.aliyun.teautil.Common.empty(err.code) && !com.aliyun.teautil.Common.empty(err.message)) {
                 // err 中含有 code 和 message 属性，可帮助开发定位问题
-                System.out.println(err.code);
-                System.out.println(err.message);
+                log.info(err.code);
+                log.info(err.message);
             }
         }
     }
@@ -165,15 +167,15 @@ public class DingTalkController {
         } catch (TeaException err) {
             if (!com.aliyun.teautil.Common.empty(err.code) && !com.aliyun.teautil.Common.empty(err.message)) {
                 // err 中含有 code 和 message 属性，可帮助开发定位问题
-                System.out.println(err.code);
-                System.out.println(err.message);
+                log.info(err.code);
+                log.info(err.message);
             }
         } catch (Exception _err) {
             TeaException err = new TeaException(_err.getMessage(), _err);
             if (!com.aliyun.teautil.Common.empty(err.code) && !com.aliyun.teautil.Common.empty(err.message)) {
                 // err 中含有 code 和 message 属性，可帮助开发定位问题
-                System.out.println(err.code);
-                System.out.println(err.message);
+                log.info(err.code);
+                log.info(err.message);
             }
         }
     }
