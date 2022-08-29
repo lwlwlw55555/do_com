@@ -34,7 +34,8 @@ import java.util.*;
 public class NormalTransaction {
     private final NormalOrderInfoMapper normalOrderInfoMapper;
 
-    private final OrderInfo orderInfo;
+    // TODO: 2022/8/29 待测
+//    private final OrderInfo orderInfo;
 
 //    @Override
     @Transactional("normalDataSourceTransactionManager")
