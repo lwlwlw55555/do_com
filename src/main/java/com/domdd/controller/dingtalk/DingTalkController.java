@@ -11,13 +11,20 @@ import com.aliyun.teautil.models.RuntimeOptions;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiGettokenRequest;
+import com.dingtalk.api.request.OapiRobotSendRequest;
 import com.dingtalk.api.response.OapiGettokenResponse;
+import com.dingtalk.api.response.OapiRobotSendResponse;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import javax.crypto.Mac;
+
+import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author lw
@@ -27,9 +34,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("dingTalk")
 public class DingTalkController {
+    private static final String INFOS = "校验消息是否是合法请求";
 
-
-    @RequestMapping(value = "robots", method = RequestMethod.POST)
+    @RequestMapping(value = "robots1", method = RequestMethod.POST)
     public String helloRobots(@RequestBody(required = false) JSONObject json) throws Exception {
         log.info(JSON.toJSONString(json));
         String content = json.getJSONObject("text").getString("content");
@@ -191,5 +198,63 @@ public class DingTalkController {
         request.setHttpMethod("GET");
         OapiGettokenResponse response = client.execute(request);
         return response.getAccessToken();
+    }
+
+
+    @RequestMapping(value = "/robots", method = RequestMethod.POST)
+    public String helloRobots(@RequestBody(required = false) JSONObject json, HttpServletRequest request) {
+        try {
+            //获取请求头header中钉钉发送的timestamp时间戳
+            Long dingTimestamp = Long.parseLong(request.getHeader("timestamp"));
+            //获取当前时间的时间戳
+            Long currentTimeMillis = System.currentTimeMillis();
+            //比较两者差值
+            Long time = currentTimeMillis - dingTimestamp;
+            //获取请求头header中钉钉发送的sign签名
+            String dingSign = request.getHeader("sign");
+            //开发者后台应用信息中机器人应用的AppSecret
+            String appSecret = "PTNBLXGz-NqsqRoEHbe96jECvywjof-lC9bgpSASW-AjlfloiFz1AJ4mjYKOF4oS";
+            //使用请求头header中钉钉发送的timestamp时间戳和开发者后台机器人应用的AppSecret，进行加密操作
+            String stringToSign = dingTimestamp + "\n" + appSecret;
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(new SecretKeySpec(appSecret.getBytes("UTF-8"), "HmacSHA256"));
+            byte[] signData = mac.doFinal(stringToSign.getBytes("UTF-8"));
+            //获取加密sign
+            String sign = new String(Base64.encodeBase64(signData));
+            //相差时间在1小时内且sign同时验证通过，才能认为是来自钉钉的合法请求
+            if (time < 3600000 && sign.equals(dingSign)) {
+                String content = json.getJSONObject("text").get("content").toString().replaceAll(" ", "");
+                log.info(content);
+                String sessionWebhook = json.getString("sessionWebhook");
+                DingTalkClient client = new DefaultDingTalkClient(sessionWebhook);
+                if (INFOS.equals(content)) {
+                    infos(client);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 发送消息
+     *
+     * @param client
+     */
+    private void infos(DingTalkClient client) {
+        try {
+            OapiRobotSendRequest request = new OapiRobotSendRequest();
+            //消息类型
+            request.setMsgtype("text");
+            OapiRobotSendRequest.Text text = new OapiRobotSendRequest.Text();
+            //消息文本
+            text.setContent("测试消息是合法请求");
+            request.setText(text);
+            OapiRobotSendResponse response = client.execute(request);
+            log.info(response.getBody());
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
     }
 }
