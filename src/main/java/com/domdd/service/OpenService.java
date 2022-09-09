@@ -1,6 +1,7 @@
 package com.domdd.service;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.http.HttpRequest;
@@ -18,12 +19,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -36,17 +36,29 @@ public class OpenService {
     private final InventoryMapper inventoryMapper;
     private final PurchaseInOrderMapper purchaseInOrderMapper;
     private final DanengOpenPropertiesDo danengOpenPropertiesDo;
+    /**
+     * @see org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration#stringRedisTemplate(RedisConnectionFactory)
+     */
+    private final StringRedisTemplate stringRedisTemplate;
+
 
     public static String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static String DEFAULT_DATE_PATTERN_0 = "yyyy-MM-dd 00:00:00";
     public static String DEFAULT_DATE_PATTERN_1 = "yyyy-MM-dd 23:59:59";
+    public static String OnlineStatus = "OnlineStatus";
     public static Integer pageSize = 100;
     public static List<String> shopNameList = Arrays.asList("诺优能官方旗舰店", "爱他美旗舰店");
     public static Map<String, String> shopNameMapping = ImmutableMap.of("爱他美旗舰店", "爱他美官方旗舰店");
     public static List<String> ignoreOuterIdList = CollectionUtil.newArrayList("lyf-sbyj", "qmsd-3", "qmsd-xd",
             "ysgb", "hx-yzbs", "tc-qslsb", "dsn-rt", "ld-xhyb", "dsn-lh", "qmsd-1", "ksjta", "ksj-2", "ksj-3", "ksj-4",
             "myb", "dsnsb", "ksj-12", "9e00094", "qmsd-7", "tsx-wd", "qmsd-4", "dsn-xhj", "dl-yhb", "lyf-rbt", "xhr-xlx",
-            "fx-yywj","fx-rtfb","NDXY-DXGZ","DUCK-DDL","DSN-gjjwj","DSN-yhxb","SHARK-xcq","fx-mmb","hrl-cslb","ds-xcq","dsn-rmj","ht-hxc","zxp","bfr-mnjt","mtj-ktkd","fx-cnt","xtk-sh","qw-mkfty","ds-cfj","bf-yqz");
+            "fx-yywj", "fx-rtfb", "NDXY-DXGZ", "DUCK-DDL", "DSN-gjjwj", "DSN-yhxb", "SHARK-xcq", "fx-mmb", "hrl-cslb", "ds-xcq", "dsn-rmj", "ht-hxc", "zxp", "bfr-mnjt", "mtj-ktkd", "fx-cnt", "xtk-sh", "qw-mkfty", "ds-cfj", "bf-yqz");
+
+    public enum OnlineStatusEnum {
+        NORMAL,
+        REFUND,
+        OFFLINE
+    }
 
     public static String getStringByMapping(String shopName) {
         if (shopNameMapping.containsKey(shopName)) {
@@ -61,6 +73,26 @@ public class OpenService {
     }
 
     public IPage<OrderInfo> orderList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize) {
+        String statusVal = stringRedisTemplate.opsForValue().get(OnlineStatus);
+        OnlineStatusEnum onlineStatus = OnlineStatusEnum.NORMAL;
+        try {
+            onlineStatus = Convert.convert(OnlineStatusEnum.class, statusVal);
+        } catch (Exception ignored) {
+
+        }
+        IPage<OrderInfo> orderInfoRes = orderList(shopName, startTime, endTime, timeType, page, pageSize, onlineStatus);
+        if (Objects.equals(onlineStatus, OnlineStatusEnum.OFFLINE)) {
+            orderInfoRes.setRecords(CollectionUtil.newArrayList());
+            orderInfoRes.setTotal(0);
+        } else if (Objects.equals(onlineStatus, OnlineStatusEnum.REFUND)) {
+            List<OrderInfo> records = orderInfoRes.getRecords();
+            records = ObjectFieldHandler.generateFindAllOptional(records, orderInfo -> !("NONE".equals(orderInfo.getRefundStatus())));
+            orderInfoRes.setRecords(records);
+        }
+        return orderInfoRes;
+    }
+
+    public IPage<OrderInfo> orderList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize, OnlineStatusEnum onlineStatusEnum) {
         if (checkTimeInNight()) {
             MddResp<OrderInfo> orderInfoList = getOrderInfoList(shopName, startTime, endTime, timeType, page, pageSize);
             IPage<OrderInfo> p = new Page<>();
@@ -72,7 +104,7 @@ public class OpenService {
 //            return Convert.convert(IPage.class, orderInfoList);
         }
         IPage<OrderInfo> p = new Page<>(page, pageSize);
-        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName);
+        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND));
     }
 
     public IPage<AfterSaleOrder> afterSaleOrderList(String shopName, Date startTime, Date endTime, Integer page, Integer pageSize) {

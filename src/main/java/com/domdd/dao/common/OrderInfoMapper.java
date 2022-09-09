@@ -1,6 +1,7 @@
 package com.domdd.dao.common;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.BooleanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -8,13 +9,14 @@ import com.domdd.model.OrderInfo;
 import com.domdd.service.OpenService;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 
-    default IPage<OrderInfo> selectByPage(IPage<OrderInfo> page, String timeType, Date startTime, Date endTime, String shopName) {
+    default IPage<OrderInfo> selectByPage(IPage<OrderInfo> page, String timeType, Date startTime, Date endTime, String shopName, Boolean isRefund) {
         LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(OrderInfo::getShopName, shopName);
         if (Objects.equals(timeType, "pay_time")) {
@@ -27,6 +29,9 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
         }
         wrapper.notIn(OrderInfo::getOuterId, OpenService.ignoreOuterIdList);
         wrapper.notIn(OrderInfo::getSysOuterId, OpenService.ignoreOuterIdList);
+        if (BooleanUtil.isTrue(isRefund)) {
+            wrapper.in(OrderInfo::getRefundStatus, Arrays.asList("APPLIED", "RETURNED"));
+        }
         return this.selectPage(page, wrapper);
     }
 

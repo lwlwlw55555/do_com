@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.crypto.Mac;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -204,6 +205,7 @@ public class DingTalkController {
     @RequestMapping(value = "/robots", method = RequestMethod.POST)
     public String helloRobots(@RequestBody(required = false) JSONObject json, HttpServletRequest request) {
         try {
+            log.info("helloRobots:{}", JSON.toJSONString(json));
             //获取请求头header中钉钉发送的timestamp时间戳
             Long dingTimestamp = Long.parseLong(request.getHeader("timestamp"));
             //获取当前时间的时间戳
