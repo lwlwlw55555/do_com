@@ -7,7 +7,7 @@
         platform_order_status, province_name, city_name, district_name, shipping_address, mobile, receive_name,
         platform_sku_id, style_value, platform_goods_id, seller_note, refund_status, tracking_number, shipping_name,
         outer_id, sys_outer_id, shipping_time, shop_name, pay_time,
-        goods_amount, pay_amount, order_amount, seller_discount, platform_discount, goods_number, sku_number)
+        goods_amount, pay_amount, order_amount, seller_discount, platform_discount, goods_number, sku_number,order_type)
         VALUES
         <foreach collection="records" item="order" separator=",">
             (#{order.orderGoodsId}, #{order.orderSn}, #{order.platformOrderSn}, #{order.goodsName}, #{order.platformOrderGoodsSn},
@@ -16,7 +16,7 @@
             #{order.styleValue}, #{order.platformGoodsId}, #{order.sellerNote}, #{order.refundStatus},
             #{order.trackingNumber}, #{order.shippingName}, #{order.outerId}, #{order.sysOuterId}, #{order.shippingTime}, #{order.shopName},
             #{order.payTime}, #{order.goodsAmount}, #{order.payAmount}, #{order.orderAmount}, #{order.sellerDiscount},
-            #{order.platformDiscount}, #{order.goodsNumber}, #{order.skuNumber})
+            #{order.platformDiscount}, #{order.goodsNumber}, #{order.skuNumber}, #{order.orderType})
         </foreach>
     </insert>
 </mapper>
