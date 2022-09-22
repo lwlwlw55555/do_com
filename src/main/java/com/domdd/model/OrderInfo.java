@@ -85,6 +85,9 @@ public class OrderInfo implements Serializable {
     private Integer skuNumber;
 
     @JSONField(serialize = false)
+    private String orderType;
+
+    @JSONField(serialize = false)
     private Date createdTime;
 
     @JSONField(serialize = false)

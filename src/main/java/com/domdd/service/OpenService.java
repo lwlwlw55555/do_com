@@ -68,8 +68,9 @@ public class OpenService {
     }
 
     public static boolean checkTimeInNight() {
-        int hour = DateUtil.hour(DateUtil.date(), true);
-        return hour <= 6;
+//        int hour = DateUtil.hour(DateUtil.date(), true);
+//        return hour <= 6;
+        return false;
     }
 
     public IPage<OrderInfo> orderList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize) {
