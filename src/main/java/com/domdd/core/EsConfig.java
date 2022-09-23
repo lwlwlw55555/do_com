@@ -16,9 +16,6 @@ public class EsConfig {
 
     @Bean
     RestHighLevelClient client(EsProperties esProperties) {
-        if (esProperties.getUrl() == null) {
-            return null;
-        }
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                 .connectedTo(esProperties.getUrl())
                 .build();
