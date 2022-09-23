@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,10 +35,11 @@ import java.util.Random;
  */
 @Api(tags = "[user]")
 @RestController
-@AllArgsConstructor
 public class UserController {
-    private final ElasticsearchRestTemplate elasticsearchTemplate;
-    private final UserService esUserService;
+    @Autowired(required = false)
+    private ElasticsearchRestTemplate elasticsearchTemplate;
+    @Resource
+    private UserService esUserService;
 
     private final String[] names = {"诸葛亮", "曹操", "李白", "韩信", "赵云", "小乔", "狄仁杰", "李四", "诸小明", "王五"};
     private final String[] infos = {"我来自中国的一个小乡村，地处湖南省", "我来自中国的一个大城市，名叫上海，人们称作魔都"
