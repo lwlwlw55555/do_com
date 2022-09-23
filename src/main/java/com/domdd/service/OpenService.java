@@ -23,6 +23,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.*;
 
 @Service
@@ -73,7 +74,7 @@ public class OpenService {
         return false;
     }
 
-    public IPage<OrderInfo> orderList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize) {
+    public IPage<OrderInfo> orderList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize, String orderType) {
         String statusVal = stringRedisTemplate.opsForValue().get(OnlineStatus);
         OnlineStatusEnum onlineStatus = OnlineStatusEnum.NORMAL;
         try {
@@ -81,7 +82,7 @@ public class OpenService {
         } catch (Exception ignored) {
 
         }
-        IPage<OrderInfo> orderInfoRes = orderList(shopName, startTime, endTime, timeType, page, pageSize, onlineStatus);
+        IPage<OrderInfo> orderInfoRes = orderList(shopName, startTime, endTime, timeType, page, pageSize, onlineStatus, orderType);
         if (Objects.equals(onlineStatus, OnlineStatusEnum.OFFLINE)) {
             orderInfoRes.setRecords(CollectionUtil.newArrayList());
             orderInfoRes.setTotal(0);
@@ -93,7 +94,7 @@ public class OpenService {
         return orderInfoRes;
     }
 
-    public IPage<OrderInfo> orderList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize, OnlineStatusEnum onlineStatusEnum) {
+    public IPage<OrderInfo> orderList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize, OnlineStatusEnum onlineStatusEnum, String orderType) {
         if (checkTimeInNight()) {
             MddResp<OrderInfo> orderInfoList = getOrderInfoList(shopName, startTime, endTime, timeType, page, pageSize);
             IPage<OrderInfo> p = new Page<>();
@@ -105,7 +106,7 @@ public class OpenService {
 //            return Convert.convert(IPage.class, orderInfoList);
         }
         IPage<OrderInfo> p = new Page<>(page, pageSize);
-        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND));
+        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND), orderType);
     }
 
     public IPage<AfterSaleOrder> afterSaleOrderList(String shopName, Date startTime, Date endTime, Integer page, Integer pageSize) {

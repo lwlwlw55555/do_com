@@ -56,7 +56,7 @@ public class OpenController extends BaseController {
     @ApiOperationSupport(author = "lw")
     public BaseResp<BasePagingResp<OrderInfo>> orderList(@RequestBody @Valid OpenOrderListReq req, BindingResult bindingResult) {
         log.info("[order/list] params:{}", JSON.toJSONString(req));
-        IPage<OrderInfo> orderInfoPage = openService.orderList(req.getShopName(), req.getStartTime(), req.getEndTime(), req.getTimeType(), req.getPage(), req.getPageSize());
+        IPage<OrderInfo> orderInfoPage = openService.orderList(req.getShopName(), req.getStartTime(), req.getEndTime(), req.getTimeType(), req.getPage(), req.getPageSize(), req.getOrderType());
         List<OrderInfo> records = orderInfoPage.getRecords();
         OrderInfo.checkParams(records);
         return BaseResp.success(new BasePagingResp<>(orderInfoPage));
