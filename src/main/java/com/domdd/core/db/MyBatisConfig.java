@@ -75,6 +75,7 @@ public class MyBatisConfig implements EnvironmentAware {
         // TODO: 2021/12/27 mybatis-plus 必须用MybatisSqlSessionFactoryBean不能用SqlSessionFactoryBean啊啊啊啊！
         //todo 从原理看MybatisSqlSessionFactoryBean是覆盖了之前的源码中的SqlSessionFactoryBean
         MybatisSqlSessionFactoryBean bean = new MybatisSqlSessionFactoryBean();
+        //todo mybatisLog 貌似不生效??
         bean.setPlugins(new Interceptor[]{(Interceptor) paginationInterceptor, mybatisLog});
         bean.setDataSource(ds);
         bean.setTypeAliasesPackage("com.domdd.dao.common");

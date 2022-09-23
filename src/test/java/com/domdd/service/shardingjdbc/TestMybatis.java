@@ -8,6 +8,8 @@ import com.alibaba.druid.pool.DruidPooledConnection;
 import com.alibaba.druid.pool.DruidPooledResultSet;
 import com.alibaba.druid.pool.DruidPooledStatement;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.domdd.DoMddApplication;
 import com.domdd.core.aop.PreNormalAopAbstract;
 import com.domdd.dao.common.OrderInfoMapper;
@@ -163,6 +165,16 @@ public class TestMybatis {
     @Test
     public void testNormalTransaction() {
         normalTransaction.testNormalTransaction();
+    }
+
+    @Test
+    public void testMybatisLog() {
+        IPage<OrderInfo> p = new Page<>(0, 100);
+        IPage<OrderInfo> orderInfoIPage = orderInfoMapper.selectByPage(p,
+                "shipping_type", DateUtil.parseDateTime("2022-05-08 14:29:00"),
+                DateUtil.parseDateTime("2022-05-08 14:30:00"), "爱他美旗舰店",
+                false, "PRESALE");
+        System.out.println(orderInfoIPage);
     }
 
 

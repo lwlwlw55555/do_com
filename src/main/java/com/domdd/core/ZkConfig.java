@@ -20,6 +20,9 @@ public class ZkConfig {
 
     @Bean
     public ZooKeeper zooKeeper(ZkProperties zkProperties) throws IOException {
+        if (zkProperties.getUrl() == null) {
+            return null;
+        }
         return new ZooKeeper(zkProperties.getUrl(), 3000, new Watcher() {
             @Override
             public void process(WatchedEvent event) {

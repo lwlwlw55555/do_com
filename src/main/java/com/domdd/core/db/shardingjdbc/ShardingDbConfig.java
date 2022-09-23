@@ -130,7 +130,7 @@ public class ShardingDbConfig {
     @Bean(name = "shardingSqlSessionFactory")
     public MybatisSqlSessionFactoryBean shardingSqlSessionFactory(@Qualifier("shardingDb") DataSource dataSource, @Qualifier("paginationInterceptor") PaginationInterceptor paginationInterceptor, @Qualifier("mybatisLog") MybatisLog mybatisLog) throws Exception {
         MybatisSqlSessionFactoryBean bean = new MybatisSqlSessionFactoryBean();
-        bean.setPlugins(new Interceptor[]{(Interceptor) paginationInterceptor});
+        bean.setPlugins(new Interceptor[]{(Interceptor) paginationInterceptor, mybatisLog});
         bean.setDataSource(dataSource);
         bean.setTypeAliasesPackage("com.domdd.shardingjdbcdao");
         bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("com/domdd/mapper/*.xml"));
