@@ -28,12 +28,12 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
                     .lt(OrderInfo::getShippingTime, endTime)
                     .ge(OrderInfo::getShippingTime, DateUtil.parseDate("2021-10-01 00:00:00"));
         }
-
-        if (StringUtils.isNotBlank(orderType)) {
-            wrapper.eq(OrderInfo::getOrderType, orderType);
-        } else {
-            wrapper.eq(OrderInfo::getOrderType, "SALE");
-        }
+//
+//        if (StringUtils.isNotBlank(orderType)) {
+//            wrapper.eq(OrderInfo::getOrderType, orderType);
+//        } else {
+//            wrapper.eq(OrderInfo::getOrderType, "SALE");
+//        }
 
         wrapper.notIn(OrderInfo::getOuterId, OpenService.ignoreOuterIdList);
         wrapper.notIn(OrderInfo::getSysOuterId, OpenService.ignoreOuterIdList);
