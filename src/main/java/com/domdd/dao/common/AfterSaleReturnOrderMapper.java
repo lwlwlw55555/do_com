@@ -16,6 +16,7 @@ public interface AfterSaleReturnOrderMapper extends BaseMapper<AfterSaleReturnOr
         wrapper.eq(AfterSaleReturnOrder::getShopName, shopName);
         wrapper.ge(AfterSaleReturnOrder::getLastUpdatedTime, startTime)
                 .lt(AfterSaleReturnOrder::getLastUpdatedTime, endTime)
+                .eq(AfterSaleReturnOrder::getAfterSalesStatus, 10)
                 .ge(AfterSaleReturnOrder::getLastUpdatedTime, DateUtil.parseDate("2021-10-01 00:00:00"));
         return this.selectPage(page, wrapper);
     }
