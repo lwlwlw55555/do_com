@@ -15,7 +15,6 @@ import com.domdd.dao.common.*;
 import com.domdd.model.*;
 import com.domdd.util.ObjectFieldHandler;
 import com.google.common.collect.ImmutableMap;
-import com.sun.tools.javac.util.Assert;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -65,7 +64,6 @@ public class OpenService {
 
     public static String getStringByMapping(String shopName) {
         if (shopNameMapping.containsKey(shopName)) {
-            Assert.check(false, 1);
             return shopNameMapping.get(shopName);
         }
         return shopName;
