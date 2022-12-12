@@ -46,6 +46,8 @@ public class AfterSaleReturnOrder implements Serializable {
 
     private Integer warehouseId;
 
+    private String warehouseName;
+
     private Integer goodsNumber;
 
     private Integer quantity;

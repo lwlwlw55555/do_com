@@ -51,6 +51,9 @@ public class TestMybatis {
     @Resource(name = "normalDataSource")
     DruidDataSource dataSource;
 
+//    @Resource
+//    OrderInfo orderInfo;
+
     @Test
     public void testJdbc() {
         OrderInfo orderInfo = orderInfoMapper.selectById(924002L);
