@@ -33,7 +33,7 @@
 //    @Resource
 //    private DanengOpenPropertiesDo danengOpenPropertiesDo;
 //
-//    @Pointcut("execution(* com.domdd.controller.OpenController.*(..))")
+//    @Pointcut("execution(* com.domdd.controller.open.OpenController.*(..))")
 //    private void openPut() {
 //
 //    }

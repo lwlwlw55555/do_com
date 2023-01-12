@@ -25,7 +25,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .groupName("2.0版本")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.domdd.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.domdd.controller.open"))
                 .paths(PathSelectors.any())
                 .build();
     }

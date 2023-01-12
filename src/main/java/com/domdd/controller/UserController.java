@@ -22,6 +22,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import java.util.Random;
  */
 //@Api(tags = "[user]")
 @RestController
+@ApiIgnore
 public class UserController {
     @Autowired(required = false)
     private ElasticsearchRestTemplate elasticsearchTemplate;

@@ -1,4 +1,4 @@
-package com.domdd.controller;
+package com.domdd.controller.open;
 
 
 import com.alibaba.fastjson.JSON;
