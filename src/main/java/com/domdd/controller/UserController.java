@@ -33,7 +33,7 @@ import java.util.Random;
  * @author lw
  * @date 2022/2/15 5:23 下午
  */
-@Api(tags = "[user]")
+//@Api(tags = "[user]")
 @RestController
 public class UserController {
     @Autowired(required = false)
@@ -46,8 +46,8 @@ public class UserController {
             , "我来自东北，家住大囤里，一口大碴子话"};
 
     @GetMapping("saveUser")
-    @ApiOperation("存数据")
-    @ApiOperationSupport(author = "lw")
+//    @ApiOperation("存数据")
+//    @ApiOperationSupport(author = "lw")
     public BaseResp saveUser() {
         //添加索引mapping    索引会自动创建但mapping自只用默认的这会导致分词器不生效 所以这里我们手动导入mapping
         elasticsearchTemplate.putMapping(User.class);
@@ -66,15 +66,15 @@ public class UserController {
     }
 
     @GetMapping("getDataById")
-    @ApiOperation("根据id查询数据")
-    @ApiOperationSupport(author = "lw")
+//    @ApiOperation("根据id查询数据")
+//    @ApiOperationSupport(author = "lw")
     public BaseResp getDataById(Integer id) {
         return BaseResp.success(esUserService.findById(id));
     }
 
     @GetMapping("getAllDataByPage")
-    @ApiOperation("分页查询所有数据")
-    @ApiOperationSupport(author = "lw")
+//    @ApiOperation("分页查询所有数据")
+//    @ApiOperationSupport(author = "lw")
     public BaseResp getAllDataByPage() {
         //本该传入page和size，这里为了方便就直接写死了
         Pageable page = PageRequest.of(0, 10, Sort.Direction.ASC, "id");
@@ -83,23 +83,23 @@ public class UserController {
     }
 
     @GetMapping("getDataByName")
-    @ApiOperation("根据名字查询")
-    @ApiOperationSupport(author = "lw")
+//    @ApiOperation("根据名字查询")
+//    @ApiOperationSupport(author = "lw")
     public BaseResp getDataByName(String name) {
         return BaseResp.success(esUserService.findByName(name));
     }
 
     @GetMapping("getDataByNameAndInfo")
-    @ApiOperation("根据名字和介绍查询")
-    @ApiOperationSupport(author = "lw")
+//    @ApiOperation("根据名字和介绍查询")
+//    @ApiOperationSupport(author = "lw")
     public BaseResp getDataByNameAndInfo(String name, String info) {
         //这里是查询两个字段取交集，即代表两个条件需要同时满足
         return BaseResp.success(esUserService.findByNameAndInfo(name, info));
     }
 
-    @ApiOperation("查询高亮显示")
+//    @ApiOperation("查询高亮显示")
     @GetMapping("getHightByUser")
-    @ApiOperationSupport(author = "lw")
+//    @ApiOperationSupport(author = "lw")
     public BaseResp getHightByUser(String value) {
         //根据一个值查询多个字段  并高亮显示  这里的查询是取并集，即多个字段只需要有一个字段满足即可
         //需要查询的字段

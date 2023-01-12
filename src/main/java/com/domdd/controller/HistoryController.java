@@ -47,7 +47,7 @@ public class HistoryController {
     }
 
     @PostMapping("afterSaleOrder/list")
-    @ApiOperation("退款单查询")
+    @ApiOperation("退款单刷新")
     @ApiOperationSupport(author = "lw")
     public BaseResp afterSaleOrderList(@RequestBody @Valid HistoryBaseReq req, BindingResult bindingResult) {
         openService.startRefreshAfterSaleList(req.getStartDate(), req.getEndDate());

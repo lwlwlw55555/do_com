@@ -22,7 +22,7 @@ import java.util.List;
  * @author lw
  * @date 2022/2/16 4:37 下午
  */
-@Api(tags = "[applog]")
+//@Api(tags = "[applog]")
 @RestController
 @RequestMapping("applog")
 @AllArgsConstructor
@@ -31,8 +31,8 @@ public class ApplogController {
 //    private final LwService lwService;
 
     @GetMapping("getAllDataByPage")
-    @ApiOperation("分页查询所有数据")
-    @ApiOperationSupport(author = "lw")
+//    @ApiOperation("分页查询所有数据")
+//    @ApiOperationSupport(author = "lw")
     public BaseResp getAllDataByPage() {
         //本该传入page和size，这里为了方便就直接写死了
         Pageable page = PageRequest.of(0, 10, Sort.Direction.ASC, "id");
@@ -41,16 +41,16 @@ public class ApplogController {
     }
 
     @GetMapping("getDataByName")
-    @ApiOperation("根据By查询")
-    @ApiOperationSupport(author = "lw")
+//    @ApiOperation("根据By查询")
+//    @ApiOperationSupport(author = "lw")
     public BaseResp getDataByName(String name) {
         List<Applog> lw = applogService.findApplogBy(name);
         return BaseResp.success(lw);
     }
 
     @GetMapping("getDataByMessage")
-    @ApiOperation("根据log查询")
-    @ApiOperationSupport(author = "lw")
+//    @ApiOperation("根据log查询")
+//    @ApiOperationSupport(author = "lw")
     public BaseResp getDataByMessage(String info) {
         List<Applog> res = applogService.findApplogByMessage(info);
         return BaseResp.success(res);

@@ -62,7 +62,8 @@ public class FitTest {
     }
 
 //    public static void main(String[] args) {
-//        Fit.lwStatic();shuju((start, end) -> {//重点1  (start,end) 这里只是一个引用
+//        Fit.lwStatic();
+//        shuju((start, end) -> {//重点1  (start,end) 这里只是一个引用
 //            System.out.println("开始" + start + "--结束" + end);
 //            return Arrays.asList("a", "b");
 //        }, 6, 9);
