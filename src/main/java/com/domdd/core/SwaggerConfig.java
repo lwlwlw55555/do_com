@@ -26,6 +26,7 @@ public class SwaggerConfig {
                 .groupName("2.0版本")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.domdd.controller.open"))
+                .apis(RequestHandlerSelectors.basePackage("com.domdd.controller.history"))
                 .paths(PathSelectors.any())
                 .build();
     }

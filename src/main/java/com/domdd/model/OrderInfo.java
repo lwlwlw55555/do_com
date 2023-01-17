@@ -1,5 +1,6 @@
 package com.domdd.model;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -129,11 +130,22 @@ public class OrderInfo implements Serializable {
     @ApiModelProperty(value = "更新时间")
     private Date lastUpdatedTime;
 
+    @JSONField(serialize = false)
+    @ApiModelProperty(value = "发货类型 PLATFORM 平台发货，SYSTEM 系统发货")
+    private String shippingUserType;
+
     public static void checkParams(List<OrderInfo> records) {
         records.forEach(orderInfo -> {
             if (StringUtils.isNotBlank(orderInfo.getSysOuterId())) {
                 orderInfo.setOuterId(orderInfo.getSysOuterId());
             }
         });
+    }
+
+    public String getPlatformOrderStatus() {
+        if (shippingTime != null) {
+            return "WAIT_BUYER_CONFIRM_GOODS";
+        }
+        return platformOrderStatus;
     }
 }

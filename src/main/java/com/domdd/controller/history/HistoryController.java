@@ -1,4 +1,4 @@
-package com.domdd.controller;
+package com.domdd.controller.history;
 
 import com.domdd.controller.base.resp.BaseResp;
 import com.domdd.controller.req.HistoryBaseReq;

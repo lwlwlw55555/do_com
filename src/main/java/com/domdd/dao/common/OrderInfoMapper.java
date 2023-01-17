@@ -19,7 +19,7 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 
     default IPage<OrderInfo> selectByPage(IPage<OrderInfo> page, String timeType, Date startTime, Date endTime, String shopName, Boolean isRefund, String orderType) {
         LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(OrderInfo::getShopName, shopName);
+        wrapper.eq(OrderInfo::getShopName, shopName).eq(OrderInfo::getShippingUserType, "SYSTEM");
         if (Objects.equals(timeType, "pay_time")) {
             wrapper.ge(OrderInfo::getPayTime, startTime)
                     .lt(OrderInfo::getPayTime, endTime);
