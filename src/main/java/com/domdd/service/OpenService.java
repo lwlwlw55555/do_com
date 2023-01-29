@@ -55,6 +55,8 @@ public class OpenService {
             "myb", "dsnsb", "ksj-12", "9e00094", "qmsd-7", "tsx-wd", "qmsd-4", "dsn-xhj", "dl-yhb", "lyf-rbt", "xhr-xlx",
             "fx-yywj", "fx-rtfb", "NDXY-DXGZ", "DUCK-DDL", "DSN-gjjwj", "DSN-yhxb", "SHARK-xcq", "fx-mmb", "hrl-cslb", "ds-xcq", "dsn-rmj", "ht-hxc", "zxp", "bfr-mnjt", "mtj-ktkd", "fx-cnt", "xtk-sh", "qw-mkfty", "ds-cfj", "bf-yqz",
             "HPK-atm", "dsn-rfm", "lyf-ddtrbt", "mq-lyyx", "nadle-slc", "sbe-kqzg", "qmsd-5", "atm-cl", "20221228");
+    public static String ignoreOuterIdRedisKey = "outerIdList";
+
 
     public enum OnlineStatusEnum {
         NORMAL,
@@ -98,6 +100,13 @@ public class OpenService {
     public IPage<OrderInfo> orderList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize, OnlineStatusEnum onlineStatusEnum, String orderType) {
         if (checkTimeInNight()) {
             MddResp<OrderInfo> orderInfoList = getOrderInfoList(shopName, startTime, endTime, timeType, page, pageSize);
+
+            String ignoreOuterIdStr = stringRedisTemplate.opsForValue().get(ignoreOuterIdRedisKey);
+            log.info("[OpenService/orderList] Latest ignoreOuterIdList :{}", ignoreOuterIdStr);
+            if (CollectionUtils.isNotEmpty(JSONObject.parseArray(ignoreOuterIdStr, String.class))) {
+                ignoreOuterIdList = JSONObject.parseArray(ignoreOuterIdStr, String.class);
+            }
+
             IPage<OrderInfo> p = new Page<>();
             orderInfoList.setRecords(ObjectFieldHandler.generateFindAllOptional(orderInfoList.getRecords(), order -> {
                 return !ignoreOuterIdList.contains(order.getOuterId()) && !ignoreOuterIdList.contains(order.getSysOuterId());
