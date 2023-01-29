@@ -171,7 +171,7 @@ public class TestMybatis {
         IPage<OrderInfo> orderInfoIPage = orderInfoMapper.selectByPage(p,
                 "shipping_type", DateUtil.parseDateTime("2022-05-08 14:29:00"),
                 DateUtil.parseDateTime("2022-05-08 14:30:00"), "爱他美旗舰店",
-                false, "PRESALE", latestIgnoreOuterIdList);
+                false, "PRESALE", null);
         System.out.println(orderInfoIPage);
     }
 
