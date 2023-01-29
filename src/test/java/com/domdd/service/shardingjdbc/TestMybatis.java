@@ -1,8 +1,6 @@
 package com.domdd.service.shardingjdbc;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.net.NetUtil;
-import cn.hutool.core.util.IdUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidPooledConnection;
 import com.alibaba.druid.pool.DruidPooledResultSet;
@@ -11,10 +9,8 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.domdd.DoMddApplication;
-import com.domdd.core.aop.PreNormalAopAbstract;
 import com.domdd.dao.common.OrderInfoMapper;
 import com.domdd.dao.normal.NormalOrderInfoMapper;
-import com.domdd.dao.shardingjdbc.SjOrderInfoMapper;
 import com.domdd.model.NormalOrderInfo;
 import com.domdd.model.OrderInfo;
 import com.domdd.service.lw.NormalTransaction;
@@ -27,7 +23,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -176,7 +171,7 @@ public class TestMybatis {
         IPage<OrderInfo> orderInfoIPage = orderInfoMapper.selectByPage(p,
                 "shipping_type", DateUtil.parseDateTime("2022-05-08 14:29:00"),
                 DateUtil.parseDateTime("2022-05-08 14:30:00"), "爱他美旗舰店",
-                false, "PRESALE");
+                false, "PRESALE", latestIgnoreOuterIdList);
         System.out.println(orderInfoIPage);
     }
 

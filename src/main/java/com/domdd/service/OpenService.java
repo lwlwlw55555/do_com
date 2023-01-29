@@ -101,12 +101,6 @@ public class OpenService {
         if (checkTimeInNight()) {
             MddResp<OrderInfo> orderInfoList = getOrderInfoList(shopName, startTime, endTime, timeType, page, pageSize);
 
-            String ignoreOuterIdStr = stringRedisTemplate.opsForValue().get(ignoreOuterIdRedisKey);
-            log.info("[OpenService/orderList] Latest ignoreOuterIdList :{}", ignoreOuterIdStr);
-            if (CollectionUtils.isNotEmpty(JSONObject.parseArray(ignoreOuterIdStr, String.class))) {
-                ignoreOuterIdList = JSONObject.parseArray(ignoreOuterIdStr, String.class);
-            }
-
             IPage<OrderInfo> p = new Page<>();
             orderInfoList.setRecords(ObjectFieldHandler.generateFindAllOptional(orderInfoList.getRecords(), order -> {
                 return !ignoreOuterIdList.contains(order.getOuterId()) && !ignoreOuterIdList.contains(order.getSysOuterId());
@@ -116,7 +110,13 @@ public class OpenService {
 //            return Convert.convert(IPage.class, orderInfoList);
         }
         IPage<OrderInfo> p = new Page<>(page, pageSize);
-        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND), orderType);
+        String ignoreOuterIdStr = stringRedisTemplate.opsForValue().get(ignoreOuterIdRedisKey);
+        log.info("[OpenService/orderList] Latest ignoreOuterIdList :{}", ignoreOuterIdStr);
+        List<String> latestIgnoreOuterIdList = CollectionUtil.newArrayList();
+        if (CollectionUtils.isNotEmpty(JSONObject.parseArray(ignoreOuterIdStr, String.class))) {
+            latestIgnoreOuterIdList = JSONObject.parseArray(ignoreOuterIdStr, String.class);
+        }
+        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND), orderType, latestIgnoreOuterIdList);
     }
 
     public IPage<AfterSaleOrder> afterSaleOrderList(String shopName, Date startTime, Date endTime, Integer page, Integer pageSize) {

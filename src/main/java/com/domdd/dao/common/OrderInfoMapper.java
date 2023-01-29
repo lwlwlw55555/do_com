@@ -1,5 +1,6 @@
 package com.domdd.dao.common;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.BooleanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -7,7 +8,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.domdd.model.OrderInfo;
 import com.domdd.service.OpenService;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 
-    default IPage<OrderInfo> selectByPage(IPage<OrderInfo> page, String timeType, Date startTime, Date endTime, String shopName, Boolean isRefund, String orderType) {
+    default IPage<OrderInfo> selectByPage(IPage<OrderInfo> page, String timeType, Date startTime, Date endTime, String shopName, Boolean isRefund, String orderType, List<String> latestIgnoreOuterIdList) {
         LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(OrderInfo::getShopName, shopName).eq(OrderInfo::getShippingUserType, "SYSTEM");
         if (Objects.equals(timeType, "pay_time")) {
@@ -35,8 +35,12 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 //            wrapper.eq(OrderInfo::getOrderType, "SALE");
 //        }
 
-        wrapper.notIn(OrderInfo::getOuterId, OpenService.ignoreOuterIdList);
-        wrapper.notIn(OrderInfo::getSysOuterId, OpenService.ignoreOuterIdList);
+        if (CollectionUtil.isEmpty(latestIgnoreOuterIdList)) {
+            latestIgnoreOuterIdList = OpenService.ignoreOuterIdList;
+        }
+
+        wrapper.notIn(OrderInfo::getOuterId, latestIgnoreOuterIdList);
+        wrapper.notIn(OrderInfo::getSysOuterId, latestIgnoreOuterIdList);
         if (BooleanUtil.isTrue(isRefund)) {
             wrapper.in(OrderInfo::getRefundStatus, Arrays.asList("APPLIED", "RETURNED"));
         }
