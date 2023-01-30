@@ -134,6 +134,8 @@ public class OrderInfo implements Serializable {
     @ApiModelProperty(value = "发货类型 PLATFORM 平台发货，SYSTEM 系统发货")
     private String shippingUserType;
 
+    public static String notSyncAmount = "补发单";
+
     public static void checkParams(List<OrderInfo> records) {
         records.forEach(orderInfo -> {
             if (StringUtils.isNotBlank(orderInfo.getSysOuterId())) {
@@ -147,5 +149,40 @@ public class OrderInfo implements Serializable {
             return "WAIT_BUYER_CONFIRM_GOODS";
         }
         return platformOrderStatus;
+    }
+
+    public BigDecimal getGoodsAmount() {
+        if (StrUtil.contains(getSellerNote(), notSyncAmount)) {
+            return BigDecimal.ZERO;
+        }
+        return goodsAmount;
+    }
+
+    public BigDecimal getSellerDiscount() {
+        if (StrUtil.contains(getSellerNote(), notSyncAmount)) {
+            return BigDecimal.ZERO;
+        }
+        return sellerDiscount;
+    }
+
+    public BigDecimal getOrderAmount() {
+        if (StrUtil.contains(getSellerNote(), notSyncAmount)) {
+            return BigDecimal.ZERO;
+        }
+        return orderAmount;
+    }
+
+    public BigDecimal getPayAmount() {
+        if (StrUtil.contains(getSellerNote(), notSyncAmount)) {
+            return BigDecimal.ZERO;
+        }
+        return payAmount;
+    }
+
+    public BigDecimal getPlatformDiscount() {
+        if (StrUtil.contains(getSellerNote(), notSyncAmount)) {
+            return BigDecimal.ZERO;
+        }
+        return platformDiscount;
     }
 }
