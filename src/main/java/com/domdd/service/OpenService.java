@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -18,11 +20,13 @@ import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
 import java.util.*;
 
@@ -37,11 +41,15 @@ public class OpenService {
     private final InventoryMapper inventoryMapper;
     private final PurchaseInOrderMapper purchaseInOrderMapper;
     private final DanengOpenPropertiesDo danengOpenPropertiesDo;
+    private final PlatformSkuOuterIdMappingMapper mappingMapper;
     /**
      * @see org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration#stringRedisTemplate(RedisConnectionFactory)
      */
-    private final StringRedisTemplate stringRedisTemplate;
+    private static StringRedisTemplate stringRedisTemplate;
 
+    public static void setStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
+        OpenService.stringRedisTemplate = stringRedisTemplate;
+    }
 
     public static String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static String DEFAULT_DATE_PATTERN_0 = "yyyy-MM-dd 00:00:00";
@@ -56,7 +64,6 @@ public class OpenService {
             "fx-yywj", "fx-rtfb", "NDXY-DXGZ", "DUCK-DDL", "DSN-gjjwj", "DSN-yhxb", "SHARK-xcq", "fx-mmb", "hrl-cslb", "ds-xcq", "dsn-rmj", "ht-hxc", "zxp", "bfr-mnjt", "mtj-ktkd", "fx-cnt", "xtk-sh", "qw-mkfty", "ds-cfj", "bf-yqz",
             "HPK-atm", "dsn-rfm", "lyf-ddtrbt", "mq-lyyx", "nadle-slc", "sbe-kqzg", "qmsd-5", "atm-cl", "20221228");
     public static String ignoreOuterIdRedisKey = "outerIdList";
-
 
     public enum OnlineStatusEnum {
         NORMAL,
@@ -75,6 +82,16 @@ public class OpenService {
 //        int hour = DateUtil.hour(DateUtil.date(), true);
 //        return hour <= 6;
         return false;
+    }
+
+    public static List<String> getIgnoreOuterIdListByRedis() {
+        String ignoreOuterIdStr = stringRedisTemplate.opsForValue().get(ignoreOuterIdRedisKey);
+        log.info("[OpenService/getIgnoreOuterIdListByRedis] Latest ignoreOuterIdList :{}", ignoreOuterIdStr);
+        List<String> latestIgnoreOuterIdList = ignoreOuterIdList;
+        if (CollectionUtils.isNotEmpty(JSONObject.parseArray(ignoreOuterIdStr, String.class))) {
+            latestIgnoreOuterIdList = JSONObject.parseArray(ignoreOuterIdStr, String.class);
+        }
+        return latestIgnoreOuterIdList;
     }
 
     public IPage<OrderInfo> orderList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize, String orderType) {
@@ -110,13 +127,8 @@ public class OpenService {
 //            return Convert.convert(IPage.class, orderInfoList);
         }
         IPage<OrderInfo> p = new Page<>(page, pageSize);
-        String ignoreOuterIdStr = stringRedisTemplate.opsForValue().get(ignoreOuterIdRedisKey);
-        log.info("[OpenService/orderList] Latest ignoreOuterIdList :{}", ignoreOuterIdStr);
-        List<String> latestIgnoreOuterIdList = CollectionUtil.newArrayList();
-        if (CollectionUtils.isNotEmpty(JSONObject.parseArray(ignoreOuterIdStr, String.class))) {
-            latestIgnoreOuterIdList = JSONObject.parseArray(ignoreOuterIdStr, String.class);
-        }
-        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND), orderType, latestIgnoreOuterIdList);
+
+        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND), orderType, getIgnoreOuterIdListByRedis());
     }
 
     public IPage<AfterSaleOrder> afterSaleOrderList(String shopName, Date startTime, Date endTime, Integer page, Integer pageSize) {
@@ -279,6 +291,26 @@ public class OpenService {
                     if (CollectionUtils.isNotEmpty(resp.getRecords())) {
                         resp.getRecords().forEach(orderInfo -> {
                             orderInfo.setShopName(shopName);
+                            if (StringUtils.isAnyBlank(orderInfo.getPlatformGoodsId(), orderInfo.getPlatformSkuId())
+                                    || Objects.equals(orderInfo.getPlatformGoodsId(), "0") || Objects.equals(orderInfo.getPlatformSkuId(), "0")
+                            ) {
+                                if (!StrUtil.isAllBlank(orderInfo.getOuterId(), orderInfo.getSysOuterId())) {
+                                    PlatformSkuOuterIdMapping mapping = mappingMapper.selectByOuterId(StrUtil.isNotBlank(orderInfo.getSysOuterId()) ? orderInfo.getSysOuterId() : orderInfo.getOuterId());
+                                    if (ObjectUtil.isNotNull(mapping)) {
+                                        orderInfo.setPlatformGoodsId(mapping.getPlatformGoodsId());
+                                        orderInfo.setPlatformSkuId(mapping.getPlatformSkuId());
+                                        if (StrUtil.isBlank(orderInfo.getGoodsName())) {
+                                            orderInfo.setGoodsName(mapping.getPlatformGoodsName());
+                                        }
+                                        if (StrUtil.isBlank(orderInfo.getStyleValue())) {
+                                            orderInfo.setStyleValue(mapping.getPlatformSkuName());
+                                        }
+                                        if (StrUtil.isBlank(orderInfo.getPlatformOrderGoodsSn())) {
+                                            orderInfo.setPlatformOrderGoodsSn(mapping.getPlatformGoodsOuterId());
+                                        }
+                                    }
+                                }
+                            }
                         });
                         orderInfoMapper.replaceBatch(resp.getRecords());
 //                resp.getRecords().forEach(orderInfo -> {
@@ -317,6 +349,30 @@ public class OpenService {
                     if (CollectionUtils.isNotEmpty(resp.getRecords())) {
                         resp.getRecords().forEach(orderInfo -> {
                             orderInfo.setShopName(shopName);
+
+                            if (StringUtils.isAnyBlank(orderInfo.getPlatformGoodsId())
+                                    || Objects.equals(orderInfo.getPlatformGoodsId(), "0")) {
+                                if (!StrUtil.isAllBlank(orderInfo.getOuterId())) {
+                                    PlatformSkuOuterIdMapping mapping = mappingMapper.selectByOuterId(orderInfo.getOuterId());
+                                    if (ObjectUtil.isNotNull(mapping)) {
+                                        orderInfo.setPlatformGoodsId(mapping.getPlatformGoodsId());
+                                        if (StrUtil.isBlank(orderInfo.getGoodsName())) {
+                                            orderInfo.setGoodsName(mapping.getPlatformGoodsName());
+                                        }
+                                        if (StrUtil.isBlank(orderInfo.getStyleValue())) {
+                                            orderInfo.setStyleValue(mapping.getPlatformSkuName());
+                                        }
+                                        if (StrUtil.isBlank(orderInfo.getSkuName())) {
+                                            orderInfo.setSkuName(mapping.getPlatformSkuName());
+                                        }
+                                        if (StrUtil.isBlank(orderInfo.getPlatformOrderGoodsSn())) {
+                                            orderInfo.setPlatformOrderGoodsSn(mapping.getPlatformGoodsOuterId());
+                                        }
+                                    }
+                                }
+                            }
+
+
 //                    afterSaleOrderMapper.insert(orderInfo);
                         });
                         afterSaleOrderMapper.replaceBatch(resp.getRecords());
@@ -352,6 +408,26 @@ public class OpenService {
                     if (CollectionUtils.isNotEmpty(resp.getRecords())) {
                         resp.getRecords().forEach(orderInfo -> {
                             orderInfo.setShopName(shopName);
+
+                            if (StringUtils.isAnyBlank(orderInfo.getPlatformGoodsId())
+                                    || Objects.equals(orderInfo.getPlatformGoodsId(), "0")) {
+                                if (!StrUtil.isAllBlank(orderInfo.getOuterId())) {
+                                    PlatformSkuOuterIdMapping mapping = mappingMapper.selectByOuterId(orderInfo.getOuterId());
+                                    if (ObjectUtil.isNotNull(mapping)) {
+                                        orderInfo.setPlatformGoodsId(mapping.getPlatformGoodsId());
+                                        if (StrUtil.isBlank(orderInfo.getGoodsName())) {
+                                            orderInfo.setGoodsName(mapping.getPlatformGoodsName());
+                                        }
+                                        if (StrUtil.isBlank(orderInfo.getSkuName())) {
+                                            orderInfo.setSkuName(mapping.getPlatformSkuName());
+                                        }
+                                        if (StrUtil.isBlank(orderInfo.getPlatformOrderGoodsSn())) {
+                                            orderInfo.setPlatformOrderGoodsSn(mapping.getPlatformGoodsOuterId());
+                                        }
+                                    }
+                                }
+                            }
+
 //                    afterSaleReturnOrderMapper.insert(orderInfo);
                         });
                         afterSaleReturnOrderMapper.replaceBatch(resp.getRecords());

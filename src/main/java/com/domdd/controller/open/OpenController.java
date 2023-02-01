@@ -67,7 +67,9 @@ public class OpenController extends BaseController {
     @ApiOperationSupport(author = "lw")
     public BaseResp<BasePagingResp<AfterSaleOrder>> afterSaleOrderList(@RequestBody @Valid OpenOrderShopReq req, BindingResult bindingResult) {
         log.info("[afterSaleOrder/list] params:{}", JSON.toJSONString(req));
-        return BaseResp.success(new BasePagingResp<>(openService.afterSaleOrderList(req.getShopName(), req.getStartTime(), req.getEndTime(), req.getPage(), req.getPageSize())));
+        IPage<AfterSaleOrder> page = openService.afterSaleOrderList(req.getShopName(), req.getStartTime(), req.getEndTime(), req.getPage(), req.getPageSize());
+        AfterSaleOrder.checkParams(page.getRecords());
+        return BaseResp.success(new BasePagingResp<>(page));
     }
 
     @PostMapping("afterSaleReturnOrder/list")
@@ -75,7 +77,9 @@ public class OpenController extends BaseController {
     @ApiOperationSupport(author = "lw")
     public BaseResp<BasePagingResp<AfterSaleReturnOrder>> afterSaleReturnOrderList(@RequestBody @Valid OpenOrderShopReq req, BindingResult bindingResult) {
         log.info("[afterSaleReturnOrder/list] params:{}", JSON.toJSONString(req));
-        return BaseResp.success(new BasePagingResp<>(openService.afterSaleReturnOrderList(req.getShopName(), req.getStartTime(), req.getEndTime(), req.getPage(), req.getPageSize())));
+        IPage<AfterSaleReturnOrder> page = openService.afterSaleReturnOrderList(req.getShopName(), req.getStartTime(), req.getEndTime(), req.getPage(), req.getPageSize());
+        AfterSaleReturnOrder.checkParams(page.getRecords());
+        return BaseResp.success(new BasePagingResp<>(page));
     }
 
     @PostMapping("inventory/list")

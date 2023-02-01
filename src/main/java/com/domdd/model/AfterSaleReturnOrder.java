@@ -1,5 +1,10 @@
 package com.domdd.model;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.ReUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -9,6 +14,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @TableName(value = "after_sale_return_order")
@@ -100,4 +106,19 @@ public class AfterSaleReturnOrder implements Serializable {
     @JSONField(serialize = false)
     @ApiModelProperty(value = "售后更新时间")
     private Date refundUpdatedTime;
+
+    public static void checkParams(List<AfterSaleReturnOrder> afterSaleReturnOrderList) {
+        afterSaleReturnOrderList.forEach(afterSaleReturnOrder -> {
+            if (ObjectUtil.isNull(afterSaleReturnOrder.refundId)) {
+                if (StrUtil.isNotBlank(afterSaleReturnOrder.orderSn)) {
+                    List<String> parseGroup = ReUtil.findAllGroup0("\\d+", afterSaleReturnOrder.orderSn);
+                    if (CollectionUtil.isNotEmpty(parseGroup)) {
+                        afterSaleReturnOrder.setRefundId(Long.parseLong(parseGroup.get(0)));
+                    }
+                } else {
+                    afterSaleReturnOrder.setRefundId(RandomUtil.randomLong());
+                }
+            }
+        });
+    }
 }
