@@ -37,8 +37,11 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 //        }
 
         wrapper.notIn(OrderInfo::getOuterId, latestIgnoreOuterIdList);
-        wrapper.notIn(OrderInfo::getSysOuterId, latestIgnoreOuterIdList);
-        wrapper.notLike(OrderInfo::getSellerNote,"不回传");
+
+        wrapper.and(w -> w.isNull(OrderInfo::getSysOuterId).
+                or(w1 -> w1.notIn(OrderInfo::getSysOuterId, latestIgnoreOuterIdList)));
+
+        wrapper.notLike(OrderInfo::getSellerNote, "不回传");
         if (BooleanUtil.isTrue(isRefund)) {
             wrapper.in(OrderInfo::getRefundStatus, Arrays.asList("APPLIED", "RETURNED"));
         }
