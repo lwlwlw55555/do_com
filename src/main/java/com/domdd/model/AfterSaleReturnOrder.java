@@ -121,4 +121,11 @@ public class AfterSaleReturnOrder implements Serializable {
             }
         });
     }
+
+    public Integer getQuantity() {
+        if (ObjectUtil.isNull(quantity)) {
+            return goodsNumber;
+        }
+        return quantity;
+    }
 }
