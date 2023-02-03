@@ -184,6 +184,16 @@ public class OpenService {
         return ObjectFieldHandler.getMapByJson(ImmutableMap.of("appkey", DanengOpenPropertiesDo.appkey, "timestamp", System.currentTimeMillis(), "method", method, "page", page, "pageSize", pageSize));
     }
 
+    private static String parseRespFormat(String rspStr) {
+        try {
+            if (!StringUtils.isBlank(rspStr)) {
+                return JSONObject.toJSONString(JSONObject.parseObject(rspStr));
+            }
+        } catch (Exception ignore) {
+        }
+        return rspStr;
+    }
+
     public static MddResp<OrderInfo> getOrderInfoList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize) {
         Map<String, Object> paramsMap = getBaseMap("order.list", page, pageSize);
         paramsMap.putAll(ObjectFieldHandler.getMapByJson(ImmutableMap.of("timeType", timeType, "shopName", shopName, "endTime", endTime, "startTime", startTime)));
@@ -193,7 +203,7 @@ public class OpenService {
         String url = DanengOpenPropertiesDo.url + "order/list";
         String resp = HttpRequest.post(url).
                 body(params).header("Content-Type", "application/json").execute().body();
-        log.info("[OpenService/getOrderInfoList-url] url:{} params:{} resp:{}", url, params, resp);
+        log.info("[OpenService/getOrderInfoList-url] url:{} params:{} resp:{}", url, params, parseRespFormat(resp));
         return getMddRespByRespStr(resp, OrderInfo.class);
 //        JSONObject jsonObject = JSONObject.parseObject(resp);
 //        return jsonObject.getJSONObject("data").getJSONArray("records").toJavaList(OrderInfo.class);
@@ -208,7 +218,7 @@ public class OpenService {
         String url = DanengOpenPropertiesDo.url + "afterSaleOrder/list";
         String resp = HttpRequest.post(url).
                 body(params).header("Content-Type", "application/json").execute().body();
-        log.info("[OpenService/getAfterSaleOrderList-url] url:{} params:{} resp:{}", url, params, resp);
+        log.info("[OpenService/getAfterSaleOrderList-url] url:{} params:{} resp:{}", url, params, parseRespFormat(resp));
         return getMddRespByRespStr(resp, AfterSaleOrder.class);
 //        JSONObject jsonObject = JSONObject.parseObject(resp);
 //        return jsonObject.getJSONObject("data").getJSONArray("records").toJavaList(AfterSaleOrder.class);
@@ -223,7 +233,7 @@ public class OpenService {
         String url = DanengOpenPropertiesDo.url + "afterSaleReturnOrder/list";
         String resp = HttpRequest.post(url).
                 body(params).header("Content-Type", "application/json").execute().body();
-        log.info("[OpenService/getAfterSaleReturnOrderList-url] url:{} params:{} resp:{}", url, params, resp);
+        log.info("[OpenService/getAfterSaleReturnOrderList-url] url:{} params:{} resp:{}", url, params, parseRespFormat(resp));
         return getMddRespByRespStr(resp, AfterSaleReturnOrder.class);
 //        JSONObject jsonObject = JSONObject.parseObject(resp);
 //        return jsonObject.getJSONObject("data").getJSONArray("records").toJavaList(AfterSaleReturnOrder.class);
@@ -238,7 +248,7 @@ public class OpenService {
         String url = DanengOpenPropertiesDo.url + "purchaseInOrder/list";
         String resp = HttpRequest.post(url).
                 body(params).header("Content-Type", "application/json").execute().body();
-        log.info("[OpenService/getPurchaseInOrderList-url] url:{} params:{} resp:{}", url, params, resp);
+        log.info("[OpenService/getPurchaseInOrderList-url] url:{} params:{} resp:{}", url, params, parseRespFormat(resp));
         return getMddRespByRespStr(resp, PurchaseInOrder.class);
 //        return jsonObject.getJSONObject("data").getJSONArray("records").toJavaList(PurchaseInOrder.class);
     }
@@ -251,7 +261,7 @@ public class OpenService {
         String url = DanengOpenPropertiesDo.url + "inventory/list";
         String resp = HttpRequest.post(url).
                 body(params).header("Content-Type", "application/json").execute().body();
-        log.info("[OpenService/getInventoryList-url] url:{} params:{} resp:{}", url, params, resp);
+        log.info("[OpenService/getInventoryList-url] url:{} params:{} resp:{}", url, params, parseRespFormat(resp));
         return getMddRespByRespStr(resp, Inventory.class);
 //        JSONObject jsonObject = JSONObject.parseObject(resp).getJSONObject("data");
 //        MddResp mddResp = jsonObject.toJavaObject(MddResp.class);
