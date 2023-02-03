@@ -309,10 +309,10 @@ public class OpenService {
                                     if (ObjectUtil.isNotNull(mapping)) {
                                         orderInfo.setPlatformGoodsId(mapping.getPlatformGoodsId());
                                         orderInfo.setPlatformSkuId(mapping.getPlatformSkuId());
-                                        if (StrUtil.isBlank(orderInfo.getGoodsName())) {
+                                        if (StrUtil.isBlank(orderInfo.getGoodsName()) || orderInfo.getGoodsName().contains("自定义")) {
                                             orderInfo.setGoodsName(mapping.getPlatformGoodsName());
                                         }
-                                        if (StrUtil.isBlank(orderInfo.getStyleValue())) {
+                                        if (StrUtil.isBlank(orderInfo.getStyleValue()) || orderInfo.getStyleValue().contains("自定义")) {
                                             orderInfo.setStyleValue(mapping.getPlatformSkuName());
                                         }
                                         if (StrUtil.isBlank(orderInfo.getPlatformOrderGoodsSn())) {
@@ -366,10 +366,10 @@ public class OpenService {
                                     PlatformSkuOuterIdMapping mapping = mappingMapper.selectByOuterId(orderInfo.getOuterId());
                                     if (ObjectUtil.isNotNull(mapping)) {
                                         orderInfo.setPlatformGoodsId(mapping.getPlatformGoodsId());
-                                        if (StrUtil.isBlank(orderInfo.getGoodsName())) {
+                                        if (StrUtil.isBlank(orderInfo.getGoodsName()) || orderInfo.getGoodsName().contains("自定义")) {
                                             orderInfo.setGoodsName(mapping.getPlatformGoodsName());
                                         }
-                                        if (StrUtil.isBlank(orderInfo.getStyleValue())) {
+                                        if (StrUtil.isBlank(orderInfo.getStyleValue()) || orderInfo.getStyleValue().contains("自定义")) {
                                             orderInfo.setStyleValue(mapping.getPlatformSkuName());
                                         }
                                         if (StrUtil.isBlank(orderInfo.getSkuName())) {
@@ -425,10 +425,10 @@ public class OpenService {
                                     PlatformSkuOuterIdMapping mapping = mappingMapper.selectByOuterId(orderInfo.getOuterId());
                                     if (ObjectUtil.isNotNull(mapping)) {
                                         orderInfo.setPlatformGoodsId(mapping.getPlatformGoodsId());
-                                        if (StrUtil.isBlank(orderInfo.getGoodsName())) {
+                                        if (StrUtil.isBlank(orderInfo.getGoodsName()) || orderInfo.getGoodsName().contains("自定义")) {
                                             orderInfo.setGoodsName(mapping.getPlatformGoodsName());
                                         }
-                                        if (StrUtil.isBlank(orderInfo.getSkuName())) {
+                                        if (StrUtil.isBlank(orderInfo.getSkuName()) || orderInfo.getSkuName().contains("自定义")) {
                                             orderInfo.setSkuName(mapping.getPlatformSkuName());
                                         }
                                         if (StrUtil.isBlank(orderInfo.getPlatformOrderGoodsSn())) {
