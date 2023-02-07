@@ -96,18 +96,21 @@ public class AfterSaleOrder implements Serializable {
     @ApiModelProperty(value = "售后更新时间")
     private Date refundUpdatedTime;
 
+    @JSONField(serialize = false)
+    private Boolean isManual;
+
     public static void checkParams(List<AfterSaleOrder> afterSaleOrderList) {
-        afterSaleOrderList.forEach(afterSaleOrder -> {
-            if (ObjectUtil.isNull(afterSaleOrder.refundId)) {
-                if (StrUtil.isNotBlank(afterSaleOrder.orderSn)) {
-                    List<String> parseGroup = ReUtil.findAllGroup0("\\d+", afterSaleOrder.orderSn);
-                    if (CollectionUtil.isNotEmpty(parseGroup)) {
-                        afterSaleOrder.setRefundId(Long.parseLong(parseGroup.get(0)));
-                    }
-                } else {
-                    afterSaleOrder.setRefundId(RandomUtil.randomLong());
-                }
-            }
-        });
+//        afterSaleOrderList.forEach(afterSaleOrder -> {
+//            if (ObjectUtil.isNull(afterSaleOrder.refundId)) {
+//                if (StrUtil.isNotBlank(afterSaleOrder.orderSn)) {
+//                    List<String> parseGroup = ReUtil.findAllGroup0("\\d+", afterSaleOrder.orderSn);
+//                    if (CollectionUtil.isNotEmpty(parseGroup)) {
+//                        afterSaleOrder.setRefundId(Long.parseLong(parseGroup.get(0)));
+//                    }
+//                } else {
+//                    afterSaleOrder.setRefundId(RandomUtil.randomLong());
+//                }
+//            }
+//        });
     }
 }

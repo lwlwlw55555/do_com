@@ -86,6 +86,9 @@ public class AfterSaleReturnOrder implements Serializable {
     @ApiModelProperty(value = "售后单创建时间")
     private Date returnOrderCreatedTime;
 
+    /**
+     * refundId 要先写好
+     */
     @ApiModelProperty(value = "平台售后id")
     private Long refundId;
 
@@ -107,19 +110,23 @@ public class AfterSaleReturnOrder implements Serializable {
     @ApiModelProperty(value = "售后更新时间")
     private Date refundUpdatedTime;
 
+    @JSONField(serialize = false)
+    private Boolean isManual;
+
     public static void checkParams(List<AfterSaleReturnOrder> afterSaleReturnOrderList) {
-        afterSaleReturnOrderList.forEach(afterSaleReturnOrder -> {
-            if (ObjectUtil.isNull(afterSaleReturnOrder.refundId)) {
-                if (StrUtil.isNotBlank(afterSaleReturnOrder.orderSn)) {
-                    List<String> parseGroup = ReUtil.findAllGroup0("\\d+", afterSaleReturnOrder.orderSn);
-                    if (CollectionUtil.isNotEmpty(parseGroup)) {
-                        afterSaleReturnOrder.setRefundId(Long.parseLong(parseGroup.get(0)));
-                    }
-                } else {
-                    afterSaleReturnOrder.setRefundId(RandomUtil.randomLong());
-                }
-            }
-        });
+//        afterSaleReturnOrderList.forEach(afterSaleReturnOrder -> {
+//            // TODO: 2023/2/3 refundId 要先写好
+//            if (ObjectUtil.isNull(afterSaleReturnOrder.refundId)) {
+//                if (StrUtil.isNotBlank(afterSaleReturnOrder.orderSn)) {
+//                    List<String> parseGroup = ReUtil.findAllGroup0("\\d+", afterSaleReturnOrder.orderSn);
+//                    if (CollectionUtil.isNotEmpty(parseGroup)) {
+//                        afterSaleReturnOrder.setRefundId(Long.parseLong(parseGroup.get(0)));
+//                    }
+//                } else {
+//                    afterSaleReturnOrder.setRefundId(RandomUtil.randomLong());
+//                }
+//            }
+//        });
     }
 
     public Integer getQuantity() {

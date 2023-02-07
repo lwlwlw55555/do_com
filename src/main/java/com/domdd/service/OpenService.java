@@ -5,6 +5,8 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson.JSONObject;
@@ -382,8 +384,16 @@ public class OpenService {
                                 }
                             }
 
-
-//                    afterSaleOrderMapper.insert(orderInfo);
+                            if (ObjectUtil.isNull(orderInfo.getRefundId())) {
+                                orderInfo.setRefundId(RandomUtil.randomLong());
+                                orderInfo.setIsManual(true);
+                                if (StrUtil.isNotBlank(orderInfo.getOrderSn())) {
+                                    List<String> parseGroup = ReUtil.findAllGroup0("\\d+", orderInfo.getOrderSn());
+                                    if (CollectionUtil.isNotEmpty(parseGroup)) {
+                                        orderInfo.setRefundId(Long.parseLong(parseGroup.get(0)));
+                                    }
+                                }
+                            }
                         });
                         afterSaleOrderMapper.replaceBatch(resp.getRecords());
                     }
@@ -438,8 +448,18 @@ public class OpenService {
                                 }
                             }
 
-//                    afterSaleReturnOrderMapper.insert(orderInfo);
+                            if (ObjectUtil.isNull(orderInfo.getRefundId())) {
+                                orderInfo.setRefundId(RandomUtil.randomLong());
+                                orderInfo.setIsManual(true);
+                                if (StrUtil.isNotBlank(orderInfo.getOrderSn())) {
+                                    List<String> parseGroup = ReUtil.findAllGroup0("\\d+", orderInfo.getOrderSn());
+                                    if (CollectionUtil.isNotEmpty(parseGroup)) {
+                                        orderInfo.setRefundId(Long.parseLong(parseGroup.get(0)));
+                                    }
+                                }
+                            }
                         });
+
                         afterSaleReturnOrderMapper.replaceBatch(resp.getRecords());
                     }
                 }
