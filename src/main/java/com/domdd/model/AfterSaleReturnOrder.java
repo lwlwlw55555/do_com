@@ -1,10 +1,7 @@
 package com.domdd.model;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.*;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -15,6 +12,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @TableName(value = "after_sale_return_order")
@@ -135,7 +133,7 @@ public class AfterSaleReturnOrder implements Serializable {
     }
 
     public Integer getQuantity() {
-        if (ObjectUtil.isNull(quantity)) {
+        if (ObjectUtil.isNull(quantity) || Objects.equals(quantity, 0)) {
             return goodsNumber;
         }
         return quantity;
