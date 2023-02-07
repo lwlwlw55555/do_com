@@ -4,17 +4,17 @@
     <insert id="replaceBatch">
         replace into after_sale_return_order (platform_order_sn, platform_order_goods_sn, after_sale_reason,
         shipping_name, tracking_number, shop_name, outer_id, goods_name, sku_name, platform_goods_id,
-        platform_goods_name, style_value, goods_sub_type, after_sales_type, after_sales_status, warehouse_id,
+        platform_goods_name, style_value, goods_sub_type, after_sales_type,pre_after_sales_type, after_sales_status, warehouse_id,
         warehouse_name, goods_number, quantity, refund_created_time, return_order_created_time,
-        refund_id,order_sn,is_manual,order_goods_id,refund_updated_time)
+        refund_id,order_sn,is_manual,return_status,order_goods_id,refund_updated_time)
         VALUES
         <foreach collection ="records" item="order" separator =",">
             (#{order.platformOrderSn}, #{order.platformOrderGoodsSn}, #{order.afterSaleReason}, #{order.shippingName},
             #{order.trackingNumber}, #{order.shopName}, #{order.outerId}, #{order.goodsName}, #{order.skuName},
             #{order.platformGoodsId}, #{order.platformGoodsName}, #{order.styleValue}, #{order.goodsSubType},
-            #{order.afterSalesType}, #{order.afterSalesStatus}, #{order.warehouseId}, #{order.warehouseName},
+            #{order.afterSalesType}, #{order.preAfterSalesType},#{order.afterSalesStatus}, #{order.warehouseId}, #{order.warehouseName},
             #{order.goodsNumber}, #{order.quantity}, #{order.refundCreatedTime}, #{order.returnOrderCreatedTime},
-            #{order.refundId},#{order.orderSn},#{order.isManual},#{order.orderGoodsId},#{order.refundUpdatedTime})
+            #{order.refundId},#{order.orderSn},#{order.isManual},#{order.returnStatus},#{order.orderGoodsId},#{order.refundUpdatedTime})
         </foreach >
     </insert>
 </mapper>

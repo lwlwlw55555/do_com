@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.domdd.model.AfterSaleOrder;
+import com.domdd.model.AfterSaleReturnOrder;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -17,6 +18,7 @@ public interface AfterSaleOrderMapper extends BaseMapper<AfterSaleOrder> {
         wrapper.ge(AfterSaleOrder::getLastUpdatedTime, startTime)
                 .lt(AfterSaleOrder::getLastUpdatedTime, endTime)
                 .eq(AfterSaleOrder::getAfterSalesStatus, 10)
+                .eq(AfterSaleOrder::getReturnStatus, "DONE")
                 .ge(AfterSaleOrder::getLastUpdatedTime, DateUtil.parseDate("2023-02-01 00:00:00"))
 //                .isNotNull(AfterSaleOrder::getRefundId);
         ;

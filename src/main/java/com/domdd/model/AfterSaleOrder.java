@@ -99,6 +99,8 @@ public class AfterSaleOrder implements Serializable {
     @JSONField(serialize = false)
     private Boolean isManual;
 
+    private String returnStatus;
+
     public static void checkParams(List<AfterSaleOrder> afterSaleOrderList) {
 //        afterSaleOrderList.forEach(afterSaleOrder -> {
 //            if (ObjectUtil.isNull(afterSaleOrder.refundId)) {

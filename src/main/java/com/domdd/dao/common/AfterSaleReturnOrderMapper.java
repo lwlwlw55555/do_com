@@ -18,6 +18,7 @@ public interface AfterSaleReturnOrderMapper extends BaseMapper<AfterSaleReturnOr
         wrapper.ge(AfterSaleReturnOrder::getLastUpdatedTime, startTime)
                 .lt(AfterSaleReturnOrder::getLastUpdatedTime, endTime)
                 .eq(AfterSaleReturnOrder::getAfterSalesStatus, 10)
+                .eq(AfterSaleReturnOrder::getReturnStatus, "DONE")
                 .in(AfterSaleReturnOrder::getWarehouseId, 111, 112, 113, 1084, 1085, 1086)
                 .ge(AfterSaleReturnOrder::getLastUpdatedTime, DateUtil.parseDate("2023-02-01 00:00:00"))
 //                .isNotNull(AfterSaleReturnOrder::getRefundId);

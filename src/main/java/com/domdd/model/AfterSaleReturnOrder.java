@@ -113,6 +113,11 @@ public class AfterSaleReturnOrder implements Serializable {
     @JSONField(serialize = false)
     private Boolean isManual;
 
+    private String returnStatus;
+
+    @JSONField(serialize = false)
+    private Integer preAfterSalesType;
+
     public static void checkParams(List<AfterSaleReturnOrder> afterSaleReturnOrderList) {
 //        afterSaleReturnOrderList.forEach(afterSaleReturnOrder -> {
 //            // TODO: 2023/2/3 refundId 要先写好
