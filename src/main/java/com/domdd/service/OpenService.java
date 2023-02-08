@@ -448,6 +448,7 @@ public class OpenService {
                                 }
                             }
 
+                            orderInfo.setIsManual(false);
                             if (ObjectUtil.isNull(orderInfo.getRefundId())) {
                                 orderInfo.setRefundId(RandomUtil.randomLong());
                                 orderInfo.setIsManual(true);
