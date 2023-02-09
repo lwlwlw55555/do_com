@@ -285,7 +285,7 @@ public class OpenService {
     public void startRefreshOrderList(Date startDate, Date endDate) {
         if (startDate == null || endDate == null) {
             DateTime yesterday = DateUtil.offsetDay(DateUtil.date(), -1);
-            startDate = DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_0));
+            startDate = DateUtil.offsetDay(DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_0)), -2);
             endDate = DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_1));
         }
         Date tempEndDate = startDate;
@@ -343,7 +343,7 @@ public class OpenService {
     public void startRefreshAfterSaleList(Date startDate, Date endDate) {
         if (startDate == null || endDate == null) {
             DateTime yesterday = DateUtil.offsetDay(DateUtil.date(), -1);
-            startDate = DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_0));
+            startDate = DateUtil.offsetDay(DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_0)), -2);
             endDate = DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_1));
         }
         Date tempEndDate = startDate;
@@ -410,7 +410,7 @@ public class OpenService {
     public void startRefreshAfterSaleRefundList(Date startDate, Date endDate) {
         if (startDate == null || endDate == null) {
             DateTime yesterday = DateUtil.offsetDay(DateUtil.date(), -1);
-            startDate = DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_0));
+            startDate = DateUtil.offsetDay(DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_0)), -2);
             endDate = DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_1));
         }
         Date tempEndDate = startDate;
@@ -508,7 +508,7 @@ public class OpenService {
     public void startRefreshPurchaseInOrder(Date startDate, Date endDate) {
         if (startDate == null || endDate == null) {
             DateTime yesterday = DateUtil.offsetDay(DateUtil.date(), -1);
-            startDate = DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_0));
+            startDate = DateUtil.offsetDay(DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_0)), -2);
             endDate = DateUtil.parseDateTime(DateUtil.format(yesterday, DEFAULT_DATE_PATTERN_1));
         }
         Date tempEndDate = startDate;

@@ -27,7 +27,8 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
         } else if (Objects.equals(timeType, "shipping_time")) {
             wrapper.ge(OrderInfo::getShippingTime, startTime)
                     .lt(OrderInfo::getShippingTime, endTime)
-                    .ge(OrderInfo::getShippingTime, DateUtil.parseDate("2023-02-01 00:00:00"));
+//                    .ge(OrderInfo::getShippingTime, DateUtil.parseDate("2023-02-01 00:00:00"))
+            ;
         }
 //
 //        if (StringUtils.isNotBlank(orderType)) {

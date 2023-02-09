@@ -19,7 +19,7 @@ public interface AfterSaleOrderMapper extends BaseMapper<AfterSaleOrder> {
                 .lt(AfterSaleOrder::getLastUpdatedTime, endTime)
                 .eq(AfterSaleOrder::getAfterSalesStatus, 10)
                 .eq(AfterSaleOrder::getReturnStatus, "DONE")
-                .ge(AfterSaleOrder::getLastUpdatedTime, DateUtil.parseDate("2023-02-01 00:00:00"))
+//                .ge(AfterSaleOrder::getLastUpdatedTime, DateUtil.parseDate("2023-02-01 00:00:00"))
                 .last(" and false")
 //                .isNotNull(AfterSaleOrder::getRefundId);
         ;
