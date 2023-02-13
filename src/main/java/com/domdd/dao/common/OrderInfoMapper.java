@@ -25,8 +25,11 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
             wrapper.ge(OrderInfo::getPayTime, startTime)
                     .lt(OrderInfo::getPayTime, endTime);
         } else if (Objects.equals(timeType, "shipping_time")) {
-            wrapper.ge(OrderInfo::getShippingTime, startTime)
-                    .lt(OrderInfo::getShippingTime, endTime)
+//            wrapper.ge(OrderInfo::getShippingTime, startTime)
+//                    .lt(OrderInfo::getShippingTime, endTime)
+            wrapper.ge(OrderInfo::getLastUpdatedTime, startTime)
+                    .lt(OrderInfo::getLastUpdatedTime, endTime)
+                    .isNotNull(OrderInfo::getShippingTime)
 //                    .ge(OrderInfo::getShippingTime, DateUtil.parseDate("2023-02-01 00:00:00"))
             ;
         }
@@ -38,6 +41,9 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 //        }
 
         wrapper.notIn(OrderInfo::getOuterId, latestIgnoreOuterIdList);
+
+        wrapper.and(w -> w.isNotNull(OrderInfo::getSysOuterId)
+                .and(w1 -> w1.isNotNull(OrderInfo::getOuterId)));
 
         wrapper.and(w -> w.isNull(OrderInfo::getSysOuterId).
                 or(w1 -> w1.notIn(OrderInfo::getSysOuterId, latestIgnoreOuterIdList)));
