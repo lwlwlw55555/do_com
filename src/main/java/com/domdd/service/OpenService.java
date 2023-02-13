@@ -130,6 +130,7 @@ public class OpenService {
         }
         IPage<OrderInfo> p = new Page<>(page, pageSize);
 
+//        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND), orderType, getIgnoreOuterIdListByRedis());
         return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND), orderType, getIgnoreOuterIdListByRedis());
     }
 

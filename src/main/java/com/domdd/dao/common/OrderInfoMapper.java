@@ -42,8 +42,8 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 
         wrapper.notIn(OrderInfo::getOuterId, latestIgnoreOuterIdList);
 
-        wrapper.and(w -> w.isNotNull(OrderInfo::getSysOuterId)
-                .and(w1 -> w1.isNotNull(OrderInfo::getOuterId)));
+        wrapper.not(w -> w.isNull(OrderInfo::getSysOuterId)
+                .and(w1 -> w1.isNull(OrderInfo::getOuterId)));
 
         wrapper.and(w -> w.isNull(OrderInfo::getSysOuterId).
                 or(w1 -> w1.notIn(OrderInfo::getSysOuterId, latestIgnoreOuterIdList)));
