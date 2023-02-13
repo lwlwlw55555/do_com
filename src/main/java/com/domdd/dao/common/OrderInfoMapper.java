@@ -40,7 +40,10 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 //            wrapper.eq(OrderInfo::getOrderType, "SALE");
 //        }
 
-        wrapper.notIn(OrderInfo::getOuterId, latestIgnoreOuterIdList);
+//        wrapper.notIn(OrderInfo::getOuterId, latestIgnoreOuterIdList);
+
+        wrapper.and(w -> w.isNull(OrderInfo::getOuterId).
+                or(w1 -> w1.notIn(OrderInfo::getOuterId, latestIgnoreOuterIdList)));
 
         wrapper.not(w -> w.isNull(OrderInfo::getSysOuterId)
                 .and(w1 -> w1.isNull(OrderInfo::getOuterId)));
