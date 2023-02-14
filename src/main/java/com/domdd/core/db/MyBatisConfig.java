@@ -3,12 +3,14 @@ package com.domdd.core.db;
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
+import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.domdd.core.interceptors.MybatisLog;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.LocalCacheScope;
 import org.mybatis.spring.annotation.MapperScan;
@@ -76,10 +78,18 @@ public class MyBatisConfig implements EnvironmentAware {
     }
 
     @Bean
-    public ServletRegistrationBean statViewServlet(@Qualifier("druidMonitorProperties") DruidMonitorProperties druidMonitorProperties) {
+    public ServletRegistrationBean statViewServlet() {
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
-        servletRegistrationBean.addInitParameter("loginUsername", druidMonitorProperties.getUserName());
-        servletRegistrationBean.addInitParameter("loginPassword", druidMonitorProperties.getPassword());
+        String loginUsername = "druid";
+        String loginPassword = "123456";
+        if (environment.containsProperty("inner.druidLoginName") && !StringUtils.isBlank(environment.getProperty("inner.druidLoginName"))) {
+            loginUsername = environment.getProperty("inner.druidLoginName");
+        }
+        if (environment.containsProperty("inner.druidLoginPassword") && !StringUtils.isBlank(environment.getProperty("inner.druidLoginPassword"))) {
+            loginPassword = environment.getProperty("inner.druidLoginPassword");
+        }
+        servletRegistrationBean.addInitParameter("loginUsername", loginUsername);
+        servletRegistrationBean.addInitParameter("loginPassword", loginPassword);
         servletRegistrationBean.addInitParameter("resetEnable", "false");
         return servletRegistrationBean;
     }
