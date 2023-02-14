@@ -1,7 +1,10 @@
 package com.domdd.core.db;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
+import com.alibaba.druid.support.http.WebStatFilter;
+import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
@@ -9,7 +12,11 @@ import com.domdd.core.interceptors.MybatisLog;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.LocalCacheScope;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.aop.Advisor;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.aop.support.JdkRegexpMethodPointcut;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +27,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -55,8 +63,50 @@ public class MyBatisConfig implements EnvironmentAware {
 //        datasource.setTestOnReturn(true);
 //        datasource.setPoolPreparedStatements(true);
 //        datasource.setMaxPoolPreparedStatementPerConnectionSize(20);
+        try {
+            ((DruidDataSource) datasource).setFilters("stat, wall");
+            Properties properties = new Properties();
+            properties.setProperty("druid.stat.mergeSql", "true");
+            properties.setProperty("druid.stat.slowSqlMillis", "5000");
+            ((DruidDataSource) datasource).setConnectProperties(properties);
+        } catch (SQLException ignored) {
+        }
         return datasource;
     }
+
+    @Bean
+    public FilterRegistrationBean statFilter() {
+        //创建过滤器
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
+        //设置过滤器过滤路径
+        filterRegistrationBean.addUrlPatterns("/*");
+        //忽略过滤的形式
+        filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        filterRegistrationBean.addInitParameter("session-stat-enable", "true");
+        filterRegistrationBean.addInitParameter("session-stat-max-count", "10");
+        return filterRegistrationBean;
+    }
+
+    @Bean
+    public DruidStatInterceptor druidStatInterceptor() {
+        return new DruidStatInterceptor();
+    }
+
+    @Bean
+    public JdkRegexpMethodPointcut druidStatPointcut() {
+        JdkRegexpMethodPointcut druidStatPointcut = new JdkRegexpMethodPointcut();
+        String patterns = "com.domdd.controller.open.*";
+        String patterns2 = "com.domdd.service.*";
+        String patterns3 = "com.domdd.dao.common.*";
+        druidStatPointcut.setPatterns(patterns, patterns2, patterns3);
+        return druidStatPointcut;
+    }
+
+    @Bean
+    public Advisor druidStatAdvisor() {
+        return new DefaultPointcutAdvisor(druidStatPointcut(), druidStatInterceptor());
+    }
+
 
     /**
      * 根据数据源创建SqlSessionFactory
