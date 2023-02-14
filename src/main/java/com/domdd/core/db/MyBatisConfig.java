@@ -17,6 +17,7 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.JdkRegexpMethodPointcut;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -72,6 +73,15 @@ public class MyBatisConfig implements EnvironmentAware {
         } catch (SQLException ignored) {
         }
         return datasource;
+    }
+
+    @Bean
+    public ServletRegistrationBean statViewServlet(@Qualifier("druidMonitorProperties") DruidMonitorProperties druidMonitorProperties) {
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
+        servletRegistrationBean.addInitParameter("loginUsername", druidMonitorProperties.getUserName());
+        servletRegistrationBean.addInitParameter("loginPassword", druidMonitorProperties.getPassword());
+        servletRegistrationBean.addInitParameter("resetEnable", "false");
+        return servletRegistrationBean;
     }
 
     @Bean
