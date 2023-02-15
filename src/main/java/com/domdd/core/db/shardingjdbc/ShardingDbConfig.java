@@ -1,6 +1,7 @@
 package com.domdd.core.db.shardingjdbc;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
@@ -29,6 +30,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -49,6 +51,14 @@ public class ShardingDbConfig {
         Map<String, DataSource> map = new HashMap<>();
 //        partyDbProperties.setUseUnfairLock( true );
         DataSource dataSource = DruidDataSourceFactory.createDataSource(BeanUtil.toBean(dbProperties, Properties.class));
+        try {
+            ((DruidDataSource) dataSource).setFilters("stat, wall");
+            Properties properties = new Properties();
+            properties.setProperty("druid.stat.mergeSql", "true");
+            properties.setProperty("druid.stat.slowSqlMillis", "5000");
+            ((DruidDataSource) dataSource).setConnectProperties(properties);
+        } catch (SQLException ignored) {
+        }
         map.put("0", dataSource);
 
         DruidProperties druidProperties = new DruidProperties();
@@ -62,6 +72,14 @@ public class ShardingDbConfig {
         url = urlPre + db + urlExtension;
         druidProperties.setUrl(url);
         DataSource dataSource0 = DruidDataSourceFactory.createDataSource(BeanUtil.toBean(druidProperties, Properties.class));
+        try {
+            ((DruidDataSource) dataSource0).setFilters("stat, wall");
+            Properties properties = new Properties();
+            properties.setProperty("druid.stat.mergeSql", "true");
+            properties.setProperty("druid.stat.slowSqlMillis", "5000");
+            ((DruidDataSource) dataSource0).setConnectProperties(properties);
+        } catch (SQLException ignored) {
+        }
         map.put("1", dataSource0);
         return map;
     }

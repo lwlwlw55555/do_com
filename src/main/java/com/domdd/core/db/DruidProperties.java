@@ -21,7 +21,7 @@ public class DruidProperties {
 
     private String maxWait;
 
-    private Boolean useUnfairLock = false;
+    private Boolean useUnfairLock = true;
 
     private String minEvictableIdleTimeMillis;
 

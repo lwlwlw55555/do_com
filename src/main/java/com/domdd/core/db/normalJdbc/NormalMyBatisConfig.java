@@ -19,6 +19,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -35,6 +36,14 @@ public class NormalMyBatisConfig {
     @Bean(name = "normalDataSource")
     public DruidDataSource normalDataSource(@Qualifier("dbProperties") DruidProperties dbProperties) throws Exception {
         DataSource datasource = DruidDataSourceFactory.createDataSource(BeanUtil.toBean(dbProperties, Properties.class));
+        try {
+            ((DruidDataSource) datasource).setFilters("stat, wall");
+            Properties properties = new Properties();
+            properties.setProperty("druid.stat.mergeSql", "true");
+            properties.setProperty("druid.stat.slowSqlMillis", "5000");
+            ((DruidDataSource) datasource).setConnectProperties(properties);
+        } catch (SQLException ignored) {
+        }
         return (DruidDataSource) datasource;
     }
 
