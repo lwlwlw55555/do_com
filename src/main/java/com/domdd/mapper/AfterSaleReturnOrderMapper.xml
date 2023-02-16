@@ -17,4 +17,47 @@
             #{order.refundId},#{order.orderSn},#{order.isManual},#{order.returnStatus},#{order.orderGoodsId},#{order.refundUpdatedTime})
         </foreach >
     </insert>
+    <select id="selectByPage" resultType="com.domdd.model.AfterSaleReturnOrder">
+        select
+            order_id,
+            platform_order_sn,
+            platform_order_goods_sn,
+            after_sale_reason,
+            shipping_name,
+            tracking_number,
+            shop_name,
+            outer_id,
+            goods_name,
+            sku_name,
+            platform_goods_id,
+            platform_goods_name,
+            style_value,
+            goods_sub_type,
+            after_sales_type,
+            pre_after_sales_type,
+            after_sales_status,
+            warehouse_id,
+            warehouse_name,
+            sum(goods_number) as goods_number,
+            sum(quantity) as quantity,
+            refund_created_time,
+            return_order_created_time,
+            refund_id,
+            order_sn,
+            is_manual,
+            return_status,
+            order_goods_id,
+            refund_updated_time,
+            created_time,
+            last_updated_time
+        from after_sale_return_order
+        where
+            shop_name = #{shopName}
+          and last_updated_time >= #{startTime}
+          and last_updated_time &lt; #{endTime}
+          and warehouse_id in (111, 112, 113, 1084, 1085, 1086)
+          and after_sales_status = 10
+          and return_status = 'DONE'
+          group by platform_order_sn,outer_id
+    </select>
 </mapper>
