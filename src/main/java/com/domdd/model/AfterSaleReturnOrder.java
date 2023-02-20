@@ -96,15 +96,12 @@ public class AfterSaleReturnOrder implements Serializable {
     @ApiModelProperty(value = "更新时间")
     private Date lastUpdatedTime;
 
-    @JSONField(serialize = false)
     @ApiModelProperty(value = "主键")
     private Long orderGoodsId;
 
-    @JSONField(serialize = false)
     @ApiModelProperty(value = "系统订单号")
     private String orderSn;
 
-    @JSONField(serialize = false)
     @ApiModelProperty(value = "售后更新时间")
     private Date refundUpdatedTime;
 
