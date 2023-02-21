@@ -55,7 +55,15 @@
             shop_name = #{shopName}
           and last_updated_time >= #{startTime}
           and last_updated_time &lt; #{endTime}
-          and warehouse_id in (111, 112, 113, 1084, 1085, 1086)
+          and warehouse_name in ('成都哆劢掂品牌盒损仓',
+                                 '成都哆劢掂品牌残品仓',
+                                 '成都哆劢掂品牌正品仓',
+                                 '成都品牌正品仓-圆通云仓 ',
+                                 '成都品牌残品仓-圆通云仓',
+                                 '成都品牌盒损仓-圆通云仓',
+                                 '品牌正品仓-成都美邦达',
+                                 '品牌盒损仓-成都美邦达',
+                                 '品牌残品仓-成都美邦达')
           and after_sales_status = 10
           and return_status = 'DONE'
           group by platform_order_sn,outer_id
