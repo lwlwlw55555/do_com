@@ -110,6 +110,9 @@ public class AfterSaleReturnOrder implements Serializable {
 
     private String returnStatus;
 
+    @ApiModelProperty(value = "订单类型 RETURN 退货， REJECT 拒收，CHANGE 换货，RESHIP 补发")
+    private String orderType;
+
     @JSONField(serialize = false)
     private Integer preAfterSalesType;
 
