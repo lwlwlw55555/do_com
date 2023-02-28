@@ -448,7 +448,11 @@ public class OpenService {
                                     }
                                 }
                             }
-
+                            //处理erp的bug
+                            orderInfo.setPreQuantity(orderInfo.getQuantity());
+                            orderInfo.setQuantity(orderInfo.getGoodsNumber());
+                            orderInfo.setPreRefundId(orderInfo.getRefundId());
+                            orderInfo.setRefundId(orderInfo.getOrderGoodsId());
                             orderInfo.setIsManual(false);
                             if (ObjectUtil.isNull(orderInfo.getRefundId())) {
                                 orderInfo.setRefundId(RandomUtil.randomLong());
