@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class WebLogAspect {
 	private final static Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
 
-    @Pointcut("execution(public * com.domdd.controller.*.*(..))")
+    @Pointcut("execution(public * com.domdd.controller.*.*..*(..))")
     public void webLog(){}
 
     @AfterReturning(returning = "ret", pointcut = "webLog()")
@@ -33,7 +33,7 @@ public class WebLogAspect {
         }
         HttpServletRequest request = attributes.getRequest();
         
-        logger.info("URL : " + request.getRequestURL().toString() +",CLASS_METHOD : "
+        logger.info("[WebLog] URL : " + request.getRequestURL().toString() +",CLASS_METHOD : "
         			+ joinPoint.getSignature().getDeclaringTypeName() + "." 
         			+ joinPoint.getSignature().getName() + "," 
         			+ request.getMethod() +",  ARGS : " 
