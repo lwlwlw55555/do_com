@@ -67,6 +67,12 @@
                                  '品牌残品仓-成都美邦达')
           and after_sales_status = 10
           and return_status = 'DONE'
-          group by platform_order_sn,outer_id
+            <if test="@cn.hutool.core.collection.CollectionUtil@isNotEmpty(ignoreOuterIdList)">
+                and outer_id not in
+                <foreach collection="ignoreOuterIdList" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        group by platform_order_sn,outer_id
     </select>
 </mapper>

@@ -1,10 +1,7 @@
 package com.domdd.dao.common;
 
-import cn.hutool.core.date.DateUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.domdd.model.AfterSaleOrder;
 import com.domdd.model.AfterSaleReturnOrder;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,7 +22,7 @@ public interface AfterSaleReturnOrderMapper extends BaseMapper<AfterSaleReturnOr
 //        ;
 //        return this.selectPage(page, wrapper);
 //    }
-    IPage<AfterSaleReturnOrder> selectByPage(IPage<AfterSaleReturnOrder> page, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("shopName") String shopName);
+    IPage<AfterSaleReturnOrder> selectByPage(IPage<AfterSaleReturnOrder> page, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("shopName") String shopName, @Param("ignoreOuterIdList") List<String> ignoreOuterIdList);
 
     void replaceBatch(@Param("records") List<AfterSaleReturnOrder> records);
 }

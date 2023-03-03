@@ -155,7 +155,7 @@ public class OpenService {
 //            return Convert.convert(IPage.class, orderInfoList);
         }
         IPage<AfterSaleReturnOrder> p = new Page<>(page, pageSize);
-        return afterSaleReturnOrderMapper.selectByPage(p, startTime, endTime, shopName);
+        return afterSaleReturnOrderMapper.selectByPage(p, startTime, endTime, shopName, getIgnoreOuterIdListByRedis());
     }
 
     public IPage<Inventory> inventoryList(Integer page, Integer pageSize) {
