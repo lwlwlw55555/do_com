@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -123,6 +124,12 @@ public class AfterSaleReturnOrder implements Serializable {
 
     @JSONField(serialize = false)
     private Integer preAfterSalesType;
+
+    @JSONField(serialize = false)
+    private BigDecimal refundAmount;
+
+    @JSONField(serialize = false)
+    private BigDecimal refundDiscountAmount;
 
     public static void checkParams(List<AfterSaleReturnOrder> afterSaleReturnOrderList) {
 //        afterSaleReturnOrderList.forEach(afterSaleReturnOrder -> {
