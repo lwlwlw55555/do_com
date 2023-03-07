@@ -108,6 +108,7 @@ public class AfterSaleReturnOrder implements Serializable {
     @JSONField(serialize = false)
     private Boolean isManual;
 
+    @JSONField(serialize = false)
     private String returnStatus;
 
     @JSONField(serialize = false)

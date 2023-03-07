@@ -99,6 +99,7 @@ public class AfterSaleOrder implements Serializable {
     @JSONField(serialize = false)
     private Boolean isManual;
 
+    @JSONField(serialize = false)
     private String returnStatus;
 
     public static void checkParams(List<AfterSaleOrder> afterSaleOrderList) {
