@@ -56,8 +56,13 @@
         from after_sale_return_order
         where
             shop_name = #{shopName}
+        <if test="@cn.hutool.core.util.ObjectUtil@isNull(platformOrderSn)">
           and last_updated_time >= #{startTime}
           and last_updated_time &lt; #{endTime}
+        </if>
+        <if test="@cn.hutool.core.util.ObjectUtil@isNotNull(platformOrderSn)">
+            and platform_order_sn = #{platformOrderSn}
+        </if>
           and warehouse_name in ('成都哆劢掂品牌盒损仓',
                                  '成都哆劢掂品牌残品仓',
                                  '成都哆劢掂品牌正品仓',

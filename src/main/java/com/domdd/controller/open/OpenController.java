@@ -82,6 +82,16 @@ public class OpenController extends BaseController {
         return BaseResp.success(new BasePagingResp<>(page));
     }
 
+    @PostMapping("afterSaleReturnOrder/byId")
+    @ApiOperation("退货单详情")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<BasePagingResp<AfterSaleReturnOrder>> afterSaleReturnOrderById(@RequestBody @Valid OpenOrderShopReq req, BindingResult bindingResult) {
+        log.info("[afterSaleReturnOrder/byId] params:{}", JSON.toJSONString(req));
+        IPage<AfterSaleReturnOrder> page = openService.afterSaleReturnOrderById(req.getShopName(), req.getPlatformOrderSn());
+        AfterSaleReturnOrder.checkParams(page.getRecords());
+        return BaseResp.success(new BasePagingResp<>(page));
+    }
+
     @PostMapping("inventory/list")
     @ApiOperation("库存表查询")
     @ApiOperationSupport(author = "lw")

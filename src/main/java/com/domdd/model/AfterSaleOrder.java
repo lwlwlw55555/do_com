@@ -85,24 +85,27 @@ public class AfterSaleOrder implements Serializable {
     private Date lastUpdatedTime;
 
     @JSONField(serialize = false)
-    @ApiModelProperty(value = "主键")
+    @ApiModelProperty(value = "主键", hidden = true)
     private Long orderGoodsId;
 
     @JSONField(serialize = false)
-    @ApiModelProperty(value = "系统订单号")
+    @ApiModelProperty(value = "系统订单号", hidden = true)
     private String orderSn;
 
     @JSONField(serialize = false)
-    @ApiModelProperty(value = "售后更新时间")
+    @ApiModelProperty(value = "售后更新时间", hidden = true)
     private Date refundUpdatedTime;
 
     @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
     private Boolean isManual;
 
     @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
     private String returnStatus;
 
     @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
     private Long preRefundId;
 
     public static void checkParams(List<AfterSaleOrder> afterSaleOrderList) {

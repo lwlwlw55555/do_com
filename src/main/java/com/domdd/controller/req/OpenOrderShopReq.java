@@ -6,8 +6,11 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class OpenOrderShopReq extends OpenTimeReq{
+public class OpenOrderShopReq extends OpenTimeReq {
     @NotBlank(message = "shopName is null")
     @ApiModelProperty(value = "店铺名称")
     private String shopName;
+
+    @ApiModelProperty(value = "平台单号", hidden = true)
+    private String platformOrderSn;
 }

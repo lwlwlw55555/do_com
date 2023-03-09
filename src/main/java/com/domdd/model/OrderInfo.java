@@ -21,7 +21,7 @@ import java.util.List;
 public class OrderInfo implements Serializable {
     @TableId(type = IdType.AUTO)
     @JSONField(serialize = false)
-    @ApiModelProperty(value = "订单id 主键")
+    @ApiModelProperty(value = "订单id 主键", hidden = true)
     private Long orderId;
 
     @ApiModelProperty(value = "系统订单号")
@@ -85,7 +85,7 @@ public class OrderInfo implements Serializable {
     private String outerId;
 
     @JSONField(serialize = false)
-    @ApiModelProperty(value = "系统sku编码")
+    @ApiModelProperty(value = "系统sku编码", hidden = true)
     private String sysOuterId;
 
     @ApiModelProperty(value = "发货时间")
@@ -119,19 +119,19 @@ public class OrderInfo implements Serializable {
     private Integer skuNumber;
 
     @JSONField(serialize = false)
-    @ApiModelProperty(value = "订单类型 SALE销售，CHANGE 换货，RESHIP 补发")
+    @ApiModelProperty(value = "订单类型 SALE销售，CHANGE 换货，RESHIP 补发", hidden = true)
     private String orderType;
 
     @JSONField(serialize = false)
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间", hidden = true)
     private Date createdTime;
 
     @JSONField(serialize = false)
-    @ApiModelProperty(value = "更新时间")
+    @ApiModelProperty(value = "更新时间", hidden = true)
     private Date lastUpdatedTime;
 
     @JSONField(serialize = false)
-    @ApiModelProperty(value = "发货类型 PLATFORM 平台发货，SYSTEM 系统发货")
+    @ApiModelProperty(value = "发货类型 PLATFORM 平台发货，SYSTEM 系统发货", hidden = true)
     private String shippingUserType;
 
     public static String notSyncAmount = "补发单";

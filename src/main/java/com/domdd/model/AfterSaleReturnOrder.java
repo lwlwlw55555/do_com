@@ -107,29 +107,35 @@ public class AfterSaleReturnOrder implements Serializable {
     private Date refundUpdatedTime;
 
     @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
     private Boolean isManual;
 
     @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
     private String returnStatus;
 
     @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
     private Long preRefundId;
 
     @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
     private Integer preQuantity;
 
-    @ApiModelProperty(value = "订单类型 RETURN 退货， REJECT 拒收，CHANGE 换货，RESHIP 补发")
     @JSONField(serialize = false)
+    @ApiModelProperty(value = "订单类型 RETURN 退货， REJECT 拒收，CHANGE 换货，RESHIP 补发", hidden = true)
     private String orderType;
 
     @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
     private Integer preAfterSalesType;
 
-//    @JSONField(serialize = false)
+    //    @JSONField(serialize = false) @ApiModelProperty(hidden = true)
     @ApiModelProperty(value = "售后金额")
     private BigDecimal refundAmount;
 
     @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
     private BigDecimal refundDiscountAmount;
 
     public static void checkParams(List<AfterSaleReturnOrder> afterSaleReturnOrderList) {

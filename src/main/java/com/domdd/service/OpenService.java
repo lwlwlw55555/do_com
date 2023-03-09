@@ -155,8 +155,13 @@ public class OpenService {
 //            return Convert.convert(IPage.class, orderInfoList);
         }
         IPage<AfterSaleReturnOrder> p = new Page<>(page, pageSize);
-        return afterSaleReturnOrderMapper.selectByPage(p, startTime, endTime, shopName, getIgnoreOuterIdListByRedis());
+        return afterSaleReturnOrderMapper.selectByPage(p, startTime, endTime, shopName, getIgnoreOuterIdListByRedis(), null);
     }
+
+    public IPage<AfterSaleReturnOrder> afterSaleReturnOrderById(String shopName, String platformOrderSn) {
+        return afterSaleReturnOrderMapper.selectByPage(new Page<>(1, 100), null, null, shopName, getIgnoreOuterIdListByRedis(), platformOrderSn);
+    }
+
 
     public IPage<Inventory> inventoryList(Integer page, Integer pageSize) {
         if (checkTimeInNight()) {

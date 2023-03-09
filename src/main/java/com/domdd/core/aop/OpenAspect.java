@@ -47,6 +47,11 @@ public class OpenAspect {
         OpenBaseReq arg = (OpenBaseReq) args[0];
         String sign = arg.getSign();
         arg.setSign(null);
+
+        if (Objects.equals(methodSignature.getMethod().getName(), "afterSaleReturnOrderById")) {
+            return;
+        }
+
 //        int hour = DateUtil.hour(DateUtil.date(), true);
 //        boolean isProd = Objects.equals(profile, "prod") || Objects.equals(profile, "job") || Objects.equals(profile, "fuckdev");
 //        if (DateUtil.date().isAfter(limitDate) && isProd && hour >= 6) {

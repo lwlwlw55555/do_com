@@ -22,7 +22,7 @@ public interface AfterSaleReturnOrderMapper extends BaseMapper<AfterSaleReturnOr
 //        ;
 //        return this.selectPage(page, wrapper);
 //    }
-    IPage<AfterSaleReturnOrder> selectByPage(IPage<AfterSaleReturnOrder> page, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("shopName") String shopName, @Param("ignoreOuterIdList") List<String> ignoreOuterIdList);
+    IPage<AfterSaleReturnOrder> selectByPage(IPage<AfterSaleReturnOrder> page, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("shopName") String shopName, @Param("ignoreOuterIdList") List<String> ignoreOuterIdList, @Param("platformOrderSn") String platformOrderSn);
 
     void replaceBatch(@Param("records") List<AfterSaleReturnOrder> records);
 }
