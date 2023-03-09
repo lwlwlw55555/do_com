@@ -5,7 +5,7 @@
     <insert id="replaceBatch">
         replace into after_sale_order (platform_order_sn, platform_order_goods_sn, after_sale_reason, outer_id,
         shop_name, goods_name, sku_name, platform_goods_id, platform_goods_name, style_value, after_sales_type,
-        after_sales_status, goods_number, refund_amount, refund_time, refund_created_time, refund_id
+        after_sales_status, goods_number, refund_amount, refund_time, refund_created_time, refund_id,pre_refund_id
         ,order_sn,is_manual,return_status,order_goods_id,refund_updated_time)
         VALUES
         <foreach collection ="records" item="order" separator =",">
@@ -13,7 +13,7 @@
             #{order.shopName}, #{order.goodsName}, #{order.skuName}, #{order.platformGoodsId},
             #{order.platformGoodsName}, #{order.styleValue}, #{order.afterSalesType}, #{order.afterSalesStatus},
             #{order.goodsNumber}, #{order.refundAmount}, #{order.refundTime}, #{order.refundCreatedTime},
-            #{order.refundId},#{order.orderSn},#{order.isManual},#{order.returnStatus},#{order.orderGoodsId},#{order.refundUpdatedTime})
+            #{order.refundId},#{order.preRefundId},#{order.orderSn},#{order.isManual},#{order.returnStatus},#{order.orderGoodsId},#{order.refundUpdatedTime})
         </foreach >
     </insert>
 </mapper>

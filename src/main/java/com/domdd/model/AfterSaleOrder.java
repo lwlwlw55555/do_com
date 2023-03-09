@@ -102,6 +102,9 @@ public class AfterSaleOrder implements Serializable {
     @JSONField(serialize = false)
     private String returnStatus;
 
+    @JSONField(serialize = false)
+    private Long preRefundId;
+
     public static void checkParams(List<AfterSaleOrder> afterSaleOrderList) {
 //        afterSaleOrderList.forEach(afterSaleOrder -> {
 //            if (ObjectUtil.isNull(afterSaleOrder.refundId)) {

@@ -395,6 +395,9 @@ public class OpenService {
                                     }
                                 }
                             }
+
+                            orderInfo.setPreRefundId(orderInfo.getRefundId());
+                            orderInfo.setRefundId(1000000 + orderInfo.getOrderGoodsId());
                         });
                         afterSaleOrderMapper.replaceBatch(resp.getRecords());
                     }
@@ -448,6 +451,7 @@ public class OpenService {
                                     }
                                 }
                             }
+                            orderInfo.setIsManual(false);
                             if (ObjectUtil.isNull(orderInfo.getRefundId())) {
                                 orderInfo.setRefundId(RandomUtil.randomLong());
                                 orderInfo.setIsManual(true);
@@ -463,7 +467,6 @@ public class OpenService {
                             orderInfo.setQuantity(orderInfo.getGoodsNumber());
                             orderInfo.setPreRefundId(orderInfo.getRefundId());
                             orderInfo.setRefundId(orderInfo.getOrderGoodsId());
-                            orderInfo.setIsManual(false);
                         });
 
                         afterSaleReturnOrderMapper.replaceBatch(resp.getRecords());
