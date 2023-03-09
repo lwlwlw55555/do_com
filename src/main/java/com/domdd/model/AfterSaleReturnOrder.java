@@ -132,6 +132,7 @@ public class AfterSaleReturnOrder implements Serializable {
 
     //    @JSONField(serialize = false) @ApiModelProperty(hidden = true)
     @ApiModelProperty(value = "售后金额")
+    @JSONField(serialize = false)
     private BigDecimal refundAmount;
 
     @JSONField(serialize = false)
