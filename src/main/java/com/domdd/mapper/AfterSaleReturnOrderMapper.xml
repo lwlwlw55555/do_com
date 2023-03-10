@@ -6,7 +6,8 @@
         shipping_name, tracking_number, shop_name, outer_id, goods_name, sku_name, platform_goods_id,
         platform_goods_name, style_value, goods_sub_type, after_sales_type,pre_after_sales_type, after_sales_status, warehouse_id,
         warehouse_name, goods_number, quantity, pre_quantity, refund_created_time, return_order_created_time,
-        refund_amount,refund_discount_amount,refund_id,pre_refund_id,order_sn,is_manual,return_status,order_type,order_goods_id,refund_updated_time)
+        refund_amount,refund_discount_amount,refund_id,pre_refund_id,order_sn,is_manual,
+        oro_refund_amount,oro_order_amount,oro_discount_amount,return_status,order_type,order_goods_id,refund_updated_time)
         VALUES
         <foreach collection ="records" item="order" separator =",">
             (#{order.platformOrderSn}, #{order.platformOrderGoodsSn}, #{order.afterSaleReason}, #{order.shippingName},
@@ -14,7 +15,8 @@
             #{order.platformGoodsId}, #{order.platformGoodsName}, #{order.styleValue}, #{order.goodsSubType},
             #{order.afterSalesType}, #{order.preAfterSalesType},#{order.afterSalesStatus}, #{order.warehouseId}, #{order.warehouseName},
             #{order.goodsNumber}, #{order.quantity}, #{order.preQuantity}, #{order.refundCreatedTime}, #{order.returnOrderCreatedTime},
-            #{order.refundAmount},#{order.refundDiscountAmount},#{order.refundId},#{order.preRefundId},#{order.orderSn},#{order.isManual},#{order.returnStatus},#{order.orderType},#{order.orderGoodsId},#{order.refundUpdatedTime})
+            #{order.refundAmount},#{order.refundDiscountAmount},#{order.refundId},#{order.preRefundId},#{order.orderSn},#{order.isManual},
+            #{order.oroRefundAmount},#{order.oroOrderAmount},#{order.oroDiscountAmount},#{order.returnStatus},#{order.orderType},#{order.orderGoodsId},#{order.refundUpdatedTime})
         </foreach >
     </insert>
     <select id="selectByPage" resultType="com.domdd.model.AfterSaleReturnOrder">
@@ -38,12 +40,15 @@
             after_sales_status,
             warehouse_id,
             warehouse_name,
-            sum(goods_number) as goods_number,
-            sum(quantity) as quantity,
+            goods_number as goods_number,
+            quantity as quantity,
             refund_created_time,
             return_order_created_time,
             refund_amount,
             refund_discount_amount,
+            oro_refund_amount,
+            oro_order_amount,
+            oro_discount_amount,
             refund_id,
             order_sn,
             is_manual,
@@ -80,6 +85,5 @@
                     #{item}
                 </foreach>
             </if>
-        group by platform_order_sn,outer_id
     </select>
 </mapper>

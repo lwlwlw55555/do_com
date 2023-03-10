@@ -108,6 +108,18 @@ public class AfterSaleOrder implements Serializable {
     @ApiModelProperty(hidden = true)
     private Long preRefundId;
 
+    @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
+    private BigDecimal oroRefundAmount;
+
+    @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
+    private BigDecimal oroOrderAmount;
+
+    @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
+    private BigDecimal oroDiscountAmount;
+
     public static void checkParams(List<AfterSaleOrder> afterSaleOrderList) {
 //        afterSaleOrderList.forEach(afterSaleOrder -> {
 //            if (ObjectUtil.isNull(afterSaleOrder.refundId)) {

@@ -139,6 +139,18 @@ public class AfterSaleReturnOrder implements Serializable {
     @ApiModelProperty(hidden = true)
     private BigDecimal refundDiscountAmount;
 
+    @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
+    private BigDecimal oroRefundAmount;
+
+    @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
+    private BigDecimal oroOrderAmount;
+
+    @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
+    private BigDecimal oroDiscountAmount;
+
     public static void checkParams(List<AfterSaleReturnOrder> afterSaleReturnOrderList) {
 //        afterSaleReturnOrderList.forEach(afterSaleReturnOrder -> {
 //            // TODO: 2023/2/3 refundId 要先写好
