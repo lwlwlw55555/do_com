@@ -116,6 +116,10 @@ public class OpenService {
         return orderInfoRes;
     }
 
+    public IPage<OrderInfo> orderById(String shopName, String platformOrderSn) {
+        return orderInfoMapper.selectByPage(new Page<>(1, 100), "shipping_time", null, null, shopName, false, null, getIgnoreOuterIdListByRedis(), platformOrderSn);
+    }
+
     public IPage<OrderInfo> orderList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize, OnlineStatusEnum onlineStatusEnum, String orderType) {
         if (checkTimeInNight()) {
             MddResp<OrderInfo> orderInfoList = getOrderInfoList(shopName, startTime, endTime, timeType, page, pageSize);
@@ -131,7 +135,7 @@ public class OpenService {
         IPage<OrderInfo> p = new Page<>(page, pageSize);
 
 //        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND), orderType, getIgnoreOuterIdListByRedis());
-        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND), orderType, getIgnoreOuterIdListByRedis());
+        return orderInfoMapper.selectByPage(p, timeType, startTime, endTime, shopName, Objects.equals(onlineStatusEnum, OnlineStatusEnum.REFUND), orderType, getIgnoreOuterIdListByRedis(), null);
     }
 
     public IPage<AfterSaleOrder> afterSaleOrderList(String shopName, Date startTime, Date endTime, Integer page, Integer pageSize) {

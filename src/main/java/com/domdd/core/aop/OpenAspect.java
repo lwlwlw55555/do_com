@@ -48,7 +48,7 @@ public class OpenAspect {
         String sign = arg.getSign();
         arg.setSign(null);
 
-        if (Objects.equals(methodSignature.getMethod().getName(), "afterSaleReturnOrderById")) {
+        if (methodSignature.getMethod().getName().contains("ById")) {
             return;
         }
 

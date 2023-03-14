@@ -1,6 +1,7 @@
 package com.domdd.controller.open;
 
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.domdd.controller.base.BaseController;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 @Api(tags = "[open]")
@@ -60,6 +62,16 @@ public class OpenController extends BaseController {
         List<OrderInfo> records = orderInfoPage.getRecords();
         OrderInfo.checkParams(records);
         return BaseResp.success(new BasePagingResp<>(orderInfoPage));
+    }
+
+    @PostMapping("order/byId")
+    @ApiOperation("销售单详情")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<BasePagingResp<OrderInfo>> orderById(@RequestBody @Valid OpenOrderShopReq req, BindingResult bindingResult) {
+        log.info("[order/byId] params:{}", JSON.toJSONString(req));
+        IPage<OrderInfo> page = openService.orderById(req.getShopName(), req.getPlatformOrderSn());
+        OrderInfo.checkParams(page.getRecords());
+        return BaseResp.success(new BasePagingResp<>(page));
     }
 
     @PostMapping("afterSaleOrder/list")
