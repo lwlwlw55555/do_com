@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.*;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
@@ -150,6 +151,12 @@ public class AfterSaleReturnOrder implements Serializable {
     @JSONField(serialize = false)
     @ApiModelProperty(hidden = true)
     private BigDecimal oroDiscountAmount;
+
+    private BigDecimal divideRefundAmount;
+
+    public BigDecimal getTotalRefundAmount() {
+        return oroRefundAmount;
+    }
 
     public static void checkParams(List<AfterSaleReturnOrder> afterSaleReturnOrderList) {
 //        afterSaleReturnOrderList.forEach(afterSaleReturnOrder -> {

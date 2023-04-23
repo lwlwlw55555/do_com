@@ -54,11 +54,14 @@
             is_manual,
             return_status,
             order_type,
+            if(refund_id = (select max(asro1.refund_id) from after_sale_return_order asro1 where asro1.platform_order_sn = asro.platform_order_sn),
+            oro_refund_amount - truncate(oro_refund_amount*(((select sum(asro2.quantity) from after_sale_return_order asro2 where platform_order_sn = asro.platform_order_sn)-asro.quantity)/(select sum(asro2.quantity) from after_sale_return_order asro2 where platform_order_sn = asro.platform_order_sn)) ,2),
+            truncate(oro_refund_amount*(asro.quantity/(select sum(asro2.quantity) from after_sale_return_order asro2 where platform_order_sn = asro.platform_order_sn)) ,2) )as divide_refund_amount,
             order_goods_id,
             refund_updated_time,
             created_time,
             last_updated_time
-        from after_sale_return_order
+        from after_sale_return_order asro
         where
             shop_name = #{shopName}
         <if test="@cn.hutool.core.util.ObjectUtil@isNull(platformOrderSn)">

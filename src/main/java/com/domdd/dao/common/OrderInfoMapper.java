@@ -18,11 +18,11 @@ import java.util.Objects;
 
 public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 
-    default IPage<OrderInfo> selectByPage(IPage<OrderInfo> page, String timeType, Date startTime, Date endTime, String shopName, Boolean isRefund, String orderType, List<String> latestIgnoreOuterIdList, String platformOrderSn) {
+    default IPage<OrderInfo> selectByPage(IPage<OrderInfo> page, String timeType, Date startTime, Date endTime, String shopName, Boolean isRefund, String orderType, List<String> latestIgnoreOuterIdList, List<String> platformOrderSnList) {
         LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(OrderInfo::getShopName, shopName);
 //                .eq(OrderInfo::getShippingUserType, "SYSTEM");
-        if (StrUtil.isBlank(platformOrderSn)) {
+        if (CollectionUtil.isEmpty(platformOrderSnList)) {
             if (Objects.equals(timeType, "pay_time")) {
                 wrapper.ge(OrderInfo::getPayTime, startTime)
                         .lt(OrderInfo::getPayTime, endTime);
@@ -36,7 +36,7 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
                 ;
             }
         } else {
-            wrapper.eq(OrderInfo::getPlatformOrderSn, platformOrderSn);
+            wrapper.in(OrderInfo::getPlatformOrderSn, platformOrderSnList);
         }
 //
 //        if (StringUtils.isNotBlank(orderType)) {

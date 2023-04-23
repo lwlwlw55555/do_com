@@ -117,7 +117,7 @@ public class OpenService {
     }
 
     public IPage<OrderInfo> orderById(String shopName, String platformOrderSn) {
-        return orderInfoMapper.selectByPage(new Page<>(1, 100), "shipping_time", null, null, shopName, false, null, getIgnoreOuterIdListByRedis(), platformOrderSn);
+        return orderInfoMapper.selectByPage(new Page<>(1, 100), "shipping_time", null, null, shopName, false, null, getIgnoreOuterIdListByRedis(), CollectionUtil.newArrayList(platformOrderSn));
     }
 
     public IPage<OrderInfo> orderList(String shopName, Date startTime, Date endTime, String timeType, Integer page, Integer pageSize, OnlineStatusEnum onlineStatusEnum, String orderType) {
