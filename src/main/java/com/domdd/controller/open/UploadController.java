@@ -31,7 +31,7 @@ public class UploadController {
     @Resource
     private UploadService uploadService;
 
-    @PostMapping("upload")
+    @PostMapping("uploadType")
     @ApiOperation("上传类型")
     @ApiOperationSupport(author = "lw")
     public BaseResp<List<SelectVo>> uploadType() {
