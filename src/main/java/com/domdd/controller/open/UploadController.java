@@ -1,0 +1,40 @@
+package com.domdd.controller.open;
+
+import com.domdd.controller.base.resp.BaseResp;
+import com.domdd.enums.upload.UploadShopNameEnum;
+import com.domdd.enums.upload.UploadTypeEnum;
+import com.domdd.service.UploadService;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+
+@Api(tags = "[upload]")
+@RestController
+@RequestMapping("upload")
+@ApiImplicitParams({
+        @ApiImplicitParam(name = "partyId", paramType = "header", type = "int", required = true, example = "1"),
+        @ApiImplicitParam(name = "bizIds", paramType = "header", type = "String", example = "1")
+})
+@Controller
+public class UploadController {
+    @Resource
+    private UploadService uploadService;
+
+    @PostMapping("upload")
+    @ApiOperation("导入")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp upload(MultipartFile file, UploadTypeEnum uploadType, UploadShopNameEnum uploadShopName) {
+        uploadService.upload(file, uploadType, uploadShopName);
+        return BaseResp.success();
+    }
+
+}
