@@ -3,6 +3,7 @@ package com.domdd.controller.open;
 import com.domdd.controller.base.resp.BaseResp;
 import com.domdd.enums.upload.UploadShopNameEnum;
 import com.domdd.enums.upload.UploadTypeEnum;
+import com.domdd.model.SelectVo;
 import com.domdd.service.UploadService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Api(tags = "[upload]")
 @RestController
@@ -28,6 +30,20 @@ import javax.annotation.Resource;
 public class UploadController {
     @Resource
     private UploadService uploadService;
+
+    @PostMapping("upload")
+    @ApiOperation("上传类型")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<List<SelectVo>> uploadType() {
+        return BaseResp.success(uploadService.uploadType());
+    }
+
+    @PostMapping("uploadShopNameType")
+    @ApiOperation("上传店铺类型")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<List<SelectVo>> uploadShopNameType() {
+        return BaseResp.success(uploadService.uploadShopNameType());
+    }
 
     @PostMapping("upload")
     @ApiOperation("导入")

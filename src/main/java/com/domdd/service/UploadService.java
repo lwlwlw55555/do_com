@@ -227,4 +227,12 @@ public class UploadService {
             afterSaleReturnOrderMapper.replaceBatch(afterSaleReturns);
         });
     }
+
+    public List<SelectVo> uploadType() {
+        return ObjectFieldHandler.enumToSelectVoDesc(UploadTypeEnum.values());
+    }
+
+    public List<SelectVo> uploadShopNameType() {
+        return ObjectFieldHandler.enumToSelectVoDesc(UploadShopNameEnum.values());
+    }
 }
