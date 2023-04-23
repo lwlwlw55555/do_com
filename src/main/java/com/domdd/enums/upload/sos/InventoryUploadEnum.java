@@ -6,14 +6,15 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum InventoryUploadEnum {
-    skuName,
-    availableQuantity,
-    brandName,
-    quantity,
-    saleInOnthewayQuantity,
-    lockQuantity,
     barcode,
-    categoryName,
     goodsName,
+    skuName,
+    skuId,
+    quantity,
+    lockQuantity,
+    availableQuantity,
     substandardQuantity,
+    saleInOnthewayQuantity,
+    brandName,
+    categoryName,
 }
