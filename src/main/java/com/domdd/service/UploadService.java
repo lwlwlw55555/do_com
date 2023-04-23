@@ -68,7 +68,7 @@ public class UploadService {
                     map.put(e.name(), ObjectFieldHandler.getValueByIndex(row, e.ordinal()));
                 });
                 OrderInfo orderInfo = Convert.convert(OrderInfo.class, map);
-                orderInfo.setShopName(uploadShopName.getName());
+                orderInfo.setShopName(uploadShopName.getDesc());
                 if (StringUtils.isAnyBlank(orderInfo.getPlatformGoodsId(), orderInfo.getPlatformSkuId())
                         || Objects.equals(orderInfo.getPlatformGoodsId(), "0") || Objects.equals(orderInfo.getPlatformSkuId(), "0")
                 ) {
@@ -132,7 +132,7 @@ public class UploadService {
                     map.put(e.name(), ObjectFieldHandler.getValueByIndex(row, e.ordinal()));
                 });
                 AfterSaleOrder orderInfo = Convert.convert(AfterSaleOrder.class, map);
-                orderInfo.setShopName(uploadShopName.getName());
+                orderInfo.setShopName(uploadShopName.getDesc());
 
                 if (StringUtils.isAnyBlank(orderInfo.getPlatformGoodsId())
                         || Objects.equals(orderInfo.getPlatformGoodsId(), "0")) {
@@ -185,7 +185,7 @@ public class UploadService {
                     map.put(e.name(), ObjectFieldHandler.getValueByIndex(row, e.ordinal()));
                 });
                 AfterSaleReturnOrder orderInfo = Convert.convert(AfterSaleReturnOrder.class, map);
-                orderInfo.setShopName(uploadShopName.getName());
+                orderInfo.setShopName(uploadShopName.getDesc());
 
                 if (StringUtils.isAnyBlank(orderInfo.getPlatformGoodsId())
                         || Objects.equals(orderInfo.getPlatformGoodsId(), "0")) {
