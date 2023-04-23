@@ -9,5 +9,5 @@ public enum UploadShopNameEnum {
     NYN("诺优能官方旗舰店"),
     ATM("爱他美旗舰店");
 
-    private String name;
+    private String desc;
 }
