@@ -38,4 +38,5 @@ public enum OrderUploadEnum {
     sysOuterId,
     orderType,
     shippingUserType,
+    shopName
 }

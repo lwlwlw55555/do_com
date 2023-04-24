@@ -828,6 +828,17 @@ public class ObjectFieldHandler {
         }
     }
 
+    public static Sheet getSheet0ByFile(MultipartFile file) throws Exception {
+        byte[] b = file.getBytes();
+        Workbook wb = null;
+        try {
+            wb = new XSSFWorkbook(new ByteArrayInputStream(b));
+        } catch (Exception ignored) {
+            wb = new HSSFWorkbook(new ByteArrayInputStream(b));
+        }
+        return wb.getSheetAt(0);
+    }
+
     public static List<Row> getRowsByFileAndRowIndex(MultipartFile file, Integer rowIndex) throws Exception {
         byte[] b = file.getBytes();
         Workbook wb = null;
@@ -837,6 +848,15 @@ public class ObjectFieldHandler {
             wb = new HSSFWorkbook(new ByteArrayInputStream(b));
         }
         Sheet sheet = wb.getSheetAt(0);
+        List<Row> rows = ObjectFieldHandler.generateFindAllOptional(sheet, r -> r.getRowNum() > rowIndex && checkIsNotEmptyRow(r));
+
+        if (CollectionUtil.isEmpty(rows)) {
+            throw new Exception("文件为空，无法解析");
+        }
+        return rows;
+    }
+
+    public static List<Row> getRowsBySheet(Sheet sheet, Integer rowIndex) throws Exception {
         List<Row> rows = ObjectFieldHandler.generateFindAllOptional(sheet, r -> r.getRowNum() > rowIndex && checkIsNotEmptyRow(r));
 
         if (CollectionUtil.isEmpty(rows)) {

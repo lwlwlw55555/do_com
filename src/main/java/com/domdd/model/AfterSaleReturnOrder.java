@@ -154,6 +154,10 @@ public class AfterSaleReturnOrder implements Serializable {
 
     private BigDecimal divideRefundAmount;
 
+    @JSONField(serialize = false)
+    @ApiModelProperty(hidden = true)
+    private String orderStatus;
+
     public BigDecimal getTotalRefundAmount() {
         return oroRefundAmount;
     }

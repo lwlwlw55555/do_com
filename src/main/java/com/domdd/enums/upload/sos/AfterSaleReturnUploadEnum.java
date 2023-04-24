@@ -38,4 +38,6 @@ public enum AfterSaleReturnUploadEnum {
     oroRefundAmount,
     oroOrderAmount,
     oroDiscountAmount,
+    orderStatus,
+    shopName
 }

@@ -46,10 +46,18 @@ public class UploadController {
     }
 
     @PostMapping("upload")
-    @ApiOperation("导入")
+    @ApiOperation("导入(废弃)")
     @ApiOperationSupport(author = "lw")
     public BaseResp upload(MultipartFile file, UploadTypeEnum uploadType, UploadShopNameEnum uploadShopName) {
         uploadService.upload(file, uploadType, uploadShopName);
+        return BaseResp.success();
+    }
+
+    @PostMapping("uploadFile")
+    @ApiOperation("导入文件")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp upload(MultipartFile file) {
+        uploadService.upload(file, null, null);
         return BaseResp.success();
     }
 

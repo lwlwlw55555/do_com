@@ -15,6 +15,7 @@ import com.domdd.util.ObjectFieldHandler;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,12 +33,18 @@ public class UploadService {
 
     public void upload(MultipartFile file, UploadTypeEnum uploadType, UploadShopNameEnum uploadShopName) {
         List<Row> rows = null;
+        Sheet sheet = null;
+
         try {
-            rows = ObjectFieldHandler.getRowsByFileAndRowIndex(file, 0);
+            sheet = ObjectFieldHandler.getSheet0ByFile(file);
+            rows = ObjectFieldHandler.getRowsBySheet(sheet, 0);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
 
+        if (ObjectUtil.isNull(uploadType)) {
+            uploadType = UploadTypeEnum.getBySheetName(sheet.getSheetName());
+        }
         switch (uploadType) {
             case ORDER:
                 uploadOrder(rows, uploadShopName);
@@ -68,7 +75,9 @@ public class UploadService {
                     map.put(e.name(), ObjectFieldHandler.getValueByIndex(row, e.ordinal(), e.name()));
                 });
                 OrderInfo orderInfo = Convert.convert(OrderInfo.class, map);
-                orderInfo.setShopName(uploadShopName.getDesc());
+//                orderInfo.setShopName(uploadShopName.getDesc());
+                orderInfo.setShopName(getCurrentShopName(orderInfo.getShopName()));
+
                 if (StringUtils.isAnyBlank(orderInfo.getPlatformGoodsId(), orderInfo.getPlatformSkuId())
                         || Objects.equals(orderInfo.getPlatformGoodsId(), "0") || Objects.equals(orderInfo.getPlatformSkuId(), "0")
                 ) {
@@ -132,7 +141,8 @@ public class UploadService {
                     map.put(e.name(), ObjectFieldHandler.getValueByIndex(row, e.ordinal(), e.name()));
                 });
                 AfterSaleOrder orderInfo = Convert.convert(AfterSaleOrder.class, map);
-                orderInfo.setShopName(uploadShopName.getDesc());
+//                orderInfo.setShopName(uploadShopName.getDesc());
+                orderInfo.setShopName(getCurrentShopName(orderInfo.getShopName()));
 
                 if (StringUtils.isAnyBlank(orderInfo.getPlatformGoodsId())
                         || Objects.equals(orderInfo.getPlatformGoodsId(), "0")) {
@@ -185,7 +195,8 @@ public class UploadService {
                     map.put(e.name(), ObjectFieldHandler.getValueByIndex(row, e.ordinal(), e.name()));
                 });
                 AfterSaleReturnOrder orderInfo = Convert.convert(AfterSaleReturnOrder.class, map);
-                orderInfo.setShopName(uploadShopName.getDesc());
+//                orderInfo.setShopName(uploadShopName.getDesc());
+                orderInfo.setShopName(getCurrentShopName(orderInfo.getShopName()));
 
                 if (StringUtils.isAnyBlank(orderInfo.getPlatformGoodsId())
                         || Objects.equals(orderInfo.getPlatformGoodsId(), "0")) {
@@ -234,5 +245,18 @@ public class UploadService {
 
     public List<SelectVo> uploadShopNameType() {
         return ObjectFieldHandler.enumToSelectVoDesc(UploadShopNameEnum.values());
+    }
+
+    public static String getCurrentShopName(String shopName) {
+        if (StrUtil.isBlank(shopName)) {
+            throw new RuntimeException("店铺为空");
+        }
+        if (shopName.contains("爱他美")) {
+            return "爱他美旗舰店";
+        }
+        if (shopName.contains("诺优能")) {
+            return "诺优能官方旗舰店";
+        }
+        return null;
     }
 }
