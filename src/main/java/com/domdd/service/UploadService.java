@@ -31,7 +31,7 @@ public class UploadService {
     private final PurchaseInOrderMapper purchaseInOrderMapper;
     private final PlatformSkuOuterIdMappingMapper mappingMapper;
 
-    public void upload(MultipartFile file, UploadTypeEnum uploadType, UploadShopNameEnum uploadShopName) {
+    public Integer upload(MultipartFile file, UploadTypeEnum uploadType, UploadShopNameEnum uploadShopName) {
         List<Row> rows = null;
         Sheet sheet = null;
 
@@ -64,6 +64,7 @@ public class UploadService {
             default:
                 throw new RuntimeException("暂不支持该类型的导入哦~");
         }
+        return rows.size();
     }
 
     private void uploadOrder(List<Row> rows, UploadShopNameEnum uploadShopName) {
