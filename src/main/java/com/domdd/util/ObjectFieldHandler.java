@@ -15,6 +15,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.domdd.enums.upload.sos.OrderUploadEnum;
 import com.domdd.model.SelectVo;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.google.common.cache.CacheBuilder;
@@ -780,6 +781,27 @@ public class ObjectFieldHandler {
     public static String getValueByIndex(Row r, Integer i) {
         if (r == null || r.getCell(i) == null) {
             return "";
+        }
+        try {
+            if (HSSFDateUtil.isCellDateFormatted(r.getCell(i))) {
+                Date dateCellValue = r.getCell(i).getDateCellValue();
+                return DateUtil.formatDateTime(dateCellValue);
+            }
+        } catch (Exception ignored) {
+
+        }
+        setCellStrType(r.getCell(i));
+        return r.getCell(i).getStringCellValue().trim();
+    }
+
+    public static String getValueByIndex(Row r, Integer i, String field) {
+        if (r == null || r.getCell(i) == null) {
+            return "";
+        }
+        if (Objects.equals(field, OrderUploadEnum.orderGoodsId.name())) {
+            Double numericCellValue = r.getCell(i).getNumericCellValue();
+            String orderGoodsStr = StrUtil.toString(numericCellValue).replaceAll("\\.", "");
+            return orderGoodsStr.substring(0, orderGoodsStr.indexOf("E"));
         }
         try {
             if (HSSFDateUtil.isCellDateFormatted(r.getCell(i))) {
