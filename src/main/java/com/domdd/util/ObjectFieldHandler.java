@@ -799,9 +799,13 @@ public class ObjectFieldHandler {
             return "";
         }
         if (Objects.equals(field, OrderUploadEnum.orderGoodsId.name())) {
-            Double numericCellValue = r.getCell(i).getNumericCellValue();
-            String orderGoodsStr = StrUtil.toString(numericCellValue).replaceAll("\\.", "");
-            return StrUtil.isNotBlank(orderGoodsStr) && orderGoodsStr.contains("E") ? orderGoodsStr.substring(0, orderGoodsStr.indexOf("E")) : orderGoodsStr;
+            try {
+                Double numericCellValue = r.getCell(i).getNumericCellValue();
+                String orderGoodsStr = StrUtil.toString(numericCellValue).replaceAll("\\.", "");
+                return StrUtil.isNotBlank(orderGoodsStr) && orderGoodsStr.contains("E") ? orderGoodsStr.substring(0, orderGoodsStr.indexOf("E")) : orderGoodsStr;
+            } catch (Exception ignored) {
+                
+            }
         }
         try {
             if (HSSFDateUtil.isCellDateFormatted(r.getCell(i))) {
