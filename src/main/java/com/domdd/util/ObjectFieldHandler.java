@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -52,6 +53,7 @@ import java.util.stream.StreamSupport;
 import static java.math.BigDecimal.ROUND_DOWN;
 import static java.math.BigDecimal.ROUND_HALF_UP;
 
+@Slf4j
 public class ObjectFieldHandler {
     public static volatile LoadingCache<String, Object> COMMON_CACHES;
     public static volatile LoadingCache<String, LoadingCache<String, Object>> COMMON_LOCKS;
@@ -831,12 +833,14 @@ public class ObjectFieldHandler {
                     if (Objects.equals(type, UploadTypeEnum.ORDER)) {
                         OrderInfo orderInfo = orderInfoMapper.selectByOrderGoodsId(Long.parseLong(errorFieldName));
                         if (ObjectUtil.isNotNull(orderInfo)) {
+                            log.info("[ObjectFieldHandler/getValueByIndex-findRepeatOrderGoods] type:{} orderGoodsId:{} errorOrderGoodsId:{}", UploadTypeEnum.ORDER.name(), fieldName, errorFieldName);
                             return errorFieldName;
                         }
                     }
                     if (Objects.equals(type, UploadTypeEnum.AFTER_SALE_RETURN)) {
                         AfterSaleReturnOrder afterSaleReturnOrder = afterSaleReturnOrderMapper.selectByOrderGoodsId(Long.parseLong(errorFieldName));
                         if (ObjectUtil.isNotNull(afterSaleReturnOrder)) {
+                            log.info("[ObjectFieldHandler/getValueByIndex-findRepeatOrderGoods] type:{} orderGoodsId:{} errorOrderGoodsId:{}", UploadTypeEnum.AFTER_SALE_RETURN.name(), fieldName, errorFieldName);
                             return errorFieldName;
                         }
                     }
