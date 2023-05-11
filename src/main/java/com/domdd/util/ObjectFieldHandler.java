@@ -15,7 +15,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.domdd.dao.common.AfterSaleReturnOrderMapper;
+import com.domdd.dao.common.OrderInfoMapper;
+import com.domdd.enums.upload.UploadTypeEnum;
 import com.domdd.enums.upload.sos.OrderUploadEnum;
+import com.domdd.model.AfterSaleReturnOrder;
+import com.domdd.model.OrderInfo;
 import com.domdd.model.SelectVo;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.google.common.cache.CacheBuilder;
@@ -795,16 +800,54 @@ public class ObjectFieldHandler {
     }
 
     public static String getValueByIndex(Row r, Integer i, String field) {
+        return getValueByIndex(r, i, field, null);
+    }
+
+    public static OrderInfoMapper orderInfoMapper;
+    public static AfterSaleReturnOrderMapper afterSaleReturnOrderMapper;
+
+    public static String getValueByIndex(Row r, Integer i, String field, UploadTypeEnum type) {
         if (r == null || r.getCell(i) == null) {
             return "";
         }
         if (Objects.equals(field, OrderUploadEnum.orderGoodsId.name())) {
             try {
                 Double numericCellValue = r.getCell(i).getNumericCellValue();
-                String orderGoodsStr = StrUtil.toString(numericCellValue).replaceAll("\\.", "");
-                return StrUtil.isNotBlank(orderGoodsStr) && orderGoodsStr.contains("E") ? orderGoodsStr.substring(0, orderGoodsStr.indexOf("E")) : orderGoodsStr;
+                Long longValue = numericCellValue.longValue();
+                String fieldName = longValue.toString();
+
+                /** TODO: 2023/5/10
+                 * 人才啊
+                 * 这么简单的东西 非要搞得这么复杂。。。。
+                 * 直接longvalue就好了 非要搞个截取字符串？？？？
+                 * 无语啊！
+                 * 现在所有后缀是0的order_goods_id 全都重复插入了.....
+                 * 想想怎么解决吧。。。
+                 * 解决方案只能这样做了。。。
+                 */
+                if (fieldName.endsWith("0")) {
+                    String orderGoodsStr = StrUtil.toString(numericCellValue).replaceAll("\\.", "");
+                    String errorFieldName = StrUtil.isNotBlank(orderGoodsStr) && orderGoodsStr.contains("E") ? orderGoodsStr.substring(0, orderGoodsStr.indexOf("E")) : orderGoodsStr;
+                    if (Objects.equals(type, UploadTypeEnum.ORDER)) {
+                        OrderInfo orderInfo = orderInfoMapper.selectByOrderGoodsId(Long.parseLong(errorFieldName));
+                        if (ObjectUtil.isNotNull(orderInfo)) {
+                            return errorFieldName;
+                        }
+                    }
+                    if (Objects.equals(type, UploadTypeEnum.AFTER_SALE_RETURN)) {
+                        AfterSaleReturnOrder afterSaleReturnOrder = afterSaleReturnOrderMapper.selectByOrderGoodsId(Long.parseLong(errorFieldName));
+                        if (ObjectUtil.isNotNull(afterSaleReturnOrder)) {
+                            return errorFieldName;
+                        }
+                    }
+                }
+                return fieldName;
+//                String orderGoodsStr = StrUtil.toString(numericCellValue).replaceAll("\\.", "");
+//                String s = StrUtil.isNotBlank(orderGoodsStr) && orderGoodsStr.contains("E") ? orderGoodsStr.substring(0, orderGoodsStr.indexOf("E")) : orderGoodsStr;
+//                System.out.println(s);
+//                return s;
             } catch (Exception ignored) {
-                
+
             }
         }
         try {

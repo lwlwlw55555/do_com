@@ -64,4 +64,11 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
     }
 
     void replaceBatch(@Param("records") List<OrderInfo> records);
+
+    default OrderInfo selectByOrderGoodsId(Long orderGoodsId){
+        LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(OrderInfo::getOrderGoodsId, orderGoodsId).last("limit 1");
+        return this.selectOne(wrapper);
+    }
+
 }

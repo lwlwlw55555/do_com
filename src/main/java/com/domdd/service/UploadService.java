@@ -73,7 +73,7 @@ public class UploadService {
             List<OrderInfo> orderInfos = ObjectFieldHandler.generateListByObj(rowList, row -> {
                 Map<String, Object> map = new HashMap<>();
                 Arrays.stream(OrderUploadEnum.values()).forEach(e -> {
-                    map.put(e.name(), ObjectFieldHandler.getValueByIndex(row, e.ordinal(), e.name()));
+                    map.put(e.name(), ObjectFieldHandler.getValueByIndex(row, e.ordinal(), e.name(), UploadTypeEnum.ORDER));
                 });
                 OrderInfo orderInfo = Convert.convert(OrderInfo.class, map);
 //                orderInfo.setShopName(uploadShopName.getDesc());
@@ -193,7 +193,7 @@ public class UploadService {
             List<AfterSaleReturnOrder> afterSaleReturns = ObjectFieldHandler.generateListByObj(rowList, row -> {
                 Map<String, Object> map = new HashMap<>();
                 Arrays.stream(AfterSaleReturnUploadEnum.values()).forEach(e -> {
-                    map.put(e.name(), ObjectFieldHandler.getValueByIndex(row, e.ordinal(), e.name()));
+                    map.put(e.name(), ObjectFieldHandler.getValueByIndex(row, e.ordinal(), e.name(), UploadTypeEnum.AFTER_SALE_RETURN));
                 });
                 AfterSaleReturnOrder orderInfo = Convert.convert(AfterSaleReturnOrder.class, map);
 //                orderInfo.setShopName(uploadShopName.getDesc());

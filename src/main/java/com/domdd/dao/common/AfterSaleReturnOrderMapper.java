@@ -1,5 +1,6 @@
 package com.domdd.dao.common;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.domdd.model.AfterSaleReturnOrder;
@@ -25,4 +26,10 @@ public interface AfterSaleReturnOrderMapper extends BaseMapper<AfterSaleReturnOr
     IPage<AfterSaleReturnOrder> selectByPage(IPage<AfterSaleReturnOrder> page, @Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("shopName") String shopName, @Param("ignoreOuterIdList") List<String> ignoreOuterIdList, @Param("platformOrderSn") String platformOrderSn);
 
     void replaceBatch(@Param("records") List<AfterSaleReturnOrder> records);
+
+    default AfterSaleReturnOrder selectByOrderGoodsId(Long orderGoodsId) {
+        LambdaQueryWrapper<AfterSaleReturnOrder> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(AfterSaleReturnOrder::getOrderGoodsId, orderGoodsId).last("limit 1");
+        return this.selectOne(wrapper);
+    }
 }
