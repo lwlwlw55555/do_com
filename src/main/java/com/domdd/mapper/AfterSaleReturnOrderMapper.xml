@@ -63,7 +63,10 @@
             last_updated_time
         from after_sale_return_order asro
         where
-            shop_name = #{shopName}
+              true
+        <if test="@cn.hutool.core.util.ObjectUtil@isNotNull(shopName)">
+            and shop_name = #{shopName}
+        </if>
         <if test="@cn.hutool.core.util.ObjectUtil@isNull(platformOrderSn)">
           and last_updated_time >= #{startTime}
           and last_updated_time &lt; #{endTime}

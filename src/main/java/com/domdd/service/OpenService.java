@@ -75,7 +75,7 @@ public class OpenService {
     }
 
     public List<SelectVo> orderShopNameType() {
-        return ObjectFieldHandler.enumToSelectVo(UploadShopNameEnum.values(), "alias");
+        return ObjectFieldHandler.enumToSelectVoDesc(UploadShopNameEnum.values());
     }
 
     public enum OnlineStatusEnum {

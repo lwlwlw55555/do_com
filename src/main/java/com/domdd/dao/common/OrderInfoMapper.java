@@ -20,7 +20,9 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 
     default IPage<OrderInfo> selectByPage(IPage<OrderInfo> page, String timeType, Date startTime, Date endTime, String shopName, Boolean isRefund, String orderType, List<String> latestIgnoreOuterIdList, List<String> platformOrderSnList) {
         LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(OrderInfo::getShopName, shopName);
+        if (StrUtil.isNotBlank(shopName)) {
+            wrapper.eq(OrderInfo::getShopName, shopName);
+        }
 //                .eq(OrderInfo::getShippingUserType, "SYSTEM");
         if (CollectionUtil.isEmpty(platformOrderSnList)) {
             if (Objects.equals(timeType, "pay_time")) {
@@ -65,7 +67,7 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 
     void replaceBatch(@Param("records") List<OrderInfo> records);
 
-    default OrderInfo selectByOrderGoodsId(Long orderGoodsId){
+    default OrderInfo selectByOrderGoodsId(Long orderGoodsId) {
         LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(OrderInfo::getOrderGoodsId, orderGoodsId).last("limit 1");
         return this.selectOne(wrapper);

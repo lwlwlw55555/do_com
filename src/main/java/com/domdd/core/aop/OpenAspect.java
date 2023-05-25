@@ -1,5 +1,7 @@
 package com.domdd.core.aop;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson.JSON;
 import com.domdd.controller.req.OpenBaseReq;
@@ -44,6 +46,9 @@ public class OpenAspect {
         Signature signature = point.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         String[] parameterNames = methodSignature.getParameterNames();
+        if (ArrayUtil.isEmpty(args)) {
+            return;
+        }
         OpenBaseReq arg = (OpenBaseReq) args[0];
         String sign = arg.getSign();
         arg.setSign(null);
