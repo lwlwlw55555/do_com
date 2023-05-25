@@ -1,13 +1,11 @@
 package com.domdd.service;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.*;
 import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,6 +14,8 @@ import com.domdd.controller.resp.MddResp;
 import com.domdd.core.DanengOpenPropertiesDo;
 import com.domdd.core.aop.OpenAspect;
 import com.domdd.dao.common.*;
+import com.domdd.enums.upload.UploadShopNameEnum;
+import com.domdd.enums.upload.UploadTypeEnum;
 import com.domdd.model.*;
 import com.domdd.util.ObjectFieldHandler;
 import com.google.common.collect.ImmutableMap;
@@ -66,6 +66,17 @@ public class OpenService {
             "fx-yywj", "fx-rtfb", "NDXY-DXGZ", "DUCK-DDL", "DSN-gjjwj", "DSN-yhxb", "SHARK-xcq", "fx-mmb", "hrl-cslb", "ds-xcq", "dsn-rmj", "ht-hxc", "zxp", "bfr-mnjt", "mtj-ktkd", "fx-cnt", "xtk-sh", "qw-mkfty", "ds-cfj", "bf-yqz",
             "HPK-atm", "dsn-rfm", "lyf-ddtrbt", "mq-lyyx", "nadle-slc", "sbe-kqzg", "qmsd-5", "atm-cl", "20221228");
     public static String ignoreOuterIdRedisKey = "outerIdList";
+
+    public List<SelectVo> orderType() {
+        return ObjectFieldHandler.enumToSelectVoDesc(
+                ArrayUtil.toArray(ObjectFieldHandler.generateFindAllOptional(UploadTypeEnum.values(), e ->
+                        CollectionUtil.newArrayList(UploadTypeEnum.ORDER, UploadTypeEnum.AFTER_SALE_RETURN)
+                                .contains(e)), UploadTypeEnum.class));
+    }
+
+    public List<SelectVo> orderShopNameType() {
+        return ObjectFieldHandler.enumToSelectVo(UploadShopNameEnum.values(), "alias");
+    }
 
     public enum OnlineStatusEnum {
         NORMAL,

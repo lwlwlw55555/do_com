@@ -111,4 +111,18 @@ public class OpenController extends BaseController {
         log.info("[inventory/list] params:{}", JSON.toJSONString(req));
         return BaseResp.success(new BasePagingResp<>(openService.inventoryList(req.getPage(), req.getPageSize())));
     }
+
+    @PostMapping("orderType")
+    @ApiOperation("上传类型")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<List<SelectVo>> orderType() {
+        return BaseResp.success(openService.orderType());
+    }
+
+    @PostMapping("orderShopNameType")
+    @ApiOperation("上传店铺类型")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<List<SelectVo>> orderShopNameType() {
+        return BaseResp.success(openService.orderShopNameType());
+    }
 }
