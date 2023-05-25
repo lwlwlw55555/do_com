@@ -867,6 +867,9 @@ public class ObjectFieldHandler {
     }
 
     public static Boolean checkIsNotEmptyRow(Row r) {
+        if (ObjectUtil.isNull(r)) {
+            return false;
+        }
         return ObjectFieldHandler.generateFindAnyOptional(r.cellIterator(), cell -> {
             setCellStrType(cell);
             return ObjectFieldHandler.isNotBlank(cell.getStringCellValue());
@@ -899,7 +902,7 @@ public class ObjectFieldHandler {
             wb = new HSSFWorkbook(new ByteArrayInputStream(b));
         }
         Sheet sheet = wb.getSheetAt(0);
-        List<Row> rows = ObjectFieldHandler.generateFindAllOptional(sheet, r -> r.getRowNum() > rowIndex && checkIsNotEmptyRow(r));
+        List<Row> rows = ObjectFieldHandler.generateFindAllOptional(sheet, r -> ObjectUtil.isNotNull(r) && r.getRowNum() > rowIndex && checkIsNotEmptyRow(r));
 
         if (CollectionUtil.isEmpty(rows)) {
             throw new Exception("文件为空，无法解析");
