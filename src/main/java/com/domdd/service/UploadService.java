@@ -93,6 +93,9 @@ public class UploadService {
                 OrderInfo orderInfo = Convert.convert(OrderInfo.class, map);
 //                orderInfo.setShopName(uploadShopName.getDesc());
                 orderInfo.setShopName(getCurrentShopName(orderInfo.getShopName()));
+                if (CollectionUtil.contains(shuadanOrders, orderInfo.getPlatformOrderSn())) {
+                    orderInfo.setSellerNote("不回传");
+                }
 
                 if (StringUtils.isAnyBlank(orderInfo.getPlatformGoodsId(), orderInfo.getPlatformSkuId())
                         || Objects.equals(orderInfo.getPlatformGoodsId(), "0") || Objects.equals(orderInfo.getPlatformSkuId(), "0")
@@ -110,9 +113,6 @@ public class UploadService {
                             }
                             if (StrUtil.isBlank(orderInfo.getPlatformOrderGoodsSn())) {
                                 orderInfo.setPlatformOrderGoodsSn(mapping.getPlatformGoodsOuterId());
-                            }
-                            if (CollectionUtil.contains(shuadanOrders, orderInfo.getPlatformOrderSn())) {
-                                orderInfo.setSellerNote("不回传");
                             }
                         }
                     }
