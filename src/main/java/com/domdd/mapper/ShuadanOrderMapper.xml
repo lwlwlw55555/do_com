@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.domdd.dao.common.ShuadanOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.domdd.model.ShuadanOrder" >
+    <id column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_sn, created_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from shuadan_order
+    where order_sn = #{orderSn,jdbcType=VARCHAR}
+  </select>
+    <select id="selectAll" resultType="java.lang.String">
+      select order_sn from shuadan_order
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from shuadan_order
+    where order_sn = #{orderSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.domdd.model.ShuadanOrder" >
+    insert into shuadan_order (order_sn, created_time)
+    values (#{orderSn,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.domdd.model.ShuadanOrder" >
+    insert into shuadan_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderSn != null" >
+        order_sn,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderSn != null" >
+        #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.domdd.model.ShuadanOrder" >
+    update shuadan_order
+    <set >
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where order_sn = #{orderSn,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.domdd.model.ShuadanOrder" >
+    update shuadan_order
+    set created_time = #{createdTime,jdbcType=TIMESTAMP}
+    where order_sn = #{orderSn,jdbcType=VARCHAR}
+  </update>
+</mapper>
