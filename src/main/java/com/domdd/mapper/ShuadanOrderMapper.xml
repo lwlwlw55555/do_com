@@ -44,6 +44,13 @@
       </if>
     </trim>
   </insert>
+  <insert id="replace">
+    replace INTO shuadan_order (order_sn)
+    VALUES
+    <foreach collection="records" item="order" separator=",">
+      (#{order.orderSn})
+    </foreach>
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.domdd.model.ShuadanOrder" >
     update shuadan_order
     <set >

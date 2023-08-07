@@ -1,30 +1,21 @@
 package com.domdd.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
 public class ShuadanOrder implements Serializable {
+    @TableField(exist = false)
+    private Long platformSkuId;
+
     private String orderSn;
 
     private Date createdTime;
 
     private static final long serialVersionUID = 1L;
-
-    public String getOrderSn() {
-        return orderSn;
-    }
-
-    public void setOrderSn(String orderSn) {
-        this.orderSn = orderSn == null ? null : orderSn.trim();
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
 
     @Override
     public boolean equals(Object that) {

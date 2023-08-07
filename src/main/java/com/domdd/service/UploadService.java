@@ -265,4 +265,33 @@ public class UploadService {
         }
         return null;
     }
+
+    public Integer uploadShuadan(MultipartFile file) {
+        List<Row> rows = null;
+        Sheet sheet = null;
+
+        try {
+            sheet = ObjectFieldHandler.getSheet0ByFile(file);
+            rows = ObjectFieldHandler.getRowsBySheet(sheet, 0);
+            if (CollectionUtil.isNotEmpty(rows)) {
+                if (!Objects.equals(sheet.getRow(0).getCell(1).getStringCellValue(), "订单号")) {
+                    throw new RuntimeException("导入文件的第二列表头必须是【订单号】哦，目前是【" + sheet.getRow(0).getCell(1) + "】，请核对!");
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        List<List<Row>> rowsList = ObjectFieldHandler.split(rows, 2000);
+        rowsList.forEach(rowList -> {
+            List<ShuadanOrder> shuadanOrders = ObjectFieldHandler.generateListByObj(rowList, row -> {
+                Map<String, Object> map = new HashMap<>();
+                Arrays.stream(ShuadanUploadEnum.values()).forEach(e -> {
+                    map.put(e.name(), ObjectFieldHandler.getValueByIndex(row, e.ordinal(), e.name()));
+                });
+                return Convert.convert(ShuadanOrder.class, map);
+            });
+            shuadanOrderMapper.replace(shuadanOrders);
+        });
+        return rows.size();
+    }
 }

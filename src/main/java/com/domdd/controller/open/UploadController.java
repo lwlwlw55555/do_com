@@ -59,4 +59,11 @@ public class UploadController {
         return BaseResp.success(uploadService.upload(file, null, null));
     }
 
+    @PostMapping("uploadShuadan")
+    @ApiOperation("导入刷单")
+    @ApiOperationSupport(author = "lw")
+    public BaseResp<Integer> uploadShuadan(MultipartFile file) {
+        return BaseResp.success(uploadService.uploadShuadan(file));
+    }
+
 }
