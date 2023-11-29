@@ -6,7 +6,6 @@ import io.shardingsphere.api.algorithm.sharding.PreciseShardingValue;
 import io.shardingsphere.api.algorithm.sharding.ShardingValue;
 import io.shardingsphere.api.algorithm.sharding.hint.HintShardingAlgorithm;
 import org.apache.commons.collections.CollectionUtils;
-import sun.security.util.ArrayUtil;
 
 import java.util.Arrays;
 import java.util.Collection;

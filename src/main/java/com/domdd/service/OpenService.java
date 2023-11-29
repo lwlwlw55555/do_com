@@ -64,8 +64,90 @@ public class OpenService {
             "ysgb", "hx-yzbs", "tc-qslsb", "dsn-rt", "ld-xhyb", "dsn-lh", "qmsd-1", "ksjta", "ksj-2", "ksj-3", "ksj-4",
             "myb", "dsnsb", "ksj-12", "9e00094", "qmsd-7", "tsx-wd", "qmsd-4", "dsn-xhj", "dl-yhb", "lyf-rbt", "xhr-xlx",
             "fx-yywj", "fx-rtfb", "NDXY-DXGZ", "DUCK-DDL", "DSN-gjjwj", "DSN-yhxb", "SHARK-xcq", "fx-mmb", "hrl-cslb", "ds-xcq", "dsn-rmj", "ht-hxc", "zxp", "bfr-mnjt", "mtj-ktkd", "fx-cnt", "xtk-sh", "qw-mkfty", "ds-cfj", "bf-yqz",
-            "HPK-atm", "dsn-rfm", "lyf-ddtrbt", "mq-lyyx", "nadle-slc", "sbe-kqzg", "qmsd-5", "atm-cl", "20221228");
+            "HPK-atm", "dsn-rfm", "lyf-ddtrbt", "mq-lyyx", "nadle-slc", "sbe-kqzg", "qmsd-5", "atm-cl", "20221228",
+            "DN-AC1*2",
+            "DN-AC1*3",
+            "DN-AC2*2",
+            "DN-AC2*3",
+            "DN-AC3*2",
+            "DN-AC3*3",
+            "DN-AC3*6",
+            "DN-AC4*2",
+            "DN-AC4*6",
+            "DN-MF6+*2",
+            "DN-MF6+*3",
+            "DN-MF7+*2",
+            "DN-MF7+*3",
+            "DN-MF8+*2",
+            "DN-MF8+*3",
+            "DN-DTN*2",
+            "DN-NGB3*2",
+            "DN-NGB3*3",
+            "DN-NGB3*6",
+            "DN-NGB4*3",
+            "DN-NGB4*6",
+            "DN-LY3*3",
+            "DN-LY3*6",
+            "DN-ZY3*2",
+            "DN-ZY3*3",
+            "DN-ZY3*6",
+            "DN-NC1*2",
+            "DN-NC1*3",
+            "DN-NC2*2",
+            "DN-NC2*3",
+            "DN-NC3*2",
+            "DN-NC3*3",
+            "DN-NC3*6",
+            "DN-NC4*2",
+            "DN-NC4*3",
+            "DN-NC4*6",
+            "DN-NCT1*3",
+            "DN-NCT2*3",
+            "DN-NCT3*2",
+            "DN-NCT3*3",
+            "DN-NCT3*6",
+            "DN-NCT4*2",
+            "DN-NCT4*3",
+            "DN-NCT4*6",
+            "DN-AC1",
+            "DN-AC2",
+            "DN-AC3",
+            "DN-AC4",
+            "DN-MF-6+",
+            "DN-MF-7+",
+            "DN-MF-8+",
+            "DN-APKM",
+            "DN-LY1",
+            "DN-LY2",
+            "DN-LY3",
+            "DN-LY1-300",
+            "DN-LY2-300",
+            "DN-LY3-300",
+            "DN-NGB1",
+            "DN-NGB2",
+            "DN-NGB3",
+            "DN-NGB4",
+            "DN-NGB1-300",
+            "DN-NGB2-300",
+            "DN-NGB3-300",
+            "DN-ZY1",
+            "DN-ZY2",
+            "DN-ZY3",
+            "DN-ZY1-400",
+            "DN-ZY2-400",
+            "DN-ZY3-400",
+            "DN-NC1",
+            "DN-NC2",
+            "DN-NC3",
+            "DN-NC4",
+            "DN-NCT1",
+            "DN-NCT2",
+            "DN-NCT3",
+            "DN-NCT4"
+    );
     public static String ignoreOuterIdRedisKey = "outerIdList";
+
+    public static String daNengIgnoreOuterIdRedisKey = "daNengOuterIdList";
 
     public List<SelectVo> orderType() {
         return ObjectFieldHandler.enumToSelectVoDesc(
@@ -98,12 +180,23 @@ public class OpenService {
     }
 
     public static List<String> getIgnoreOuterIdListByRedis() {
+        List<String> latestIgnoreOuterIdList = ignoreOuterIdList;
+
         String ignoreOuterIdStr = stringRedisTemplate.opsForValue().get(ignoreOuterIdRedisKey);
         log.info("[OpenService/getIgnoreOuterIdListByRedis] Latest ignoreOuterIdList :{}", ignoreOuterIdStr);
-        List<String> latestIgnoreOuterIdList = ignoreOuterIdList;
         if (CollectionUtils.isNotEmpty(JSONObject.parseArray(ignoreOuterIdStr, String.class))) {
-            latestIgnoreOuterIdList = JSONObject.parseArray(ignoreOuterIdStr, String.class);
+            List<String> tempIgnoreOuterIdList = JSONObject.parseArray(ignoreOuterIdStr, String.class);
+            latestIgnoreOuterIdList.addAll(tempIgnoreOuterIdList);
+            latestIgnoreOuterIdList = ObjectFieldHandler.generateDistinctListByObj(latestIgnoreOuterIdList, v -> v);
         }
+        String daNengIgnoreOuterIdStr = stringRedisTemplate.opsForValue().get(daNengIgnoreOuterIdRedisKey);
+        log.info("[OpenService/getIgnoreOuterIdListByRedis] Latest daNengIgnoreOuterIdStr :{}", daNengIgnoreOuterIdStr);
+        if (CollectionUtils.isNotEmpty(JSONObject.parseArray(daNengIgnoreOuterIdStr, String.class))) {
+            List<String> tempIgnoreOuterIdList = JSONObject.parseArray(daNengIgnoreOuterIdStr, String.class);
+            latestIgnoreOuterIdList.addAll(tempIgnoreOuterIdList);
+            latestIgnoreOuterIdList = ObjectFieldHandler.generateDistinctListByObj(latestIgnoreOuterIdList, v -> v);
+        }
+
         return latestIgnoreOuterIdList;
     }
 
