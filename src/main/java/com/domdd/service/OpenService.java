@@ -183,20 +183,20 @@ public class OpenService {
         List<String> latestIgnoreOuterIdList = ignoreOuterIdList;
 
         String ignoreOuterIdStr = stringRedisTemplate.opsForValue().get(ignoreOuterIdRedisKey);
-        log.info("[OpenService/getIgnoreOuterIdListByRedis] Latest ignoreOuterIdList :{}", ignoreOuterIdStr);
+//        log.info("[OpenService/getIgnoreOuterIdListByRedis] Latest ignoreOuterIdList :{}", ignoreOuterIdStr);
         if (CollectionUtils.isNotEmpty(JSONObject.parseArray(ignoreOuterIdStr, String.class))) {
             List<String> tempIgnoreOuterIdList = JSONObject.parseArray(ignoreOuterIdStr, String.class);
             latestIgnoreOuterIdList.addAll(tempIgnoreOuterIdList);
             latestIgnoreOuterIdList = ObjectFieldHandler.generateDistinctListByObj(latestIgnoreOuterIdList, v -> v);
         }
         String daNengIgnoreOuterIdStr = stringRedisTemplate.opsForValue().get(daNengIgnoreOuterIdRedisKey);
-        log.info("[OpenService/getIgnoreOuterIdListByRedis] Latest daNengIgnoreOuterIdStr :{}", daNengIgnoreOuterIdStr);
+//        log.info("[OpenService/getIgnoreOuterIdListByRedis] Latest daNengIgnoreOuterIdStr :{}", daNengIgnoreOuterIdStr);
         if (CollectionUtils.isNotEmpty(JSONObject.parseArray(daNengIgnoreOuterIdStr, String.class))) {
             List<String> tempIgnoreOuterIdList = JSONObject.parseArray(daNengIgnoreOuterIdStr, String.class);
             latestIgnoreOuterIdList.addAll(tempIgnoreOuterIdList);
             latestIgnoreOuterIdList = ObjectFieldHandler.generateDistinctListByObj(latestIgnoreOuterIdList, v -> v);
         }
-
+        log.info("[OpenService/getIgnoreOuterIdListByRedis] Latest latestIgnoreOuterIdList :{}", JSONObject.toJSONString(latestIgnoreOuterIdList));
         return latestIgnoreOuterIdList;
     }
 
